@@ -21,9 +21,15 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, email, password } = formData;
+    const principal_id = localStorage.getItem("principal_id");
 
     toast.promise(
-      DCompetition_backend_user.register(username, email, password),
+      DCompetition_backend_user.register(
+        principal_id,
+        username,
+        email,
+        password
+      ),
       {
         loading: "Registering...",
         success: <b>Registration successful!</b>,

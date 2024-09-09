@@ -7,13 +7,14 @@ actor Main {
 
   let tree = RBTree.RBTree<Text, User.User>(Text.compare);
 
-  public func register(username : Text, email : Text, password : Text) : async () {
+  public func register(principal_id : Text, username : Text, email : Text, password : Text) : async () {
     let newUser : User.User = {
+      principal_id = principal_id;
       username = username;
       email = email;
       password = password;
     };
-    tree.put(newUser.username, newUser);
+    tree.put(principal_id, newUser);
   };
 
   public func getAllUsers() : async [User.User] {
@@ -25,5 +26,10 @@ actor Main {
 
     return users;
   };
+
+  public func login(principal_id : Text) : async ?User.User {
+      let user = tree.get(principal_id);
+      return user;
+  }
 
 };
