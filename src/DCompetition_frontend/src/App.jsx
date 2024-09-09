@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
+import { Button, Card, CardBody, Input } from "@nextui-org/react";
+import { Toaster, toast } from "react-hot-toast";
 
 const App = () => {
   const [formData, setFormData] = useState({
@@ -18,44 +20,57 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { username, email, password } = formData;
+    const { username, email, password } = formData;
 
-      await DCompetition_backend_user.register(username, email, password);
-      alert("Registration successful!");
-    } catch (error) {
-      console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
-    }
+    toast.promise(
+      DCompetition_backend_user.register(username, email, password),
+      {
+        loading: "Registering...",
+        success: <b>Registration successful!</b>,
+        error: <b>Registration failed. Please try again.</b>,
+      }
+    );
   };
 
   return (
     <>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <input type="submit" value="Register" />
-      </form>
+      <Toaster />
+      <Card className="max-w-max m-auto mt-10">
+        <CardBody>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+            <div className="flex w-96 flex-wrap md:flex-nowrap gap-4">
+              <Input
+                type="email"
+                label="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex w-96 flex-wrap md:flex-nowrap gap-4">
+              <Input
+                type="text"
+                label="Username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex w-96 flex-wrap md:flex-nowrap gap-4">
+              <Input
+                type="password"
+                label="Password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+            <Button color="primary" type="submit" className="w-96">
+              Submit
+            </Button>
+          </form>
+        </CardBody>
+      </Card>
     </>
   );
 };

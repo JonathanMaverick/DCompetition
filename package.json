@@ -17,5 +17,8 @@
   ],
   "devDependencies": {
     "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "react-hot-toast": "^2.4.1"
   }
 }
