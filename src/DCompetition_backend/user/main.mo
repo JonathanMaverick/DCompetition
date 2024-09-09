@@ -13,17 +13,17 @@ actor Main {
       email = email;
       password = password;
     };
-    tree.put(newUser.username , newUser);
+    tree.put(newUser.username, newUser);
   };
 
-  public func getAllUsers(): async [User.User] {
-    var users: [User.User] = [];
+  public func getAllUsers() : async [User.User] {
+    var users : [User.User] = [];
 
-    for(entry in RBTree.iter(tree.share(), #bwd)){
+    for (entry in RBTree.iter(tree.share(), #bwd)) {
       users := Array.append<User.User>(users, [entry.1]);
     };
-    
+
     return users;
-  }
+  };
 
 };

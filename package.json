@@ -16,6 +16,8 @@
     "src/DCompetition_frontend"
   ],
   "devDependencies": {
+    "prettier": "^3.3.3",
+    "prettier-plugin-motoko": "^0.9.4",
     "typescript": "^5.5.4"
   },
   "dependencies": {
