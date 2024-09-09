@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "DCompetition_backend": {
+      "main": "src/DCompetition_backend/main.mo",
+      "type": "motoko"
+    },
+    "DCompetition_frontend": {
+      "dependencies": [
+        "DCompetition_backend"
+      ],
+      "source": [
+        "src/DCompetition_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "DCompetition_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
