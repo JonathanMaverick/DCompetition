@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { DCompetition_backend } from 'declarations/DCompetition_backend';
+import { DCompetition_backend } from "declarations/DCompetition_backend";
 
 const App = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
+    username: "",
+    email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -22,10 +22,10 @@ const App = () => {
       const { username, email, password } = formData;
 
       await DCompetition_backend.register(username, email, password);
-      alert('Registration successful!');
+      alert("Registration successful!");
     } catch (error) {
-      console.error('Registration failed:', error);
-      alert('Registration failed. Please try again.');
+      console.error("Registration failed:", error);
+      alert("Registration failed. Please try again.");
     }
   };
 

@@ -1,4 +1,4 @@
-import User "object/user";
+import User "types";
 import Array "mo:base/Array";
 
 actor Main {
