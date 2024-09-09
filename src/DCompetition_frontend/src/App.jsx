@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DCompetition_backend } from "declarations/DCompetition_backend";
+import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 
 const App = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ const App = () => {
     try {
       const { username, email, password } = formData;
 
-      await DCompetition_backend.register(username, email, password);
+      await DCompetition_backend_user.register(username, email, password);
       alert("Registration successful!");
     } catch (error) {
       console.error("Registration failed:", error);
