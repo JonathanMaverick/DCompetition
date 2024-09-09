@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { DCompetition_backend } from 'declarations/DCompetition_backend';
+import { useState } from "react";
+import { DCompetition_backend } from "declarations/DCompetition_backend";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [greeting, setGreeting] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
