@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 const UserAuthContext = createContext(null);
 
 export function UserAuthProvider({ children }) {
-  const [user, setUser] = useState(null);
 
   const getPrincipal = async() => {
     const principalID = await DCompetition_backend_user.getPrincipalID()
@@ -16,19 +15,12 @@ export function UserAuthProvider({ children }) {
     await DCompetition_backend_user.storePrincipalID(principal)
   }
 
-  function getUserData() {
-    console.log("user data")
+  const getUserData = async(principal) => {
+    const user = await DCompetition_backend_user.login(principal);
+    return user
   }
 
-  function setUserData(user) {
-    console.log("set user data")
-  }
-
-  function update(user) {
-    console.log("update")
-  }
-
-  const value = { update, setUserData, getUserData , getPrincipal, setPrincipal};
+  const value = {getUserData , getPrincipal, setPrincipal};
 
   return (
     <UserAuthContext.Provider value={value}>

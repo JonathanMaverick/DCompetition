@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 import { AuthClient } from "@dfinity/auth-client";
 import { useUserAuth } from "../context/UserContext";
@@ -15,37 +15,26 @@ function Login() {
           const identity = authClient.getIdentity();
           const principal = identity.getPrincipal().toString();
           setPrincipal(principal);
+
+          try {
+            console.log("Logged in Principal ID:", principal);
+
+            const user = await DCompetition_backend_user.login(principal);
+
+            if (Array.isArray(user) && user.length > 0) {
+              window.location.href = "/home";
+            } else {
+              window.location.href = "/register";
+            }
+          } catch (error) {
+            console.error("Error during user check:", error);
+          }
         },
       });
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const principal = await getPrincipal(); 
-
-      if (principal !== '') {
-        try {
-          console.log("Logged in Principal ID:", principal);
-
-          const user = await DCompetition_backend_user.login(principal);
-
-          if (Array.isArray(user) && user.length > 0) {
-            window.location.href = "/home";
-          } else {
-            window.location.href = "/register";
-          }
-        } catch (error) {
-          console.error("Error during user check:", error);
-        }
-      }
-    };
-
-    checkUser();
-  }, [getPrincipal]);
-
 
   return (
     <div>
