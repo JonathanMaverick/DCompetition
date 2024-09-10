@@ -19,5 +19,15 @@ actor Main {
         return competitions;
     };
 
+    public func getAllCompetition() : async [Competition.Competition] {
+        var competitions : [Competition.Competition] = [];
+        
+        for (entry in RBTree.iter(tree.share(), #bwd)) {
+            competitions := Array.append<Competition.Competition>(competitions, [entry.1])
+        };
+
+        return competitions;
+    }
+
 
 }
