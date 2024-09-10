@@ -33,7 +33,6 @@ const Register = () => {
         loading: "Registering...",
         success: () => {
           navigate("/home");
-          return <b>Registration successful!</b>;
         },
         error: <b>Registration failed. Please try again.</b>,
       }
