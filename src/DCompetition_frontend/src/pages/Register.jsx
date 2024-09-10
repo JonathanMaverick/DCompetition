@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 import { Button, Card, CardBody, Input } from "@nextui-org/react";
 import { Toaster, toast } from "react-hot-toast";
+import { useUserAuth } from "../context/UserContext";
 
 const Register = () => {
+  const { getPrincipal } = useUserAuth()
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -21,11 +23,11 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, email, password } = formData;
-    const principal_id = localStorage.getItem("principal_id");
-
+    const principal = await getPrincipal()
+    
     toast.promise(
       DCompetition_backend_user.register(
-        principal_id,
+        principal,
         username,
         email,
         password

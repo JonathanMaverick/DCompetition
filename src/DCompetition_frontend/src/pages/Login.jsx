@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 import { AuthClient } from "@dfinity/auth-client";
+import { useUserAuth } from "../context/UserContext";
 
 function Login() {
-  const [principalId, setPrincipalId] = useState(null);
+  const { getPrincipal, setPrincipal } = useUserAuth();
 
   const loginAndStorePrincipal = async () => {
     try {
       const authClient = await AuthClient.create();
-
       await authClient.login({
         identityProvider: "https://identity.ic0.app",
-        onSuccess: () => {
+        onSuccess: async () => {
           const identity = authClient.getIdentity();
           const principal = identity.getPrincipal().toString();
-          setPrincipalId(principal);
+          setPrincipal(principal);
         },
       });
     } catch (error) {
@@ -22,22 +22,19 @@ function Login() {
     }
   };
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     const checkUser = async () => {
-      if (principalId) {
+      const principal = await getPrincipal(); 
+
+      if (principal !== '') {
         try {
-          console.log("Logged in Principal ID:", principalId);
+          console.log("Logged in Principal ID:", principal);
 
-          const user = await DCompetition_backend_user.login(principalId);
-          console.log("User data:", user);
+          const user = await DCompetition_backend_user.login(principal);
 
-          //Keknya backend perlu di modif, ini user nya ngereturn array
           if (Array.isArray(user) && user.length > 0) {
             window.location.href = "/home";
           } else {
-            localStorage.setItem("principal_id", JSON.stringify(principalId));
             window.location.href = "/register";
           }
         } catch (error) {
@@ -47,7 +44,8 @@ function Login() {
     };
 
     checkUser();
-  }, [principalId]);
+  }, [getPrincipal]);
+
 
   return (
     <div>
@@ -55,7 +53,6 @@ function Login() {
       <button onClick={loginAndStorePrincipal}>
         Login With Internet Identity (click Me)
       </button>
-      {principalId && <p>Logged in! Principal ID: {principalId}</p>}
     </div>
   );
 }

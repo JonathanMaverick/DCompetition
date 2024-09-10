@@ -6,6 +6,15 @@ import Text "mo:base/Text";
 actor Main {
 
   let tree = RBTree.RBTree<Text, User.User>(Text.compare);
+  var loginPrincipalID : Text = "";
+
+  public func storePrincipalID(principal_id : Text) : async () {
+    loginPrincipalID := principal_id;
+  };
+
+  public func getPrincipalID() : async (Text) {
+    return loginPrincipalID;
+  };
 
   public func register(principal_id : Text, username : Text, email : Text, password : Text) : async () {
     let newUser : User.User = {
@@ -28,8 +37,8 @@ actor Main {
   };
 
   public func login(principal_id : Text) : async ?User.User {
-      let user = tree.get(principal_id);
-      return user;
-  }
+    let user = tree.get(principal_id);
+    return user;
+  };
 
 };
