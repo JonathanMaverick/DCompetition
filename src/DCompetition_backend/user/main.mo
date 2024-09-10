@@ -20,12 +20,11 @@ actor Main {
     loginPrincipalID := "";
   };
 
-  public func register(principal_id : Text, username : Text, email : Text, password : Text) : async () {
+  public func register(principal_id : Text, username : Text, email : Text) : async () {
     let newUser : User.User = {
       principal_id = principal_id;
       username = username;
       email = email;
-      password = password;
     };
     tree.put(principal_id, newUser);
   };

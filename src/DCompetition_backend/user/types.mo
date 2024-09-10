@@ -4,6 +4,5 @@ module {
     principal_id : Text;
     username : Text;
     email : Text;
-    password : Text;
   };
 };

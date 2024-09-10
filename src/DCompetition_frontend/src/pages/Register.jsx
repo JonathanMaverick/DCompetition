@@ -3,13 +3,15 @@ import { DCompetition_backend_user } from "declarations/DCompetition_backend_use
 import { Button, Card, CardBody, Input } from "@nextui-org/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useUserAuth } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const { getPrincipal } = useUserAuth()
+  const { getPrincipal } = useUserAuth();
+  const navigate = useNavigate(); 
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: "",
   });
 
   const handleChange = (e) => {
@@ -22,19 +24,17 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, email, password } = formData;
-    const principal = await getPrincipal()
-    
+    const { username, email } = formData;
+    const principal = await getPrincipal();
+
     toast.promise(
-      DCompetition_backend_user.register(
-        principal,
-        username,
-        email,
-        password
-      ),
+      DCompetition_backend_user.register(principal, username, email),
       {
         loading: "Registering...",
-        success: <b>Registration successful!</b>,
+        success: () => {
+          navigate("/home");
+          return <b>Registration successful!</b>;
+        },
         error: <b>Registration failed. Please try again.</b>,
       }
     );
@@ -61,15 +61,6 @@ const Register = () => {
                 label="Username"
                 name="username"
                 value={formData.username}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex w-96 flex-wrap md:flex-nowrap gap-4">
-              <Input
-                type="password"
-                label="Password"
-                name="password"
-                value={formData.password}
                 onChange={handleChange}
               />
             </div>
