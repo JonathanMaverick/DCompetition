@@ -2,7 +2,6 @@ import RBTree "mo:base/RBTree";
 import Competition "types";
 import Text "mo:base/Text";
 import Array "mo:base/Array";
-import Blob "mo:base/Blob";
 import Nat "mo:base/Nat";
 
 actor Main { 
@@ -20,6 +19,13 @@ actor Main {
         };
 
         return competitions;
+    };
+
+    public func getCompetitionById(competition_id : Nat) : async ?Competition.Competition {
+
+        var competition = tree.get(competition_id);
+
+        return competition;
     };
 
     public func getAllCompetition() : async [Competition.Competition] {
