@@ -1,25 +1,23 @@
 import RBTree "mo:base/RBTree";
+import Competition "types";
 import Text "mo:base/Text";
 import Array "mo:base/Array";
-import Competition "types";
 
 actor Main { 
 
     let tree = RBTree.RBTree<Text, Competition.Competition>(Text.compare);
 
-    // public func getCompetitionsByUser(userPrincipalId : Text): async [Competition.Competition] {
-    //     let competitionArray : [(Text, Competition.Competition)] = RBTree.toArray(tree);
+    public func getPrincipalCompetition(principal_id : Text) : async [Competition.Competition] {
+        var competitions : [Competition.Competition] = [];
 
-    //     let filteredCompetitions = Array.filter(competitionArray, func(pair : (Text, Competition.Competition)) : Bool {
-    //         let (_, competition) = pair;
-    //         competition.principal_id == userPrincipalId
-    //     });
+        for (entry in RBTree.iter(tree.share(), #bwd)) {
+            if(Text.equal(entry.1.principal_id, principal_id)){
+                competitions := Array.append<Competition.Competition>(competitions, [entry.1]);
+            }
+        };
 
-    //     // Extract the competition values
-    //     return Array.map(filteredCompetitions, func(pair : (Text, Competition.Competition)) : Competition.Competition {
-    //         let (_, competition) = pair;
-    //         competition
-    //     });
-    // }
+        return competitions;
+    };
+
 
 }
