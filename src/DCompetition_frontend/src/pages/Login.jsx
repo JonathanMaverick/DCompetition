@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 import { AuthClient } from "@dfinity/auth-client";
 import { useUserAuth } from "../context/UserContext";
