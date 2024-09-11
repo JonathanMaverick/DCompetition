@@ -16,19 +16,16 @@ export default function Nav() {
   const { getPrincipal, setPrincipal, getUserData } = useUserAuth();
   const [id, setID] = useState("");
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const principalID = async () => {
-      setLoading(true);
       try {
         const principal = await getPrincipal();
         setID(principal);
         console.log(principal);
       } catch (error) {
         console.error("Error getting principal:", error);
-      } finally {
-        setLoading(false);
       }
     };
     principalID();
@@ -37,8 +34,8 @@ export default function Nav() {
   useEffect(() => {
     const fetchUserData = async () => {
       if (id !== "") {
-        setLoading(true);
         try {
+          setLoading(true);
           console.log(id);
           const fetchedUser = await getUserData(id);
           console.log(fetchedUser);
@@ -48,6 +45,10 @@ export default function Nav() {
         } finally {
           setLoading(false);
         }
+      } else {
+        setTimeout(() => {
+          setLoading(false);
+        }, 5000);
       }
     };
     fetchUserData();
