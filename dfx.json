@@ -4,6 +4,10 @@
       "main": "src/DCompetition_backend/user/main.mo",
       "type": "motoko"
     },
+    "DCompetition_backend_competition": {
+      "main": "src/DCompetition_backend/competition/main.mo",
+      "type": "motoko"
+    },
     "DCompetition_frontend": {
       "dependencies": ["DCompetition_backend_user"],
       "source": ["src/DCompetition_frontend/dist"],
