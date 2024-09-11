@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaSun, FaMoon } from "react-icons/fa";
+import Nav from "../components/Nav";
 
 export default function Template({ children }) {
   const [theme, setTheme] = useState("light");
@@ -26,9 +27,10 @@ export default function Template({ children }) {
     <div
       className={`${theme} min-h-screen flex flex-col text-foreground bg-background`}
     >
+      <Nav></Nav>
       <div className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <button
+          {/* <button
             className="px-2 py-2 mb-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white rounded-full"
             onClick={toggleTheme}
           >
@@ -37,7 +39,7 @@ export default function Template({ children }) {
             ) : (
               <FaSun className="h-6 w-6 text-white" />
             )}
-          </button>
+          </button> */}
           {children}
         </div>
       </div>

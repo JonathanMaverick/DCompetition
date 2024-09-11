@@ -9,7 +9,10 @@
       "type": "motoko"
     },
     "DCompetition_frontend": {
-      "dependencies": ["DCompetition_backend_user"],
+      "dependencies": [
+        "DCompetition_backend_user",
+        "DCompetition_backend_competition"
+      ],
       "source": ["src/DCompetition_frontend/dist"],
       "type": "assets",
       "workspace": "DCompetition_frontend"
