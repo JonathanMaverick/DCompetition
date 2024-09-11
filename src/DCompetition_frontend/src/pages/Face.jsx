@@ -4,6 +4,7 @@ import Webcam from "react-webcam";
 const Face = () => {
   const webcamRef = useRef(null);
   const [image, setImage] = useState(null);
+  const [message, setMessage] = useState("");
 
   const videoConstraints = {
     width: 1280,
@@ -14,6 +15,25 @@ const Face = () => {
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
+    processFace(imageSrc);
+  };
+
+  const processFace = async (imageSrc) => {
+    try {
+      const response = await fetch("http://localhost:5000/check-face", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: imageSrc }),
+      });
+
+      const data = await response.json();
+      setMessage(data.message);
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("Error processing image.");
+    }
   };
 
   return (
@@ -37,6 +57,8 @@ const Face = () => {
           <img src={image} alt="Captured" />
         </div>
       )}
+
+      {message && <p>{message}</p>}
     </div>
   );
 };
