@@ -1,6 +1,7 @@
-import { Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { IoAdd } from "react-icons/io5";
 
 const formatTime = (time) => {
   const hours = String(Math.floor(time / 3600)).padStart(2, "0");
@@ -54,14 +55,22 @@ function Competitions() {
 
   return (
     <div className="flex flex-col gap-6 p-6 text-gray-100">
-      <h1 className="text-4xl font-bold text-center text-purple-400 mb-4">
-        Competitions
-      </h1>
+      <div className="relative">
+        {" "}
+        <h1 className="text-4xl font-bold text-center text-purple-400 mb-4">
+          Competitions
+        </h1>
+        <Button variant="ghost" className="absolute right-0 top-1">
+          <IoAdd className="text-xl" />
+          Create
+        </Button>
+      </div>
+
       <div className="flex flex-col gap-6">
         {[1, 2, 3, 4, 5].map((_, index) => (
           <Card
             key={index}
-            className="relative shadow-lg transition-transform transform hover:scale-[1.01] cursor-pointer"
+            className="bg-black bg-opacity-40 backdrop-blur-md relative shadow-lg transition-transform transform hover:scale-[1.01] cursor-pointer"
           >
             <CountdownTimer deadline={deadline} />
             <CardBody className="p-6 space-y-4">
