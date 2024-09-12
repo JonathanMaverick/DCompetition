@@ -42,33 +42,46 @@ const Register = () => {
   return (
     <>
       <Toaster />
-      <Card className="max-w-max m-auto">
-        <CardBody>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-            <div className="flex w-96 flex-wrap md:flex-nowrap gap-4">
-              <Input
-                type="email"
-                label="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex w-96 flex-wrap md:flex-nowrap gap-4">
-              <Input
-                type="text"
-                label="Username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-            </div>
-            <Button color="primary" type="submit" className="w-96">
-              Submit
-            </Button>
-          </form>
-        </CardBody>
-      </Card>
+      <div
+        className="flex items-center justify-center"
+        style={{ height: "calc(100vh - 12rem)" }}
+      >
+        <Card className="w-full max-w-lg m-auto shadow-lg p-4 bg-black bg-opacity-40 backdrop-blur-md rounded-lg">
+          <CardBody>
+            <h1 className="text-3xl font-semibold my-2 text-center">
+              Welcome to DCompetition!
+            </h1>
+            <p className="text-center mb-6 text-gray-400">
+              Please fill in your details
+            </p>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <div className="flex flex-wrap gap-4">
+                <Input
+                  type="email"
+                  label="Email"
+                  name="email"
+                  fullWidth
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <Input
+                  type="text"
+                  label="Username"
+                  name="username"
+                  fullWidth
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+              </div>
+              <Button color="secondary" type="submit" fullWidth>
+                Continue
+              </Button>
+            </form>
+          </CardBody>
+        </Card>
+      </div>
     </>
   );
 };
