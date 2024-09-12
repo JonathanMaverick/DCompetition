@@ -17,6 +17,14 @@ def check_face():
     image_array = decode_image(image_base64)
     temp_image_path = save_temp_image(image_array)
 
+    analyze = DeepFace.analyze(
+      img_path=temp_image_path,
+      actions=('emotion'),
+    )
+
+    if analyze[0]['dominant_emotion'] != 'neutral':
+      return jsonify({"message": "Please take neutral face expression"})
+
     for file_name in os.listdir(STORAGE_PATH):
       file_path = os.path.join(STORAGE_PATH, file_name)
             
@@ -24,10 +32,10 @@ def check_face():
         img1_path=temp_image_path, 
         img2_path=file_path
       )
-      print(f"Comparing with {file_name}: {result['distance']}")
+      print(f"Comparing with {file_name}: {result['distance']}, {result['verified']} ")
             
-      if result['distance'] < 0.4:
-        return jsonify({"message": f"Match found with {file_name}!"}), 200
+      if result['distance'] < 0.4 and result['verified']:
+        return jsonify({"message": f"Match found with {file_name}! "}), 200
         
     save_image(image_array, STORAGE_PATH)
     return jsonify({"message": "No match found."}), 200
@@ -41,4 +49,4 @@ def check_face():
       os.remove(temp_image_path)
 
 if __name__ == '__main__':
-  app.run(port=5000)
+  app.run(port=1234)
