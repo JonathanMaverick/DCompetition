@@ -4,6 +4,8 @@ import Register from "./pages/Register";
 import Template from "./templates/Template";
 import Home from "./pages/Home";
 import Face from "./pages/Face";
+import Competitions from "./pages/Competitions";
+import Results from "./pages/Results";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/face" element={<Face />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/competitions" element={<Competitions />} />
+          <Route path="/results" element={<Results />} />
         </Routes>
       </Template>
     </Router>

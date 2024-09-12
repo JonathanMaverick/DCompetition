@@ -11,12 +11,14 @@ import {
 import { useUserAuth } from "../context/UserContext";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 import { AuthClient } from "@dfinity/auth-client";
+import { useLocation } from "react-router-dom"; // Import useLocation
 
 export default function Nav() {
   const { getPrincipal, setPrincipal, getUserData } = useUserAuth();
   const [id, setID] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const location = useLocation(); // Get current location
 
   useEffect(() => {
     const principalID = async () => {
@@ -99,18 +101,31 @@ export default function Nav() {
         />
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-6" justify="center">
-        <NavbarItem isActive>
-          <Link color="secondary" href="#">
+        <NavbarItem isActive={location.pathname === "/"}>
+          <Link
+            color={location.pathname === "/" ? "secondary" : "foreground"}
+            href="/"
+          >
             Home
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
+        <NavbarItem isActive={location.pathname === "/competitions"}>
+          <Link
+            color={
+              location.pathname === "/competitions" ? "secondary" : "foreground"
+            }
+            href="/competitions"
+          >
             Competitions
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
+        <NavbarItem isActive={location.pathname === "/results"}>
+          <Link
+            color={
+              location.pathname === "/results" ? "secondary" : "foreground"
+            }
+            href="/results"
+          >
             Results
           </Link>
         </NavbarItem>
