@@ -1,5 +1,8 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage, firestore } from "../tools/firebase"; 
+import { collection, addDoc } from "../tools/firebase"; 
 
 const Face = () => {
   const webcamRef = useRef(null);
@@ -30,9 +33,36 @@ const Face = () => {
 
       const data = await response.json();
       setMessage(data.message);
+
+      if (data.message === "No match found.") {
+        uploadImageToFirebase(imageSrc);
+      }
     } catch (error) {
       console.error("Error:", error);
       setMessage("Error processing image.");
+    }
+  };
+
+  const uploadImageToFirebase = async (imageSrc) => {
+    try {
+      const base64Response = await fetch(imageSrc);
+      const blob = await base64Response.blob();
+
+      const storageRef = ref(storage, `faces/${Date.now()}.jpg`);
+
+      const snapshot = await uploadBytes(storageRef, blob);
+      console.log("Image uploaded to Firebase Storage");
+
+      const downloadURL = await getDownloadURL(snapshot.ref);
+
+      await addDoc(collection(firestore, "faces"), {
+        url: downloadURL,
+        createdAt: new Date(),
+      });
+
+      console.log("Image URL and metadata stored in Firestore");
+    } catch (error) {
+      console.error("Error uploading image:", error);
     }
   };
 
