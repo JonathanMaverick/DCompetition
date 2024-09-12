@@ -3,7 +3,7 @@ import { FaSun, FaMoon } from "react-icons/fa";
 import Nav from "../components/Nav";
 
 export default function Template({ children }) {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -31,13 +31,13 @@ export default function Template({ children }) {
       <div className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* <button
-            className="px-2 py-2 mb-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white rounded-full"
+            className="fixed bottom-2 right-5 z-10 px-2 py-2 mb-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white rounded-full"
             onClick={toggleTheme}
           >
             {theme === "light" ? (
-              <FaMoon className="h-6 w-6 text-gray-800 dark:text-gray-200" />
+              <FaMoon className="h-5 w-5 text-gray-800 dark:text-gray-200" />
             ) : (
-              <FaSun className="h-6 w-6 text-white" />
+              <FaSun className="h-5 w-5 text-white" />
             )}
           </button> */}
           {children}

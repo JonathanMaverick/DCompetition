@@ -121,9 +121,9 @@ export default function Nav() {
             <CircularProgress
               classNames={{
                 svg: "w-6 h-6 drop-shadow-md",
-                indicator: "stroke-white",
-                track: "stroke-white/10",
-                value: "text-3xl font-semibold text-white",
+                indicator: "stroke-purple-500",
+                track: "stroke-purple-500/10",
+                value: "text-3xl font-semibold text-purple-500",
               }}
               color="secondary"
               aria-label="Loading..."
@@ -131,7 +131,12 @@ export default function Nav() {
           ) : user ? (
             <div className="flex gap-3 items-center">
               <p>{user.username}</p>
-              <Button color="secondary" variant="flat" onClick={signOut}>
+              <Button
+                color="secondary"
+                variant="flat"
+                onClick={signOut}
+                className="text-purple-500"
+              >
                 Sign Out
               </Button>
             </div>
