@@ -20,7 +20,7 @@ const Face = () => {
 
   const processFace = async (imageSrc) => {
     try {
-      const response = await fetch("http://localhost:5000/check-face", {
+      const response = await fetch("http://localhost:1234/check-face", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

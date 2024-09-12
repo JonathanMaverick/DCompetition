@@ -49,4 +49,4 @@ def check_face():
       os.remove(temp_image_path)
 
 if __name__ == '__main__':
-  app.run(port=5000)
+  app.run(port=1234)
