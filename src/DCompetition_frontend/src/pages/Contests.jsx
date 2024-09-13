@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { IoAdd } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
-import { FaCrown, FaTrophy, FaUsers } from "react-icons/fa"; // Added icons
+import { FaClock, FaTrophy, FaUsers } from "react-icons/fa";
 
 const formatTime = (time) => {
   const hours = String(Math.floor(time / 3600)).padStart(2, "0");
@@ -25,48 +25,82 @@ const getDeadline = () => {
   return deadline;
 };
 
-function CountdownTimer({ deadline }) {
+function Status({ status }) {
+  const statusColors = {
+    "Not Started": "bg-gray-800",
+    Ongoing: "bg-purple-900",
+    "Winner Selection": "bg-purple-600",
+    Completed: "bg-fuchsia-700",
+  };
+
+  return (
+    <div
+      className={`w-full h-12 ${statusColors[status]} text-white flex items-center justify-center font-bold rounded-t-lg`}
+    >
+      {status}
+    </div>
+  );
+}
+
+function BottomCard({ reward, submissions, deadline, status }) {
   const [timeLeft, setTimeLeft] = useState(
-    Math.max((deadline - new Date()) / 1000, 0)
+    formatTime(Math.max((deadline - new Date()) / 1000, 0))
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const newTimeLeft = Math.max((deadline - new Date()) / 1000, 0);
-      setTimeLeft(newTimeLeft);
-      if (newTimeLeft <= 0) clearInterval(interval);
+      setTimeLeft(formatTime(Math.max((deadline - new Date()) / 1000, 0)));
     }, 1000);
 
     return () => clearInterval(interval);
   }, [deadline]);
 
-  return (
-    <div className="w-full h-12 bg-purple-800 text-white flex items-center justify-center font-bold rounded-t-lg">
-      {formatTime(timeLeft)}
-    </div>
-  );
-}
+  const statusGradients = {
+    "Not Started": "from-gray-600 to-gray-800",
+    Ongoing: "from-purple-700 to-purple-900",
+    "Winner Selection": "from-purple-500 to-purple-700",
+    Completed: "from-fuchsia-600 to-fuchsia-800",
+  };
 
-function SubmissionAndReward({ reward, submissions, status }) {
+  const iconColors = {
+    "Not Started": "text-gray-400",
+    Ongoing: "text-purple-300",
+    "Winner Selection": "text-purple-200",
+    Completed: "text-fuchsia-200",
+  };
+
+  const titleColors = {
+    "Not Started": "text-gray-100",
+    Ongoing: "text-purple-100",
+    "Winner Selection": "text-purple-50",
+    Completed: "text-fuchsia-100",
+  };
+
   return (
-    <div className="relative p-4 bg-gradient-to-r from-purple-400 to-purple-600 rounded-lg shadow-lg">
-      <motion.div className="absolute inset-0 opacity-30 rounded-lg" />
-      <div className="relative z-10 text-center text-gray-100 flex justify-center items-center gap-10">
+    <div
+      className={`relative p-4 bg-gradient-to-r ${statusGradients[status]} rounded-lg shadow-lg`}
+    >
+      <motion.div className="absolute inset-0 opacity-20 rounded-lg" />
+      <div className="relative z-10 text-center text-gray-200 flex justify-center items-center gap-8">
         <div className="flex flex-col items-center">
-          <FaUsers className="text-yellow-300 text-3xl" />
-          <p className="font-semibold">Participant</p>
-          <p className="text-xl font-bold text-yellow-300">{submissions}</p>
+          <FaUsers className={`text-3xl ${iconColors[status]}`} />
+          <p className={`font-semibold ${titleColors[status]}`}>Entries</p>
+          <p className={`text-lg font-bold ${titleColors[status]}`}>
+            {submissions} Design
+          </p>
         </div>
         <div className="flex flex-col items-center">
-          <FaTrophy className="text-yellow-300 text-3xl" />
-          <p className="font-semibold">Reward</p>
-          <p className="text-xl font-bold text-yellow-300">{reward}</p>
+          <FaTrophy className={`text-3xl ${iconColors[status]}`} />
+          <p className={`font-semibold ${titleColors[status]}`}>Reward</p>
+          <p className={`text-lg font-bold ${titleColors[status]}`}>{reward}</p>
         </div>
-        {/* <div className="flex flex-col items-center">
-          <FaCrown className="text-yellow-300 text-xl" />
-          <p className="font-semibold">Status</p>
-          <p className="text-xl font-bold text-yellow-300">{status}</p>
-        </div> */}
+        <div className="flex flex-col items-center">
+          <FaClock className={`text-3xl ${iconColors[status]}`} />
+          <p className={`font-semibold ${titleColors[status]}`}>Ends In</p>
+          <p className={`text-lg font-bold ${titleColors[status]}`}>
+            {timeLeft}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -85,6 +119,13 @@ function Contests() {
     { label: "Ongoing Contest", value: "ongoing contest" },
     { label: "Winner Selection", value: "winner selection" },
     { label: "Completed Contest", value: "completed contest" },
+  ];
+
+  const statusTypes = [
+    "Not Started",
+    "Ongoing",
+    "Winner Selection",
+    "Completed",
   ];
 
   return (
@@ -136,37 +177,42 @@ function Contests() {
             )}
           </Autocomplete>
         </div>
-        <div className="grid grid-cols-3 gap-6 contest-section w-3/4">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((_, index) => (
-            <Card
-              key={index}
-              className="bg-black bg-opacity-40 backdrop-blur-md relative shadow-lg transition-transform transform hover:scale-[1.01] cursor-pointer hover:shadow-purple-600"
-            >
-              <CountdownTimer deadline={deadline} />
-              <CardBody className="p-4 space-y-4">
-                <div className="grid grid-cols-2 gap-2 mb-2">
-                  {Array.from({ length: 4 }).map((_, imgIndex) => (
-                    <img
-                      key={imgIndex}
-                      src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                      alt={`Placeholder ${imgIndex + 1}`}
-                      className="w-full h-auto object-cover rounded-md shadow-sm"
+        <div className="grid grid-cols-2 gap-6 contest-section w-3/4">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((_, index) => {
+            const status = statusTypes[index % statusTypes.length];
+
+            return (
+              <Card
+                key={index}
+                className="bg-black bg-opacity-40 backdrop-blur-md relative shadow-lg transition-transform transform hover:scale-[1.01] cursor-pointer "
+              >
+                <Status status={status} />
+                <CardBody className="p-4 space-y-4">
+                  <div className="grid grid-cols-2 gap-2 mb-2">
+                    {Array.from({ length: 4 }).map((_, imgIndex) => (
+                      <img
+                        key={imgIndex}
+                        src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                        alt={`Placeholder ${imgIndex + 1}`}
+                        className="w-full h-auto object-cover rounded-md shadow-sm"
+                      />
+                    ))}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h2 className="text-xl font-bold text-gray-200">
+                      Contest Title {index + 1}
+                    </h2>
+                    <BottomCard
+                      reward="1 BTC"
+                      submissions="20"
+                      deadline={deadline}
+                      status={status}
                     />
-                  ))}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <h2 className="text-xl font-bold text-purple-300">
-                    Contest Title {index + 1}
-                  </h2>
-                  <SubmissionAndReward
-                    reward="1 BTC"
-                    submissions="200"
-                    status="Ongoing"
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          ))}
+                  </div>
+                </CardBody>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </div>
