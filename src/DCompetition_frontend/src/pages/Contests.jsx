@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { IoAdd } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
+import { FaCrown, FaTrophy, FaUsers } from "react-icons/fa"; // Added icons
 
 const formatTime = (time) => {
   const hours = String(Math.floor(time / 3600)).padStart(2, "0");
@@ -46,18 +47,25 @@ function CountdownTimer({ deadline }) {
   );
 }
 
-function SubmissionAndReward({ reward, submissions }) {
+function SubmissionAndReward({ reward, submissions, status }) {
   return (
-    <div className="relative p-4 bg-gradient-to-r from-purple-400 to-purple-600 rounded-lg">
+    <div className="relative p-4 bg-gradient-to-r from-purple-400 to-purple-600 rounded-lg shadow-lg">
       <motion.div className="absolute inset-0 opacity-30 rounded-lg" />
-      <div className="relative z-10 text-center text-gray-100 flex justify-between">
-        <div>
-          <p className="font-semibold">Submitted Designs:</p>
+      <div className="relative z-10 text-center text-gray-100 flex justify-between items-center">
+        <div className="flex flex-col items-center">
+          <FaUsers className="text-yellow-300 text-3xl" />
+          <p className="font-semibold">Submitted Designs</p>
           <p className="text-2xl font-bold text-yellow-300">{submissions}</p>
         </div>
-        <div>
-          <p className="font-semibold">Reward:</p>
+        <div className="flex flex-col items-center">
+          <FaTrophy className="text-yellow-300 text-3xl" />
+          <p className="font-semibold">Reward</p>
           <p className="text-2xl font-bold text-yellow-300">{reward}</p>
+        </div>
+        <div className="flex flex-col items-center">
+          <FaCrown className="text-yellow-300 text-3xl" />
+          <p className="font-semibold">Status</p>
+          <p className="text-2xl font-bold text-yellow-300">{status}</p>
         </div>
       </div>
     </div>
@@ -128,39 +136,33 @@ function Contests() {
             )}
           </Autocomplete>
         </div>
-        <div className="flex flex-col gap-6 contest-section w-3/4">
+        <div className="grid grid-cols-2 gap-6 contest-section w-3/4">
           {[1, 2, 3, 4, 5].map((_, index) => (
             <Card
               key={index}
-              className="bg-black bg-opacity-40 backdrop-blur-md relative shadow-lg transition-transform transform hover:scale-[1.01] cursor-pointer"
+              className="bg-black bg-opacity-40 backdrop-blur-md relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer hover:shadow-purple-600"
             >
               <CountdownTimer deadline={deadline} />
-              <CardBody className="p-6 space-y-4">
-                <div className="grid grid-cols-4 gap-4 mb-4">
-                  {Array.from({ length: 12 }).map((_, imgIndex) => (
+              <CardBody className="p-4 space-y-4">
+                <div className="grid grid-cols-4 gap-2 mb-2">
+                  {Array.from({ length: 4 }).map((_, imgIndex) => (
                     <img
                       key={imgIndex}
                       src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
                       alt={`Placeholder ${imgIndex + 1}`}
-                      className="w-full h-auto object-cover"
+                      className="w-full h-auto object-cover rounded-md shadow-sm"
                     />
                   ))}
                 </div>
-                <div className="flex flex-col gap-4">
-                  <h2 className="text-2xl font-bold text-purple-300">
+                <div className="flex flex-col gap-2">
+                  <h2 className="text-xl font-bold text-purple-300">
                     Contest Title {index + 1}
                   </h2>
-                  {/* <p className="text-gray-400">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </p> */}
-                  <SubmissionAndReward reward="1 BTC" submissions="200" />
+                  <SubmissionAndReward
+                    reward="1 BTC"
+                    submissions="200"
+                    status="Ongoing"
+                  />
                 </div>
               </CardBody>
             </Card>
