@@ -51,22 +51,22 @@ function SubmissionAndReward({ reward, submissions, status }) {
   return (
     <div className="relative p-4 bg-gradient-to-r from-purple-400 to-purple-600 rounded-lg shadow-lg">
       <motion.div className="absolute inset-0 opacity-30 rounded-lg" />
-      <div className="relative z-10 text-center text-gray-100 flex justify-between items-center">
+      <div className="relative z-10 text-center text-gray-100 flex justify-center items-center gap-10">
         <div className="flex flex-col items-center">
           <FaUsers className="text-yellow-300 text-3xl" />
-          <p className="font-semibold">Submitted Designs</p>
-          <p className="text-2xl font-bold text-yellow-300">{submissions}</p>
+          <p className="font-semibold">Participant</p>
+          <p className="text-xl font-bold text-yellow-300">{submissions}</p>
         </div>
         <div className="flex flex-col items-center">
           <FaTrophy className="text-yellow-300 text-3xl" />
           <p className="font-semibold">Reward</p>
-          <p className="text-2xl font-bold text-yellow-300">{reward}</p>
+          <p className="text-xl font-bold text-yellow-300">{reward}</p>
         </div>
-        <div className="flex flex-col items-center">
-          <FaCrown className="text-yellow-300 text-3xl" />
+        {/* <div className="flex flex-col items-center">
+          <FaCrown className="text-yellow-300 text-xl" />
           <p className="font-semibold">Status</p>
-          <p className="text-2xl font-bold text-yellow-300">{status}</p>
-        </div>
+          <p className="text-xl font-bold text-yellow-300">{status}</p>
+        </div> */}
       </div>
     </div>
   );
@@ -136,15 +136,15 @@ function Contests() {
             )}
           </Autocomplete>
         </div>
-        <div className="grid grid-cols-2 gap-6 contest-section w-3/4">
-          {[1, 2, 3, 4, 5].map((_, index) => (
+        <div className="grid grid-cols-3 gap-6 contest-section w-3/4">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((_, index) => (
             <Card
               key={index}
-              className="bg-black bg-opacity-40 backdrop-blur-md relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer hover:shadow-purple-600"
+              className="bg-black bg-opacity-40 backdrop-blur-md relative shadow-lg transition-transform transform hover:scale-[1.01] cursor-pointer hover:shadow-purple-600"
             >
               <CountdownTimer deadline={deadline} />
               <CardBody className="p-4 space-y-4">
-                <div className="grid grid-cols-4 gap-2 mb-2">
+                <div className="grid grid-cols-2 gap-2 mb-2">
                   {Array.from({ length: 4 }).map((_, imgIndex) => (
                     <img
                       key={imgIndex}
