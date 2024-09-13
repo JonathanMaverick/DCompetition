@@ -80,24 +80,25 @@ function BottomCard({ reward, submissions, deadline, status }) {
     <div
       className={`relative p-4 bg-gradient-to-r ${statusGradients[status]} rounded-lg shadow-lg`}
     >
-      <motion.div className="absolute inset-0 opacity-20 rounded-lg" />
       <div className="relative z-10 text-center text-gray-200 flex justify-center items-center gap-8">
         <div className="flex flex-col items-center">
           <FaUsers className={`text-3xl ${iconColors[status]}`} />
           <p className={`font-semibold ${titleColors[status]}`}>Entries</p>
-          <p className={`text-lg font-bold ${titleColors[status]}`}>
+          <p className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}>
             {submissions} Design
           </p>
         </div>
         <div className="flex flex-col items-center">
           <FaTrophy className={`text-3xl ${iconColors[status]}`} />
           <p className={`font-semibold ${titleColors[status]}`}>Reward</p>
-          <p className={`text-lg font-bold ${titleColors[status]}`}>{reward}</p>
+          <p className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}>
+            {reward}
+          </p>
         </div>
         <div className="flex flex-col items-center">
           <FaClock className={`text-3xl ${iconColors[status]}`} />
           <p className={`font-semibold ${titleColors[status]}`}>Ends In</p>
-          <p className={`text-lg font-bold ${titleColors[status]}`}>
+          <p className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}>
             {timeLeft}
           </p>
         </div>
@@ -121,6 +122,12 @@ function Contests() {
     { label: "Completed Contest", value: "completed contest" },
   ];
 
+  const orderByOptions = [
+    { label: "Newest", value: "newest" },
+    { label: "Oldest", value: "oldest" },
+    { label: "Most Entries", value: "most_entries" },
+  ];
+
   const statusTypes = [
     "Not Started",
     "Ongoing",
@@ -131,7 +138,7 @@ function Contests() {
   return (
     <div className="flex flex-col gap-6 p-6 text-gray-100">
       <div className="relative">
-        <h1 className="text-4xl font-bold text-center text-purple-400 mb-4">
+        <h1 className="text-4xl font-bold text-left md:text-center text-purple-400 mb-4">
           Contests
         </h1>
         <Button variant="ghost" className="absolute right-0 top-1">
@@ -140,8 +147,8 @@ function Contests() {
         </Button>
       </div>
 
-      <div className="flex gap-8">
-        <div className="filter-section w-1/4 flex flex-col gap-4">
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="filter-section w-full md:w-1/4 flex flex-col gap-4">
           <Input
             type="text"
             label="Search Contest"
@@ -176,15 +183,27 @@ function Contests() {
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
             )}
           </Autocomplete>
+          <Autocomplete
+            label="Order By"
+            placeholder="Order By"
+            defaultItems={orderByOptions}
+            labelPlacement="outside"
+            variant="bordered"
+          >
+            {(item) => (
+              <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
+            )}
+          </Autocomplete>
         </div>
-        <div className="grid grid-cols-2 gap-6 contest-section w-3/4">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 contest-section w-full md:w-3/4">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((_, index) => {
             const status = statusTypes[index % statusTypes.length];
 
             return (
               <Card
                 key={index}
-                className="bg-black bg-opacity-40 backdrop-blur-md relative shadow-lg transition-transform transform hover:scale-[1.01] cursor-pointer "
+                className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer"
               >
                 <Status status={status} />
                 <CardBody className="p-4 space-y-4">
