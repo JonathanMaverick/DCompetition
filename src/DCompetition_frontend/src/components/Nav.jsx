@@ -91,7 +91,7 @@ export default function Nav() {
   };
 
   return (
-    <Navbar>
+    <Navbar maxWidth="xl">
       <NavbarBrand>
         <img
           src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/image%20(4).png?alt=media&token=181e4ae9-7cc8-49cf-a628-c97b013b3549"
@@ -104,22 +104,24 @@ export default function Nav() {
           <Link
             to={"/"}
             className={
-              location.pathname === "/" ? "text-purple-500" : "text-white"
+              location.pathname === "/"
+                ? "text-purple-500"
+                : "text-white hover:text-gray-300 transition-all"
             }
           >
             Home
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={location.pathname === "/competitions"}>
+        <NavbarItem isActive={location.pathname === "/contests"}>
           <Link
-            to={"/competitions"}
+            to={"/contests"}
             className={
-              location.pathname === "/competitions"
+              location.pathname === "/contests"
                 ? "text-purple-500"
-                : "text-white"
+                : "text-white hover:text-gray-300 transition-all"
             }
           >
-            Competitions
+            Contests
           </Link>
         </NavbarItem>
         <NavbarItem isActive={location.pathname === "/results"}>
@@ -128,7 +130,7 @@ export default function Nav() {
             className={
               location.pathname === "/results"
                 ? "text-purple-500"
-                : "text-white"
+                : "text-white hover:text-gray-300 transition-all"
             }
           >
             Results

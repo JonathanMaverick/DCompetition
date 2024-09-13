@@ -51,7 +51,7 @@ const Register = () => {
             <h1 className="text-3xl font-semibold my-2 text-center">
               Welcome to DCompetition!
             </h1>
-            <p className="text-center mb-6 text-gray-400">
+            <p className="text-center mb-6 text-gray-300">
               Please fill in your details
             </p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -76,7 +76,7 @@ const Register = () => {
                 />
               </div>
               <Button color="secondary" type="submit" fullWidth>
-                Continue
+                Submit
               </Button>
             </form>
           </CardBody>
