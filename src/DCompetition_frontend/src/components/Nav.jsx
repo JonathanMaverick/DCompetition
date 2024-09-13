@@ -4,21 +4,20 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Button,
   CircularProgress,
 } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 import { AuthClient } from "@dfinity/auth-client";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useLocation, Link } from "react-router-dom";
 
 export default function Nav() {
   const { getPrincipal, setPrincipal, getUserData } = useUserAuth();
   const [id, setID] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const location = useLocation(); // Get current location
+  const location = useLocation();
 
   useEffect(() => {
     const principalID = async () => {
@@ -103,28 +102,34 @@ export default function Nav() {
       <NavbarContent className="hidden sm:flex gap-6" justify="center">
         <NavbarItem isActive={location.pathname === "/"}>
           <Link
-            color={location.pathname === "/" ? "secondary" : "foreground"}
-            href="/"
+            to={"/"}
+            className={
+              location.pathname === "/" ? "text-purple-500" : "text-white"
+            }
           >
             Home
           </Link>
         </NavbarItem>
         <NavbarItem isActive={location.pathname === "/competitions"}>
           <Link
-            color={
-              location.pathname === "/competitions" ? "secondary" : "foreground"
+            to={"/competitions"}
+            className={
+              location.pathname === "/competitions"
+                ? "text-purple-500"
+                : "text-white"
             }
-            href="/competitions"
           >
             Competitions
           </Link>
         </NavbarItem>
         <NavbarItem isActive={location.pathname === "/results"}>
           <Link
-            color={
-              location.pathname === "/results" ? "secondary" : "foreground"
+            to={"/results"}
+            className={
+              location.pathname === "/results"
+                ? "text-purple-500"
+                : "text-white"
             }
-            href="/results"
           >
             Results
           </Link>
