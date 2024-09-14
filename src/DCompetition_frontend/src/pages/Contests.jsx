@@ -153,7 +153,7 @@ function Contests() {
             type="text"
             label="Search Contest"
             placeholder="Enter a Contest Title"
-            variant="bordered"
+            variant="flat"
             labelPlacement="outside"
             endContent={
               <button className="focus:outline-none" type="button">
@@ -166,7 +166,7 @@ function Contests() {
             placeholder="All Category"
             defaultItems={categories}
             labelPlacement="outside"
-            variant="bordered"
+            variant="flat"
           >
             {(item) => (
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
@@ -177,7 +177,7 @@ function Contests() {
             placeholder="All Status"
             defaultItems={statuses}
             labelPlacement="outside"
-            variant="bordered"
+            variant="flat"
           >
             {(item) => (
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
@@ -188,7 +188,7 @@ function Contests() {
             placeholder="Order By"
             defaultItems={orderByOptions}
             labelPlacement="outside"
-            variant="bordered"
+            variant="flat"
           >
             {(item) => (
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
