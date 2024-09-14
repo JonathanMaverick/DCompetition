@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaSun, FaMoon } from "react-icons/fa";
 import Nav from "../components/Nav";
+import ParticlesBackground from "../components/ParticlesBackground";
 
 export default function Template({ children }) {
   const [theme, setTheme] = useState("dark");
@@ -28,6 +29,7 @@ export default function Template({ children }) {
       className={`dark min-h-screen flex flex-col text-foreground bg-gradient-to-b from-black to-purple-900`}
     >
       <Nav></Nav>
+      <ParticlesBackground />
       <div className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* <button
