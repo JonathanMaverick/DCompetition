@@ -91,7 +91,7 @@ export default function Nav() {
   };
 
   return (
-    <Navbar maxWidth="xl">
+    <Navbar maxWidth="xl" className={location.pathname === "/" && "pr-[13px]"}>
       <NavbarBrand>
         <img
           src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/image%20(4).png?alt=media&token=181e4ae9-7cc8-49cf-a628-c97b013b3549"
@@ -124,16 +124,16 @@ export default function Nav() {
             Contests
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={location.pathname === "/results"}>
+        <NavbarItem isActive={location.pathname === "/face"}>
           <Link
-            to={"/results"}
+            to={"/face"}
             className={
-              location.pathname === "/results"
+              location.pathname === "/face"
                 ? "text-purple-500"
                 : "text-white hover:text-gray-300 transition-all"
             }
           >
-            Results
+            Face
           </Link>
         </NavbarItem>
       </NavbarContent>
