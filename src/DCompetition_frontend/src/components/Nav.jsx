@@ -94,9 +94,9 @@ export default function Nav() {
     <Navbar maxWidth="xl" className={location.pathname === "/" && "pr-[13px]"}>
       <NavbarBrand>
         <img
-          src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/image%20(4).png?alt=media&token=181e4ae9-7cc8-49cf-a628-c97b013b3549"
+          src="https://firebasestorage.googleapis.com/v0/b/demarj-59046.appspot.com/o/logo_fix_2-removebg-preview.png?alt=media&token=2daf760b-643d-4e6a-be78-129f3926fb3c"
           alt=""
-          width={40}
+          width={150}
         />
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-6" justify="center">
