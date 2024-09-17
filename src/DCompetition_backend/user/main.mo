@@ -2,8 +2,6 @@ import User "types";
 import Array "mo:base/Array";
 import RBTree "mo:base/RBTree";
 import Text "mo:base/Text";
-import Nat "mo:base/Nat";
-import RbTree "mo:base/RBTree";
 
 actor Main {
 
@@ -24,14 +22,6 @@ actor Main {
 
   public func clearPrincipalID() : async () {
     loginPrincipalID := "";
-  };
-
-  public func getUserSize() : async (Nat) {
-    var size : Nat = 0;
-    for (e in RbTree.iter(tree.share(), #bwd)) {
-      size := size + 1;
-    };
-    return size;
   };
 
   public func register(principal_id : Text, username : Text, email : Text) : async () {

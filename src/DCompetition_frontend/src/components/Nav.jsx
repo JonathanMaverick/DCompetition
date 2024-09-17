@@ -37,9 +37,7 @@ export default function Nav() {
       if (id !== "") {
         try {
           setLoading(true);
-          console.log(id);
           const fetchedUser = await getUserData(id);
-          console.log(fetchedUser);
           setUser(fetchedUser[0]);
         } catch (error) {
           console.error("Error fetching user data:", error);

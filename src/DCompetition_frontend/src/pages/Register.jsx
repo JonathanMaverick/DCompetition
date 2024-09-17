@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 import { Button, Card, CardBody, Input } from "@nextui-org/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useUserAuth } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { collection, addDoc, firestore } from "../tools/firebase";
+import { collection, addDoc, firestore, storage } from "../tools/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Register = () => {
   const { getPrincipal } = useUserAuth();
   const navigate = useNavigate();
+  const inputRef = useRef(null); 
 
   const [formData, setFormData] = useState({
     username: "",
@@ -22,15 +24,6 @@ const Register = () => {
       [name]: value,
     }));
   };
-
-  const saveData = async(principalID, username, email) => {
-    console.log("Call")
-    await addDoc(collection(firestore,"users"),{
-      principalID : principalID,
-      username : username,
-      email : email
-    })
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +39,17 @@ const Register = () => {
       }
     );
 
-    await saveData(principal,username,email)
+    const file = inputRef.current.files[0];
+
+    const storageRef = ref(storage, `photos/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const imageURL = await getDownloadURL(storageRef);
+
+    await addDoc(collection(firestore, "users"), {
+      principalID: principal,
+      imageURL: imageURL,
+    });
+    
     navigate("/home", { replace: true });
     window.location.reload();
   };
@@ -86,6 +89,9 @@ const Register = () => {
                   value={formData.username}
                   onChange={handleChange}
                 />
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <input type="file" ref={inputRef} /> 
               </div>
               <Button color="secondary" type="submit" fullWidth>
                 Submit
