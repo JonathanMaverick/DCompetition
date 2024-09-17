@@ -5,7 +5,7 @@ import Array "mo:base/Array";
 import Nat "mo:base/Nat";
 import Time "mo:base/Time";
 
-actor Main { 
+actor Main {
 
     let tree = RBTree.RBTree<Nat, Competition.Competition>(Nat.compare);
     var currentId : Nat = 0;
@@ -14,9 +14,9 @@ actor Main {
         var competitions : [Competition.Competition] = [];
 
         for (entry in RBTree.iter(tree.share(), #bwd)) {
-            if(Text.equal(entry.1.principal_id, principal_id)){
+            if (Text.equal(entry.1.principal_id, principal_id)) {
                 competitions := Array.append<Competition.Competition>(competitions, [entry.1]);
-            }
+            };
         };
 
         return competitions;
@@ -31,29 +31,30 @@ actor Main {
 
     public func getAllCompetition() : async [Competition.Competition] {
         var competitions : [Competition.Competition] = [];
-        
+
         for (entry in RBTree.iter(tree.share(), #bwd)) {
-            competitions := Array.append<Competition.Competition>(competitions, [entry.1])
+            competitions := Array.append<Competition.Competition>(competitions, [entry.1]);
         };
 
         return competitions;
     };
 
-    public func addCompetition(principal_id : Text, reward : Nat, name : Text, desc : Text, startDate: Time.Time, endDate:Time.Time) : async () {
+    public func addCompetition(principal_id : Text, name : Text, reward : Nat, desc : Text, category : Text, startDate : Time.Time, endDate : Time.Time, status : Text) : async () {
         currentId := currentId + 1;
 
         let newCompetition : Competition.Competition = {
             competition_id = currentId;
             principal_id = principal_id;
-            reward = reward;
             name = name;
+            reward = reward;
             desc = desc;
+            category = category;
             startDate = startDate;
             endDate = endDate;
+            status = status;
         };
 
         tree.put(currentId, newCompetition);
     };
 
-
-}
+};

@@ -5,10 +5,12 @@ module {
   public type Competition = {
     competition_id : Nat;
     principal_id : Text;
-    reward : Nat;
     name : Text;
+    reward : Nat;
     desc : Text;
+    category : Text;
     startDate : Time.Time;
     endDate : Time.Time;
+    status : Text;
   };
 };

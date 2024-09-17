@@ -7,22 +7,17 @@ import {
   Input,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { IoAdd } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import { FaClock, FaTrophy, FaUsers } from "react-icons/fa";
+import { convertDate,convertBigInt } from "../tools/date";
+import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
 
 const formatTime = (time) => {
   const hours = String(Math.floor(time / 3600)).padStart(2, "0");
   const minutes = String(Math.floor((time % 3600) / 60)).padStart(2, "0");
   const seconds = String(Math.floor(time % 60)).padStart(2, "0");
   return `${hours}:${minutes}:${seconds}`;
-};
-
-const getDeadline = () => {
-  const now = new Date();
-  const deadline = new Date(now.getTime() + 10 * 60 * 60 * 1000);
-  return deadline;
 };
 
 function Status({ status }) {
@@ -108,13 +103,32 @@ function BottomCard({ reward, submissions, deadline, status }) {
 }
 
 function Contests() {
-  const deadline = getDeadline();
+  const [contests, setContests] = useState([]);
+  
+
+  useEffect(() => {
+    const getContest = async () => {
+      const competitions = await DCompetition_backend_competition.getAllCompetition();
+      setContests(
+        competitions.map(comp => ({
+          ...comp,
+          startDate: convertBigInt(comp.startDate),
+          endDate: convertBigInt(comp.endDate) 
+        }))
+      );
+    };
+    getContest();
+  }, []);
+
+  console.log(contests)
+
   const categories = [
     { label: "Logo", value: "logo" },
     { label: "Poster", value: "poster" },
     { label: "Design", value: "design" },
     { label: "Infographic", value: "infographic" },
   ];
+
   const statuses = [
     { label: "Not Started", value: "not started" },
     { label: "Ongoing Contest", value: "ongoing contest" },
@@ -197,8 +211,11 @@ function Contests() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 contest-section w-full md:w-3/4">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((_, index) => {
+          {contests.map((contest, index) => {
             const status = statusTypes[index % statusTypes.length];
+            const deadline = convertDate(contest.endDate * 1_000_000);
+
+            console.log(deadline)
 
             return (
               <Card
@@ -219,10 +236,10 @@ function Contests() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <h2 className="text-xl font-bold text-gray-200">
-                      Contest Title {index + 1}
+                      {contest.name}
                     </h2>
                     <BottomCard
-                      reward="1 BTC"
+                      reward={contest.reward}
                       submissions="20"
                       deadline={deadline}
                       status={status}
