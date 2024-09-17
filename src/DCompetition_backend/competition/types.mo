@@ -1,5 +1,6 @@
 import Text "mo:base/Text";
 import Nat "mo:base/Nat";
+import Time "mo:base/Time";
 module {
   public type Competition = {
     competition_id : Nat;
@@ -7,5 +8,7 @@ module {
     reward : Nat;
     name : Text;
     desc : Text;
+    startDate : Time.Time;
+    endDate : Time.Time;
   };
 };

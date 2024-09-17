@@ -4,6 +4,7 @@ import { Button, Card, CardBody, Input } from "@nextui-org/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useUserAuth } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { collection, addDoc, firestore } from "../tools/firebase";
 
 const Register = () => {
   const { getPrincipal } = useUserAuth();
@@ -22,6 +23,15 @@ const Register = () => {
     }));
   };
 
+  const saveData = async(principalID, username, email) => {
+    console.log("Call")
+    await addDoc(collection(firestore,"users"),{
+      principalID : principalID,
+      username : username,
+      email : email
+    })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, email } = formData;
@@ -31,12 +41,14 @@ const Register = () => {
       DCompetition_backend_user.register(principal, username, email),
       {
         loading: "Registering...",
-        success: () => {
-          navigate("/home");
-        },
+        success: "Success...",
         error: <b>Registration failed. Please try again.</b>,
       }
     );
+
+    await saveData(principal,username,email)
+    navigate("/home", { replace: true });
+    window.location.reload();
   };
 
   return (

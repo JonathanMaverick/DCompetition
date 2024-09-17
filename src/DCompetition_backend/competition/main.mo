@@ -3,6 +3,7 @@ import Competition "types";
 import Text "mo:base/Text";
 import Array "mo:base/Array";
 import Nat "mo:base/Nat";
+import Time "mo:base/Time";
 
 actor Main { 
 
@@ -38,7 +39,7 @@ actor Main {
         return competitions;
     };
 
-    public func addCompetition(principal_id : Text, reward : Nat, name : Text, desc : Text) : async () {
+    public func addCompetition(principal_id : Text, reward : Nat, name : Text, desc : Text, startDate: Time.Time, endDate:Time.Time) : async () {
         currentId := currentId + 1;
 
         let newCompetition : Competition.Competition = {
@@ -47,6 +48,8 @@ actor Main {
             reward = reward;
             name = name;
             desc = desc;
+            startDate = startDate;
+            endDate = endDate;
         };
 
         tree.put(currentId, newCompetition);

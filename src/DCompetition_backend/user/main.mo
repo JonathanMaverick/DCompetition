@@ -5,11 +5,15 @@ import Text "mo:base/Text";
 
 actor Main {
 
-  let tree = RBTree.RBTree<Text, User.User>(Text.compare);
+  var tree = RBTree.RBTree<Text, User.User>(Text.compare);
   stable var loginPrincipalID : Text = "";
 
   public func storePrincipalID(principal_id : Text) : async () {
     loginPrincipalID := principal_id;
+  };
+
+  public func deleteUser(principal_id : Text) : async () {
+    tree.delete(principal_id);
   };
 
   public func getPrincipalID() : async (Text) {
