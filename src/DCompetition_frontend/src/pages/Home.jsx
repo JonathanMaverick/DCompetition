@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from "../tools/firebase";
+
 
 function Home() {
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userCollection = collection(firestore, "users");
+      const snapShot = await getDocs(userCollection);
+  
+      const usersList = snapShot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(usersList.length)
+    };
+    
+    getUserData();
+  }, []);
+  
+
   return (
     <div className="absolute top-0 left-0 w-screen min-h-screen flex flex-col justify-center items-center text-white overflow-hidden px-8">
       <motion.div
