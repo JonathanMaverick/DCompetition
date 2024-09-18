@@ -5,7 +5,7 @@
 ::-webkit-scrollbar {
   height: 12px;
   width: 14px;
-  background: black;
+  background: transparent;
   z-index: 12;
   overflow: visible;
 }

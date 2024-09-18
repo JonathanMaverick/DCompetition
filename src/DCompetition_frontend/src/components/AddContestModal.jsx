@@ -44,7 +44,6 @@ export default function AddContestModal({ userId }) {
       ...prev,
       [key]: value,
     }));
-
   };
 
   const handleSubmit = async (e) => {
@@ -57,7 +56,7 @@ export default function AddContestModal({ userId }) {
       contestData.startDate.second,
       contestData.startDate.millisecond
     );
-    
+
     const endDate = new Date(
       contestData.endDate.year,
       contestData.endDate.month - 1,
@@ -67,7 +66,7 @@ export default function AddContestModal({ userId }) {
       contestData.endDate.second,
       contestData.endDate.millisecond
     );
-    
+
     const endVotingDate = new Date(
       contestData.endVotingDate.year,
       contestData.endVotingDate.month - 1,
@@ -77,20 +76,19 @@ export default function AddContestModal({ userId }) {
       contestData.endVotingDate.second,
       contestData.endVotingDate.millisecond
     );
-  
-    // Convert to nanoseconds
+
     const startDateNanoseconds = startDate.getTime() * 1_000_000;
     const endDateNanoseconds = endDate.getTime() * 1_000_000;
     const endVotingDateNanoseconds = endVotingDate.getTime() * 1_000_000;
-  
+
     console.log("Start Date in Nanoseconds:", startDateNanoseconds);
-    console.log("title",contestData.title)
-    console.log("desc",contestData.description)
-    console.log("reward",contestData.reward)
-    console.log("category",contestData.category)
-    console.log("end date",contestData.endDate)
-    console.log("voting end date",contestData.endVotingDate)
-  
+    console.log("title", contestData.title);
+    console.log("desc", contestData.description);
+    console.log("reward", contestData.reward);
+    console.log("category", contestData.category);
+    console.log("end date", contestData.endDate);
+    console.log("voting end date", contestData.endVotingDate);
+
     await DCompetition_backend_competition.addCompetition(
       userId,
       contestData.title,
@@ -102,9 +100,8 @@ export default function AddContestModal({ userId }) {
       endVotingDateNanoseconds
     );
 
-    window.location.reload()
+    window.location.reload();
   };
-  
 
   return (
     <>
@@ -112,14 +109,18 @@ export default function AddContestModal({ userId }) {
         <IoAdd className="text-xl" />
         Create
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior="inside"
+      >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 Create Contest
               </ModalHeader>
-              <ModalBody>
+              <ModalBody className="overflow-y-auto">
                 <Input
                   label="Title"
                   placeholder="Enter contest title"
@@ -198,7 +199,7 @@ export default function AddContestModal({ userId }) {
                 </div>
               </ModalBody>
               <ModalFooter>
-              <Button
+                <Button
                   color="secondary"
                   onPress={() => {
                     handleSubmit();
