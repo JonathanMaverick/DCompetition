@@ -85,7 +85,7 @@ function BottomCard({ reward, submissions, deadline, status }) {
     <div
       className={`relative p-4 bg-gradient-to-r ${statusGradients[status]} rounded-lg shadow-lg`}
     >
-      <div className="relative z-10 text-center text-gray-200 flex justify-center items-center gap-7">
+      <div className="relative z-10 text-center text-gray-200 flex justify-center items-center gap-6">
         <div className="flex flex-col items-center">
           <FaUsers className={`text-3xl ${iconColors[status]}`} />
           <p className={` ${titleColors[status]}`}>Entries</p>
@@ -131,16 +131,37 @@ function Contests() {
     const getContest = async () => {
       const competitions =
         await DCompetition_backend_competition.getAllCompetition();
-      setContests(
-        competitions.map((comp) => ({
+
+      const currentDate = new Date().getTime();
+
+      const updatedCompetitions = competitions.map((comp) => {
+        const startDate = Number(comp.startDate);
+        const endDate = Number(comp.endDate);
+        const endVotingDate = Number(comp.endVotingDate);
+
+        let status = "Not Started";
+        if (currentDate >= startDate && currentDate < endDate) {
+          status = "Ongoing";
+        } else if (currentDate >= endDate && currentDate < endVotingDate) {
+          status = "Winner Selection";
+        } else if (currentDate >= endVotingDate) {
+          status = "Completed";
+        }
+
+        return {
           ...comp,
           competition_id: Number(comp.competition_id),
-          startDate: Number(comp.startDate),
-          endDate: Number(comp.endDate),
+          startDate,
+          endDate,
+          endVotingDate,
           reward: Number(comp.reward),
-        }))
-      );
+          status,
+        };
+      });
+
+      setContests(updatedCompetitions);
     };
+
     getContest();
   }, []);
 
