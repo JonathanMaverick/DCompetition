@@ -15,7 +15,6 @@ import {
 import { IoAdd } from "react-icons/io5";
 import { now, getLocalTimeZone } from "@internationalized/date";
 import { useState } from "react";
-import { useUserAuth } from "../context/UserContext";
 import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
 
 export default function AddContestModal({ userId }) {
@@ -36,8 +35,6 @@ export default function AddContestModal({ userId }) {
     endDate: now(getLocalTimeZone()),
     endVotingDate: now(getLocalTimeZone()),
   });
-
-  const { getPrincipal } = useUserAuth();
 
   const handleChange = (key, value) => {
     setContestData((prev) => ({

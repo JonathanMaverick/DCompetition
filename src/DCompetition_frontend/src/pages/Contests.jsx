@@ -16,10 +16,11 @@ import AddContestModal from "../components/AddContestModal";
 import { useUserAuth } from "../context/UserContext";
 
 const formatTime = (time) => {
-  const hours = String(Math.floor(time / 3600)).padStart(2, "0");
-  const minutes = String(Math.floor((time % 3600) / 60)).padStart(2, "0");
-  const seconds = String(Math.floor(time % 60)).padStart(2, "0");
-  return `${hours}:${minutes}:${seconds}`;
+  const days = String(Math.floor(time / (3600 * 24)));
+  const hours = String(Math.floor((time % (3600 * 24)) / 3600));
+  const minutes = String(Math.floor((time % 3600) / 60));
+  const seconds = String(Math.floor(time % 60));
+  return `${days}d ${hours}h ${minutes}m`;
 };
 
 function Status({ status }) {
@@ -80,21 +81,21 @@ function BottomCard({ reward, submissions, deadline, status }) {
       <div className="relative z-10 text-center text-gray-200 flex justify-center items-center gap-8">
         <div className="flex flex-col items-center">
           <FaUsers className={`text-3xl ${iconColors[status]}`} />
-          <p className={`font-semibold ${titleColors[status]}`}>Entries</p>
+          <p className={` ${titleColors[status]}`}>Entries</p>
           <p className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}>
             {submissions} Design
           </p>
         </div>
         <div className="flex flex-col items-center">
           <FaTrophy className={`text-3xl ${iconColors[status]}`} />
-          <p className={`font-semibold ${titleColors[status]}`}>Reward</p>
+          <p className={` ${titleColors[status]}`}>Reward</p>
           <p className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}>
-            {reward}
+            {reward} ICP
           </p>
         </div>
         <div className="flex flex-col items-center">
           <FaClock className={`text-3xl ${iconColors[status]}`} />
-          <p className={`font-semibold ${titleColors[status]}`}>Ends In</p>
+          <p className={` ${titleColors[status]}`}>Ends In</p>
           <p className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}>
             {timeLeft}
           </p>
