@@ -112,8 +112,10 @@ function Contests() {
       setContests(
         competitions.map(comp => ({
           ...comp,
-          startDate: convertBigInt(comp.startDate),
-          endDate: convertBigInt(comp.endDate) 
+          competition_id: Number(comp.competition_id),
+          startDate: Number(comp.startDate),
+          endDate: Number(comp.endDate),
+          reward: Number(comp.reward) 
         }))
       );
     };
@@ -212,8 +214,8 @@ function Contests() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 contest-section w-full md:w-3/4">
           {contests.map((contest, index) => {
-            const status = statusTypes[index % statusTypes.length];
-            const deadline = convertDate(contest.endDate * 1_000_000);
+            const status = contest.status
+            const deadline = convertDate(contest.endDate);
 
             console.log(deadline)
 
