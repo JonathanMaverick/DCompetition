@@ -11,6 +11,6 @@ module {
     category : Text;
     startDate : Time.Time;
     endDate : Time.Time;
-    status : Text;
+    votingEndDate : Time.Time;
   };
 };

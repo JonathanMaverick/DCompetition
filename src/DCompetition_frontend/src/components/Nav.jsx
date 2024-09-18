@@ -151,6 +151,7 @@ export default function Nav() {
           ) : user ? (
             <div className="flex gap-3 items-center">
               <p>{user.username}</p>
+              <p>ICP: {Number(user.money)}</p>
               <Button
                 color="secondary"
                 variant="flat"

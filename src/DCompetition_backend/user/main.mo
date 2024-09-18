@@ -29,6 +29,7 @@ actor Main {
       principal_id = principal_id;
       username = username;
       email = email;
+      money = 500;
     };
     tree.put(principal_id, newUser);
   };

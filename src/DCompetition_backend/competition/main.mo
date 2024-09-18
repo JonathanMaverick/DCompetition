@@ -39,7 +39,7 @@ actor Main {
         return competitions;
     };
 
-    public func addCompetition(principal_id : Text, name : Text, reward : Nat, desc : Text, category : Text, startDate : Time.Time, endDate : Time.Time, status : Text) : async () {
+    public func addCompetition(principal_id : Text, name : Text, reward : Nat, desc : Text, category : Text, startDate : Time.Time, endDate : Time.Time, votingEndDate : Time.Time) : async () {
         currentId := currentId + 1;
 
         let newCompetition : Competition.Competition = {
@@ -51,7 +51,7 @@ actor Main {
             category = category;
             startDate = startDate;
             endDate = endDate;
-            status = status;
+            votingEndDate = votingEndDate;
         };
 
         tree.put(currentId, newCompetition);

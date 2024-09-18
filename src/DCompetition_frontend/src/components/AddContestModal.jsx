@@ -44,17 +44,53 @@ export default function AddContestModal({ userId }) {
       ...prev,
       [key]: value,
     }));
+
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const startDateNanoseconds =
-      new Date(contestData.startDate).getTime() * 1_000_000;
-    const endDateNanoseconds =
-      new Date(contestData.endDate).getTime() * 1_000_000;
-    const endVotingDateNanoseconds =
-      new Date(contestData.endDate).getTime() * 1_000_000;
-
+    const startDate = new Date(
+      contestData.startDate.year,
+      contestData.startDate.month - 1,
+      contestData.startDate.day,
+      contestData.startDate.hour,
+      contestData.startDate.minute,
+      contestData.startDate.second,
+      contestData.startDate.millisecond
+    );
+    
+    const endDate = new Date(
+      contestData.endDate.year,
+      contestData.endDate.month - 1,
+      contestData.endDate.day,
+      contestData.endDate.hour,
+      contestData.endDate.minute,
+      contestData.endDate.second,
+      contestData.endDate.millisecond
+    );
+    
+    const endVotingDate = new Date(
+      contestData.endVotingDate.year,
+      contestData.endVotingDate.month - 1,
+      contestData.endVotingDate.day,
+      contestData.endVotingDate.hour,
+      contestData.endVotingDate.minute,
+      contestData.endVotingDate.second,
+      contestData.endVotingDate.millisecond
+    );
+  
+    // Convert to nanoseconds
+    const startDateNanoseconds = startDate.getTime() * 1_000_000;
+    const endDateNanoseconds = endDate.getTime() * 1_000_000;
+    const endVotingDateNanoseconds = endVotingDate.getTime() * 1_000_000;
+  
+    console.log("Start Date in Nanoseconds:", startDateNanoseconds);
+    console.log("title",contestData.title)
+    console.log("desc",contestData.description)
+    console.log("reward",contestData.reward)
+    console.log("category",contestData.category)
+    console.log("end date",contestData.endDate)
+    console.log("voting end date",contestData.endVotingDate)
+  
     await DCompetition_backend_competition.addCompetition(
       userId,
       contestData.title,
@@ -65,7 +101,10 @@ export default function AddContestModal({ userId }) {
       endDateNanoseconds,
       endVotingDateNanoseconds
     );
+
+    window.location.reload()
   };
+  
 
   return (
     <>
@@ -103,7 +142,8 @@ export default function AddContestModal({ userId }) {
                   defaultItems={categories}
                   labelPlacement="outside"
                   variant="bordered"
-                  onSelect={(item) => handleChange("category", item.value)}
+                  value={contestData.category}
+                  onSelectionChange={(value) => handleChange("category", value)}
                 >
                   {(item) => (
                     <AutocompleteItem key={item.value}>
@@ -111,6 +151,7 @@ export default function AddContestModal({ userId }) {
                     </AutocompleteItem>
                   )}
                 </Autocomplete>
+
                 <Input
                   label="Reward"
                   placeholder="Enter contest reward"
@@ -157,7 +198,7 @@ export default function AddContestModal({ userId }) {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button
+              <Button
                   color="secondary"
                   onPress={() => {
                     handleSubmit();
