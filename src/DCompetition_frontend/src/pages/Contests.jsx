@@ -10,8 +10,10 @@ import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import { FaClock, FaTrophy, FaUsers } from "react-icons/fa";
-import { convertDate,convertBigInt } from "../tools/date";
+import { convertDate } from "../tools/date";
 import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
+import AddContestModal from "../components/AddContestModal";
+import { useUserAuth } from "../context/UserContext";
 
 const formatTime = (time) => {
   const hours = String(Math.floor(time / 3600)).padStart(2, "0");
@@ -104,25 +106,37 @@ function BottomCard({ reward, submissions, deadline, status }) {
 
 function Contests() {
   const [contests, setContests] = useState([]);
-  
+
+  const { getPrincipal } = useUserAuth();
+  const [userId, setUserId] = useState();
+
+  useEffect(() => {
+    const fetchPrincipal = async () => {
+      const principal = await getPrincipal();
+      setUserId(principal);
+    };
+
+    fetchPrincipal();
+  }, [getPrincipal]);
 
   useEffect(() => {
     const getContest = async () => {
-      const competitions = await DCompetition_backend_competition.getAllCompetition();
+      const competitions =
+        await DCompetition_backend_competition.getAllCompetition();
       setContests(
-        competitions.map(comp => ({
+        competitions.map((comp) => ({
           ...comp,
           competition_id: Number(comp.competition_id),
           startDate: Number(comp.startDate),
           endDate: Number(comp.endDate),
-          reward: Number(comp.reward) 
+          reward: Number(comp.reward),
         }))
       );
     };
     getContest();
   }, []);
 
-  console.log(contests)
+  console.log(contests);
 
   const categories = [
     { label: "Logo", value: "logo" },
@@ -157,12 +171,14 @@ function Contests() {
         <h1 className="text-4xl font-bold text-left md:text-center text-purple-400 mb-4">
           Contests
         </h1>
-        <Button variant="ghost" className="absolute right-0 top-1">
+        <div className="absolute right-0 top-1">
+          {userId && <AddContestModal userId={userId} />}
+        </div>
+        {/* <Button variant="ghost" className="absolute right-0 top-1">
           <IoAdd className="text-xl" />
           Create
-        </Button>
+        </Button> */}
       </div>
-
       <div className="flex flex-col md:flex-row gap-8">
         <div className="filter-section w-full md:w-1/4 flex flex-col gap-4">
           <Input
@@ -214,10 +230,10 @@ function Contests() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 contest-section w-full md:w-3/4">
           {contests.map((contest, index) => {
-            const status = contest.status
+            const status = contest.status;
             const deadline = convertDate(contest.endDate);
 
-            console.log(deadline)
+            console.log(deadline);
 
             return (
               <Card

@@ -15,6 +15,7 @@
     "@dfinity/auth-client": "^2.0.0",
     "@dfinity/candid": "^1.4.0",
     "@dfinity/principal": "^1.4.0",
+    "@internationalized/date": "^3.5.5",
     "@nextui-org/react": "^2.4.6",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.5.0",
