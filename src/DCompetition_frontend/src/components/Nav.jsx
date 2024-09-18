@@ -89,7 +89,7 @@ export default function Nav() {
   };
 
   return (
-    <Navbar maxWidth="xl" className={location.pathname === "/" && "pr-[13px]"}>
+    <Navbar maxWidth="xl">
       <NavbarBrand>
         <img
           src="https://firebasestorage.googleapis.com/v0/b/demarj-59046.appspot.com/o/logo_fix_2-removebg-preview.png?alt=media&token=2daf760b-643d-4e6a-be78-129f3926fb3c"
