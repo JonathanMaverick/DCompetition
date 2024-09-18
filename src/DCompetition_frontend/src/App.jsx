@@ -5,7 +5,6 @@ import Template from "./templates/Template";
 import Home from "./pages/Home";
 import Face from "./pages/Face";
 import Contests from "./pages/Contests";
-import AddContest from "./pages/AddContest";
 
 function App() {
   return (
@@ -17,7 +16,6 @@ function App() {
           <Route path="/face" element={<Face />} />
           <Route path="/home" element={<Home />} />
           <Route path="/contests" element={<Contests />} />
-          <Route path="/add" element={<AddContest/>} />
         </Routes>
       </Template>
     </Router>
