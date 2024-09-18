@@ -20,7 +20,14 @@ const formatTime = (time) => {
   const hours = String(Math.floor((time % (3600 * 24)) / 3600));
   const minutes = String(Math.floor((time % 3600) / 60));
   const seconds = String(Math.floor(time % 60));
-  return `${days}d ${hours}h ${minutes}m`;
+  return (
+    <>
+      {days}
+      <span className="text-[11px]">D</span> {hours}
+      <span className="text-[10px]">H</span> {minutes}
+      <span className="text-[10px]">M</span>
+    </>
+  );
 };
 
 function Status({ status }) {
@@ -78,7 +85,7 @@ function BottomCard({ reward, submissions, deadline, status }) {
     <div
       className={`relative p-4 bg-gradient-to-r ${statusGradients[status]} rounded-lg shadow-lg`}
     >
-      <div className="relative z-10 text-center text-gray-200 flex justify-center items-center gap-8">
+      <div className="relative z-10 text-center text-gray-200 flex justify-center items-center gap-7">
         <div className="flex flex-col items-center">
           <FaUsers className={`text-3xl ${iconColors[status]}`} />
           <p className={` ${titleColors[status]}`}>Entries</p>
