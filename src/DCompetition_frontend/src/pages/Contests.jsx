@@ -14,6 +14,7 @@ import { convertDate } from "../tools/date";
 import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
 import AddContestModal from "../components/AddContestModal";
 import { useUserAuth } from "../context/UserContext";
+import { Link } from "react-router-dom";
 
 const formatTime = (time) => {
   const days = String(Math.floor(time / (3600 * 24)));
@@ -265,35 +266,39 @@ function Contests() {
             console.log(deadline);
 
             return (
-              <Card
-                key={index}
-                className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer"
-              >
-                <Status status={status} />
-                <CardBody className="p-4 space-y-4">
-                  <div className="grid grid-cols-2 gap-2 mb-2">
-                    {Array.from({ length: 4 }).map((_, imgIndex) => (
-                      <img
-                        key={imgIndex}
-                        src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                        alt={`Placeholder ${imgIndex + 1}`}
-                        className="w-full h-auto object-cover rounded-md shadow-sm"
+              <Link
+                to={`/contestDetail/${contest.competition_id}`}
+                >
+                <Card
+                  key={index}
+                  className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer"
+                >
+                  <Status status={status} />
+                  <CardBody className="p-4 space-y-4">
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                      {Array.from({ length: 4 }).map((_, imgIndex) => (
+                        <img
+                          key={imgIndex}
+                          src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                          alt={`Placeholder ${imgIndex + 1}`}
+                          className="w-full h-auto object-cover rounded-md shadow-sm"
+                        />
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <h2 className="text-xl font-bold text-gray-200">
+                        {contest.name}
+                      </h2>
+                      <BottomCard
+                        reward={contest.reward}
+                        submissions="20"
+                        deadline={deadline}
+                        status={status}
                       />
-                    ))}
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <h2 className="text-xl font-bold text-gray-200">
-                      {contest.name}
-                    </h2>
-                    <BottomCard
-                      reward={contest.reward}
-                      submissions="20"
-                      deadline={deadline}
-                      status={status}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Link>
             );
           })}
         </div>
