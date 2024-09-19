@@ -5,6 +5,7 @@ import {
   Card,
   CardBody,
   Input,
+  Skeleton,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
@@ -116,6 +117,7 @@ function BottomCard({ reward, submissions, deadline, status }) {
 
 function Contests() {
   const [contests, setContests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { getPrincipal } = useUserAuth();
   const [userId, setUserId] = useState();
@@ -163,10 +165,12 @@ function Contests() {
         reward: Number(comp.reward),
         status,
         deadline,
+        category: comp.category,
       };
     });
 
     setContests(updatedCompetitions);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -210,12 +214,13 @@ function Contests() {
         </Button> */}
       </div>
       <div className="flex flex-col md:flex-row gap-8">
-        <div className="filter-section w-full md:w-1/4 flex flex-col gap-4">
+        <div className="filter-section w-full md:w-1/4 flex flex-col gap-4 backdrop-blur-md max-h-80">
           <Input
             type="text"
             label="Search Contest"
             placeholder="Enter a Contest Title"
-            variant="flat"
+            variant="bordered"
+            className="backdrop-blur-md"
             labelPlacement="outside"
             endContent={
               <button className="focus:outline-none" type="button">
@@ -228,7 +233,8 @@ function Contests() {
             placeholder="All Category"
             defaultItems={categories}
             labelPlacement="outside"
-            variant="flat"
+            variant="bordered"
+            className="backdrop-blur-md"
           >
             {(item) => (
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
@@ -239,7 +245,8 @@ function Contests() {
             placeholder="All Status"
             defaultItems={statuses}
             labelPlacement="outside"
-            variant="flat"
+            variant="bordered"
+            className="backdrop-blur-md"
           >
             {(item) => (
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
@@ -250,7 +257,8 @@ function Contests() {
             placeholder="Order By"
             defaultItems={orderByOptions}
             labelPlacement="outside"
-            variant="flat"
+            variant="bordered"
+            className="backdrop-blur-md"
           >
             {(item) => (
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
@@ -259,6 +267,32 @@ function Contests() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 contest-section w-full md:w-3/4">
+          {loading &&
+            Array(6)
+              .fill()
+              .map((_, index) => (
+                <Card key={index} radius="lg">
+                  <Skeleton className="rounded-t-lg">
+                    <div className="h-12 rounded-t-lg bg-default-300"></div>{" "}
+                  </Skeleton>
+                  <CardBody className="p-4 space-y-4">
+                    <Skeleton className="rounded-lg">
+                      <div className="h-[16rem] rounded-lg bg-default-300"></div>{" "}
+                    </Skeleton>
+                    <div>
+                      <Skeleton className="w-3/5 rounded-lg mt-4">
+                        <div className="h-2.5 rounded-lg bg-default-200"></div>{" "}
+                      </Skeleton>
+                      <Skeleton className="w-4/5 rounded-lg mt-4 mb-2">
+                        <div className="h-2.5 rounded-lg bg-default-200"></div>{" "}
+                      </Skeleton>
+                    </div>
+                    <Skeleton className="rounded-lg">
+                      <div className="h-[7rem] rounded-lg bg-default-300"></div>{" "}
+                    </Skeleton>
+                  </CardBody>
+                </Card>
+              ))}
           {contests.map((contest, index) => {
             const status = contest.status;
             return (
@@ -272,14 +306,21 @@ function Contests() {
                           key={imgIndex}
                           src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
                           alt={`Placeholder ${imgIndex + 1}`}
-                          className="w-full h-auto object-cover rounded-md shadow-sm"
+                          className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm"
                         />
                       ))}
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <h2 className="text-xl font-bold text-gray-200">
-                        {contest.name}
-                      </h2>
+                    <div className="flex flex-col">
+                      <div className="flex flex-col ml-0.5">
+                        <h2 className="text-2xl font-bold text-gray-200">
+                          {contest.name}
+                        </h2>
+                        <p className="mb-4">
+                          {contest.category.charAt(0).toUpperCase() +
+                            contest.category.slice(1).toLowerCase()}
+                        </p>
+                      </div>
+
                       <BottomCard
                         reward={contest.reward}
                         submissions="20"
