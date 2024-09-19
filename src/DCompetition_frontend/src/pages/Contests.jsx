@@ -17,6 +17,7 @@ import { useUserAuth } from "../context/UserContext";
 import { Link } from "react-router-dom";
 
 const formatTime = (time) => {
+  if (isNaN(time)) return "-";
   const days = String(Math.floor(time / (3600 * 24)));
   const hours = String(Math.floor((time % (3600 * 24)) / 3600));
   const minutes = String(Math.floor((time % 3600) / 60));
@@ -123,46 +124,52 @@ function Contests() {
     const fetchPrincipal = async () => {
       const principal = await getPrincipal();
       setUserId(principal);
+      console.log(principal);
     };
 
     fetchPrincipal();
   }, [getPrincipal]);
 
+  const getContest = async () => {
+    const competitions =
+      await DCompetition_backend_competition.getAllCompetition();
+
+    const currentDate = new Date().getTime();
+
+    const updatedCompetitions = competitions.map((comp) => {
+      const startDate = convertDate(Number(comp.startDate));
+      const endDate = convertDate(Number(comp.endDate));
+      const votingEndDate = convertDate(Number(comp.votingEndDate));
+
+      let status = "Not Started";
+      let deadline = "-";
+      if (currentDate >= startDate && currentDate < endDate) {
+        status = "Ongoing";
+        deadline = endDate;
+        console.log(endDate);
+      } else if (currentDate >= endDate && currentDate < votingEndDate) {
+        status = "Winner Selection";
+        deadline = votingEndDate;
+      } else if (currentDate >= votingEndDate) {
+        status = "Completed";
+      }
+
+      return {
+        ...comp,
+        competition_id: Number(comp.competition_id),
+        startDate,
+        endDate,
+        votingEndDate,
+        reward: Number(comp.reward),
+        status,
+        deadline,
+      };
+    });
+
+    setContests(updatedCompetitions);
+  };
+
   useEffect(() => {
-    const getContest = async () => {
-      const competitions =
-        await DCompetition_backend_competition.getAllCompetition();
-
-      const currentDate = new Date().getTime();
-
-      const updatedCompetitions = competitions.map((comp) => {
-        const startDate = Number(comp.startDate);
-        const endDate = Number(comp.endDate);
-        const endVotingDate = Number(comp.endVotingDate);
-
-        let status = "Not Started";
-        if (currentDate >= startDate && currentDate < endDate) {
-          status = "Ongoing";
-        } else if (currentDate >= endDate && currentDate < endVotingDate) {
-          status = "Winner Selection";
-        } else if (currentDate >= endVotingDate) {
-          status = "Completed";
-        }
-
-        return {
-          ...comp,
-          competition_id: Number(comp.competition_id),
-          startDate,
-          endDate,
-          endVotingDate,
-          reward: Number(comp.reward),
-          status,
-        };
-      });
-
-      setContests(updatedCompetitions);
-    };
-
     getContest();
   }, []);
 
@@ -188,13 +195,6 @@ function Contests() {
     { label: "Most Entries", value: "most_entries" },
   ];
 
-  const statusTypes = [
-    "Not Started",
-    "Ongoing",
-    "Winner Selection",
-    "Completed",
-  ];
-
   return (
     <div className="flex flex-col gap-6 p-6 text-gray-100">
       <div className="relative">
@@ -202,7 +202,7 @@ function Contests() {
           Contests
         </h1>
         <div className="absolute right-0 top-1">
-          {userId && <AddContestModal userId={userId} />}
+          {userId && <AddContestModal userId={userId} fetchData={getContest} />}
         </div>
         {/* <Button variant="ghost" className="absolute right-0 top-1">
           <IoAdd className="text-xl" />
@@ -261,18 +261,9 @@ function Contests() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 contest-section w-full md:w-3/4">
           {contests.map((contest, index) => {
             const status = contest.status;
-            const deadline = convertDate(contest.endDate);
-
-            console.log(deadline);
-
             return (
-              <Link
-                to={`/contestDetail/${contest.competition_id}`}
-                >
-                <Card
-                  key={index}
-                  className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer"
-                >
+              <Link to={`/contestDetail/${contest.competition_id}`} key={index}>
+                <Card className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer">
                   <Status status={status} />
                   <CardBody className="p-4 space-y-4">
                     <div className="grid grid-cols-2 gap-2 mb-2">
@@ -292,7 +283,7 @@ function Contests() {
                       <BottomCard
                         reward={contest.reward}
                         submissions="20"
-                        deadline={deadline}
+                        deadline={contest.deadline}
                         status={status}
                       />
                     </div>

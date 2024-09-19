@@ -17,7 +17,7 @@ import { now, getLocalTimeZone } from "@internationalized/date";
 import { useState } from "react";
 import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
 
-export default function AddContestModal({ userId }) {
+export default function AddContestModal({ userId, fetchData }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const categories = [
     { label: "Logo", value: "logo" },
@@ -97,7 +97,7 @@ export default function AddContestModal({ userId }) {
       endVotingDateNanoseconds
     );
 
-    window.location.reload();
+    fetchData();
   };
 
   return (

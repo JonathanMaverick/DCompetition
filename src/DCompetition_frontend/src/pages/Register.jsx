@@ -10,7 +10,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 const Register = () => {
   const { getPrincipal } = useUserAuth();
   const navigate = useNavigate();
-  const inputRef = useRef(null); 
+  const inputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -49,7 +49,7 @@ const Register = () => {
       principalID: principal,
       imageURL: imageURL,
     });
-    
+
     navigate("/home", { replace: true });
     window.location.reload();
   };
@@ -64,7 +64,7 @@ const Register = () => {
         <Card className="w-full max-w-lg m-auto shadow-lg p-4 bg-black bg-opacity-40 backdrop-blur-md rounded-lg">
           <CardBody>
             <h1 className="text-3xl font-semibold my-2 text-center">
-              Welcome to DCompetition!
+              Welcome to DContest!
             </h1>
             <p className="text-center mb-6 text-gray-300">
               Please fill in your details
@@ -75,7 +75,10 @@ const Register = () => {
                   type="email"
                   label="Email"
                   name="email"
-                  fullWidth
+                  variant="bordered"
+                  className="bg-black bg-opacity-40"
+                  labelPlacement="outside"
+                  placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -85,13 +88,16 @@ const Register = () => {
                   type="text"
                   label="Username"
                   name="username"
-                  fullWidth
+                  variant="bordered"
+                  className="bg-black bg-opacity-40"
+                  labelPlacement="outside"
+                  placeholder="Enter your username"
                   value={formData.username}
                   onChange={handleChange}
                 />
               </div>
               <div className="flex flex-wrap gap-4">
-                <input type="file" ref={inputRef} /> 
+                <input type="file" ref={inputRef} />
               </div>
               <Button color="secondary" type="submit" fullWidth>
                 Submit
