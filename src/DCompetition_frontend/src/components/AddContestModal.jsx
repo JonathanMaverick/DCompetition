@@ -11,14 +11,17 @@ import {
   Autocomplete,
   AutocompleteItem,
   DatePicker,
+  CircularProgress,
 } from "@nextui-org/react";
 import { IoAdd } from "react-icons/io5";
 import { now, getLocalTimeZone } from "@internationalized/date";
 import { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
 
 export default function AddContestModal({ userId, fetchData }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [loading, setLoading] = useState(false);
   const categories = [
     { label: "Logo", value: "logo" },
     { label: "Poster", value: "poster" },
@@ -26,7 +29,7 @@ export default function AddContestModal({ userId, fetchData }) {
     { label: "Infographic", value: "infographic" },
   ];
 
-  const [contestData, setContestData] = useState({
+  const initialContestData = {
     title: "",
     description: "",
     category: "",
@@ -34,7 +37,9 @@ export default function AddContestModal({ userId, fetchData }) {
     startDate: now(getLocalTimeZone()),
     endDate: now(getLocalTimeZone()),
     endVotingDate: now(getLocalTimeZone()),
-  });
+  };
+
+  const [contestData, setContestData] = useState(initialContestData);
 
   const handleChange = (key, value) => {
     setContestData((prev) => ({
@@ -43,65 +48,76 @@ export default function AddContestModal({ userId, fetchData }) {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    const startDate = new Date(
-      contestData.startDate.year,
-      contestData.startDate.month - 1,
-      contestData.startDate.day,
-      contestData.startDate.hour,
-      contestData.startDate.minute,
-      contestData.startDate.second,
-      contestData.startDate.millisecond
-    );
+  const handleSubmit = async () => {
+    setLoading(true);
 
-    const endDate = new Date(
-      contestData.endDate.year,
-      contestData.endDate.month - 1,
-      contestData.endDate.day,
-      contestData.endDate.hour,
-      contestData.endDate.minute,
-      contestData.endDate.second,
-      contestData.endDate.millisecond
-    );
+    try {
+      const startDate = new Date(
+        contestData.startDate.year,
+        contestData.startDate.month - 1,
+        contestData.startDate.day,
+        contestData.startDate.hour,
+        contestData.startDate.minute,
+        contestData.startDate.second,
+        contestData.startDate.millisecond
+      );
 
-    const endVotingDate = new Date(
-      contestData.endVotingDate.year,
-      contestData.endVotingDate.month - 1,
-      contestData.endVotingDate.day,
-      contestData.endVotingDate.hour,
-      contestData.endVotingDate.minute,
-      contestData.endVotingDate.second,
-      contestData.endVotingDate.millisecond
-    );
+      const endDate = new Date(
+        contestData.endDate.year,
+        contestData.endDate.month - 1,
+        contestData.endDate.day,
+        contestData.endDate.hour,
+        contestData.endDate.minute,
+        contestData.endDate.second,
+        contestData.endDate.millisecond
+      );
 
-    const startDateNanoseconds = startDate.getTime() * 1_000_000;
-    const endDateNanoseconds = endDate.getTime() * 1_000_000;
-    const endVotingDateNanoseconds = endVotingDate.getTime() * 1_000_000;
+      const endVotingDate = new Date(
+        contestData.endVotingDate.year,
+        contestData.endVotingDate.month - 1,
+        contestData.endVotingDate.day,
+        contestData.endVotingDate.hour,
+        contestData.endVotingDate.minute,
+        contestData.endVotingDate.second,
+        contestData.endVotingDate.millisecond
+      );
 
-    console.log("Start Date in Nanoseconds:", startDateNanoseconds);
-    console.log("title", contestData.title);
-    console.log("desc", contestData.description);
-    console.log("reward", contestData.reward);
-    console.log("category", contestData.category);
-    console.log("end date", contestData.endDate);
-    console.log("voting end date", contestData.endVotingDate);
+      const startDateNanoseconds = startDate.getTime() * 1_000_000;
+      const endDateNanoseconds = endDate.getTime() * 1_000_000;
+      const endVotingDateNanoseconds = endVotingDate.getTime() * 1_000_000;
 
-    await DCompetition_backend_competition.addCompetition(
-      userId,
-      contestData.title,
-      Number(contestData.reward),
-      contestData.description,
-      contestData.category,
-      startDateNanoseconds,
-      endDateNanoseconds,
-      endVotingDateNanoseconds
-    );
+      await DCompetition_backend_competition.addCompetition(
+        userId,
+        contestData.title,
+        Number(contestData.reward),
+        contestData.description,
+        contestData.category,
+        startDateNanoseconds,
+        endDateNanoseconds,
+        endVotingDateNanoseconds
+      );
 
-    fetchData();
+      fetchData();
+      toast.success("Success!", {
+        style: {
+          borderRadius: "8px",
+          background: "#000",
+          color: "#fff",
+        },
+      });
+      onOpenChange(false);
+      setContestData(initialContestData);
+    } catch (error) {
+      toast.error("Submission failed!");
+      console.error("Error submitting contest:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
+      <Toaster />
       <Button onPress={onOpen} variant="ghost">
         <IoAdd className="text-xl" />
         Create
@@ -196,16 +212,36 @@ export default function AddContestModal({ userId, fetchData }) {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button
-                  color="secondary"
-                  onPress={() => {
-                    handleSubmit();
-                    onClose();
-                  }}
-                  className="w-full"
-                >
-                  Create
-                </Button>
+                {loading ? (
+                  <Button
+                    color="secondary"
+                    onPress={() => {
+                      handleSubmit();
+                    }}
+                    className="w-full"
+                  >
+                    <CircularProgress
+                      classNames={{
+                        svg: "w-6 h-6 drop-shadow-md",
+                        indicator: "stroke-white",
+                        track: "stroke-purple-500/10",
+                        value: "text-3xl font-semibold text-white",
+                      }}
+                      color="secondary"
+                      aria-label="Loading..."
+                    />
+                  </Button>
+                ) : (
+                  <Button
+                    color="secondary"
+                    onPress={() => {
+                      handleSubmit();
+                    }}
+                    className="w-full"
+                  >
+                    Create
+                  </Button>
+                )}
               </ModalFooter>
             </>
           )}

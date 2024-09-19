@@ -50,18 +50,20 @@ function Status({ status }) {
   );
 }
 
-function BottomCard({ reward, submissions, deadline, status }) {
+function BottomCard({ reward, submissions, deadline, status, endDate }) {
   const [timeLeft, setTimeLeft] = useState(
     formatTime(Math.max((deadline - new Date()) / 1000, 0))
   );
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(formatTime(Math.max((deadline - new Date()) / 1000, 0)));
-    }, 1000);
+    if (status !== "Completed") {
+      const interval = setInterval(() => {
+        setTimeLeft(formatTime(Math.max((deadline - new Date()) / 1000, 0)));
+      }, 1000);
 
-    return () => clearInterval(interval);
-  }, [deadline]);
+      return () => clearInterval(interval);
+    }
+  }, [deadline, status]);
 
   const statusGradients = {
     "Not Started": "from-gray-600 to-gray-800",
@@ -82,6 +84,16 @@ function BottomCard({ reward, submissions, deadline, status }) {
     Ongoing: "text-purple-100",
     "Winner Selection": "text-purple-50",
     Completed: "text-fuchsia-100",
+  };
+
+  const formatEndDate = (endDate) => {
+    console.log(endDate);
+    const date = new Date(endDate);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   return (
@@ -105,10 +117,27 @@ function BottomCard({ reward, submissions, deadline, status }) {
         </div>
         <div className="flex flex-col items-center">
           <FaClock className={`text-3xl ${iconColors[status]}`} />
-          <p className={` ${titleColors[status]}`}>Ends In</p>
-          <p className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}>
-            {timeLeft}
-          </p>
+          {status === "Completed" ? (
+            <>
+              <p className={` ${titleColors[status]}`}>Completed On</p>
+              <p
+                className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}
+              >
+                {formatEndDate(endDate)}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className={` ${titleColors[status]}`}>
+                {status === "Not Started" ? "Starts In" : "Ends In"}
+              </p>
+              <p
+                className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}
+              >
+                {timeLeft}
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -117,6 +146,10 @@ function BottomCard({ reward, submissions, deadline, status }) {
 
 function Contests() {
   const [contests, setContests] = useState([]);
+  const [filteredContests, setFilteredContests] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const { getPrincipal } = useUserAuth();
@@ -144,7 +177,7 @@ function Contests() {
       const votingEndDate = convertDate(Number(comp.votingEndDate));
 
       let status = "Not Started";
-      let deadline = "-";
+      let deadline = startDate;
       if (currentDate >= startDate && currentDate < endDate) {
         status = "Ongoing";
         deadline = endDate;
@@ -170,6 +203,7 @@ function Contests() {
     });
 
     setContests(updatedCompetitions);
+    setFilteredContests(updatedCompetitions);
     setLoading(false);
   };
 
@@ -177,9 +211,8 @@ function Contests() {
     getContest();
   }, []);
 
-  console.log(contests);
-
   const categories = [
+    { label: "All Category", value: "" },
     { label: "Logo", value: "logo" },
     { label: "Poster", value: "poster" },
     { label: "Design", value: "design" },
@@ -187,17 +220,49 @@ function Contests() {
   ];
 
   const statuses = [
-    { label: "Not Started", value: "not started" },
-    { label: "Ongoing Contest", value: "ongoing contest" },
-    { label: "Winner Selection", value: "winner selection" },
-    { label: "Completed Contest", value: "completed contest" },
+    { label: "All Status", value: "" },
+    { label: "Not Started", value: "Not Started" },
+    { label: "Ongoing Contest", value: "Ongoing" },
+    { label: "Winner Selection", value: "Winner Selection" },
+    { label: "Completed Contest", value: "Completed" },
   ];
 
-  const orderByOptions = [
-    { label: "Newest", value: "newest" },
-    { label: "Oldest", value: "oldest" },
-    { label: "Most Entries", value: "most_entries" },
-  ];
+  const applyFilters = () => {
+    let filtered = contests;
+
+    if (searchTerm) {
+      filtered = filtered.filter((contest) =>
+        contest.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (selectedCategory) {
+      filtered = filtered.filter(
+        (contest) => contest.category === selectedCategory
+      );
+    }
+
+    if (selectedStatus) {
+      console.log(selectedStatus);
+      filtered = filtered.filter(
+        (contest) => contest.status === selectedStatus
+      );
+    }
+
+    setFilteredContests(filtered);
+  };
+
+  useEffect(() => {
+    applyFilters();
+  }, [searchTerm, selectedCategory, selectedStatus, contests]);
+
+  const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
+  };
+
+  const handleStatusChange = (value) => {
+    setSelectedStatus(value);
+  };
 
   return (
     <div className="flex flex-col gap-6 p-6 text-gray-100">
@@ -208,10 +273,6 @@ function Contests() {
         <div className="absolute right-0 top-1">
           {userId && <AddContestModal userId={userId} fetchData={getContest} />}
         </div>
-        {/* <Button variant="ghost" className="absolute right-0 top-1">
-          <IoAdd className="text-xl" />
-          Create
-        </Button> */}
       </div>
       <div className="flex flex-col md:flex-row gap-8">
         <div className="filter-section w-full md:w-1/4 flex flex-col gap-4 backdrop-blur-md max-h-80">
@@ -222,6 +283,7 @@ function Contests() {
             variant="bordered"
             className="backdrop-blur-md"
             labelPlacement="outside"
+            onValueChange={setSearchTerm}
             endContent={
               <button className="focus:outline-none" type="button">
                 <IoIosSearch className="text-xl" />
@@ -235,6 +297,7 @@ function Contests() {
             labelPlacement="outside"
             variant="bordered"
             className="backdrop-blur-md"
+            onSelectionChange={handleCategoryChange}
           >
             {(item) => (
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
@@ -247,18 +310,7 @@ function Contests() {
             labelPlacement="outside"
             variant="bordered"
             className="backdrop-blur-md"
-          >
-            {(item) => (
-              <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
-            )}
-          </Autocomplete>
-          <Autocomplete
-            label="Order By"
-            placeholder="Order By"
-            defaultItems={orderByOptions}
-            labelPlacement="outside"
-            variant="bordered"
-            className="backdrop-blur-md"
+            onSelectionChange={handleStatusChange}
           >
             {(item) => (
               <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
@@ -293,7 +345,7 @@ function Contests() {
                   </CardBody>
                 </Card>
               ))}
-          {contests.map((contest, index) => {
+          {filteredContests.map((contest, index) => {
             const status = contest.status;
             return (
               <Link to={`/contestDetail/${contest.competition_id}`} key={index}>
@@ -326,6 +378,7 @@ function Contests() {
                         submissions="20"
                         deadline={contest.deadline}
                         status={status}
+                        endDate={contest.endDate}
                       />
                     </div>
                   </CardBody>
