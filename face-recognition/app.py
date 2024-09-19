@@ -22,7 +22,7 @@ def check_face():
       actions=('emotion'),
     )
 
-    if analyze[0]['dominant_emotion'] != 'neutral':
+    if analyze[0]['dominant_emotion'] != 'neutral' or analyze[0]['dominant_emotion'] != 'happy':
       return jsonify({"message": "Please take neutral face expression"})
 
     for file_name in os.listdir(STORAGE_PATH):
@@ -35,7 +35,7 @@ def check_face():
       print(f"Comparing with {file_name}: {result['distance']}, {result['verified']} ")
             
       if result['distance'] < 0.4 and result['verified']:
-        return jsonify({"message": f"Match found with {file_name}! "}), 200
+        return jsonify({"message": "Face already used."}), 200
         
     save_image(image_array, STORAGE_PATH)
     return jsonify({"message": "No match found."}), 200
