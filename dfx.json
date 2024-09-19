@@ -8,10 +8,15 @@
       "main": "src/DCompetition_backend/competition/main.mo",
       "type": "motoko"
     },
+    "DCompetition_backend_contestant": {
+      "main": "src/DCompetition_backend/contestant/main.mo",
+      "type": "motoko"
+    },
     "DCompetition_frontend": {
       "dependencies": [
         "DCompetition_backend_user",
-        "DCompetition_backend_competition"
+        "DCompetition_backend_competition",
+        "DCompetition_backend_contestant"
       ],
       "source": ["src/DCompetition_frontend/dist"],
       "type": "assets",

@@ -17,6 +17,7 @@ export default function Nav() {
   const [id, setID] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profilePicURL, setProfilePicURL] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -39,6 +40,12 @@ export default function Nav() {
           setLoading(true);
           const fetchedUser = await getUserData(id);
           setUser(fetchedUser[0]);
+
+          if (fetchedUser[0]?.profilePic) {
+            const blob = new Blob([fetchedUser[0].profilePic], { type: "image/jpeg" });
+            const url = URL.createObjectURL(blob);
+            setProfilePicURL(url);
+          }
         } catch (error) {
           console.error("Error fetching user data:", error);
         } finally {
@@ -150,6 +157,15 @@ export default function Nav() {
             />
           ) : user ? (
             <div className="flex gap-3 items-center">
+              {profilePicURL && (
+                <img
+                  src={profilePicURL}
+                  alt="Profile"
+                  width={40}
+                  height={40}
+                  style={{ borderRadius: "50%" }}
+                />
+              )}
               <p>{user.username}</p>
               <p>ICP: {Number(user.money)}</p>
               <Button

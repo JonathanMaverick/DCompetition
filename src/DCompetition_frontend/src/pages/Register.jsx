@@ -4,8 +4,6 @@ import { Button, Card, CardBody, Input } from "@nextui-org/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useUserAuth } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { collection, addDoc, firestore, storage } from "../tools/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Register = () => {
   const { getPrincipal } = useUserAuth();
@@ -30,25 +28,17 @@ const Register = () => {
     const { username, email } = formData;
     const principal = await getPrincipal();
 
+    const file = inputRef.current.files[0];
+    const profilePic = new Uint8Array(await file.arrayBuffer());
+
     toast.promise(
-      DCompetition_backend_user.register(principal, username, email),
+      DCompetition_backend_user.register(principal, username, email,profilePic),
       {
         loading: "Registering...",
         success: "Success...",
         error: <b>Registration failed. Please try again.</b>,
       }
-    );
-
-    const file = inputRef.current.files[0];
-
-    const storageRef = ref(storage, `photos/${file.name}`);
-    await uploadBytes(storageRef, file);
-    const imageURL = await getDownloadURL(storageRef);
-
-    await addDoc(collection(firestore, "users"), {
-      principalID: principal,
-      imageURL: imageURL,
-    });
+    )
 
     navigate("/home", { replace: true });
     window.location.reload();
