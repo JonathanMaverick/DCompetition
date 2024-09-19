@@ -1,8 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage, firestore } from "../tools/firebase";
-import { collection, addDoc } from "../tools/firebase";
 import { Button, CircularProgress, Spinner } from "@nextui-org/react";
 import "../style/capture.css";
 import "../style/toast.css";
@@ -90,14 +87,6 @@ const Face = () => {
 
       const data = await response.json();
       setMessage(data.message);
-
-      if (data.message === "No match found.") {
-        uploadImageToFirebase(imageSrc);
-      } else {
-        setShowToast(true);
-        setCountdownSeconds(3);
-        setShowGuidance(true);
-      }
     } catch (error) {
       console.error("Error:", error);
       setShowToast(true);
@@ -105,29 +94,6 @@ const Face = () => {
       setShowGuidance(true);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const uploadImageToFirebase = async (imageSrc) => {
-    try {
-      const base64Response = await fetch(imageSrc);
-      const blob = await base64Response.blob();
-
-      const storageRef = ref(storage, `faces/${Date.now()}.jpg`);
-
-      const snapshot = await uploadBytes(storageRef, blob);
-      console.log("Image uploaded to Firebase Storage");
-
-      const downloadURL = await getDownloadURL(snapshot.ref);
-
-      await addDoc(collection(firestore, "faces"), {
-        url: downloadURL,
-        createdAt: new Date(),
-      });
-
-      console.log("Image URL and metadata stored in Firestore");
-    } catch (error) {
-      console.error("Error uploading image:", error);
     }
   };
 

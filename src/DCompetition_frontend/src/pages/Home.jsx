@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
-import { collection, getDocs } from "firebase/firestore";
-import { firestore } from "../tools/firebase";
 
 
 function Home() {

@@ -2,6 +2,7 @@ import User "types";
 import Array "mo:base/Array";
 import RBTree "mo:base/RBTree";
 import Text "mo:base/Text";
+import Blob "mo:base/Blob";
 
 actor Main {
 
@@ -24,12 +25,13 @@ actor Main {
     loginPrincipalID := "";
   };
 
-  public func register(principal_id : Text, username : Text, email : Text) : async () {
+  public func register(principal_id : Text, username : Text, email : Text, profilePic : Blob) : async () {
     let newUser : User.User = {
       principal_id = principal_id;
       username = username;
       email = email;
       money = 500;
+      profilePic = profilePic;
     };
     tree.put(principal_id, newUser);
   };

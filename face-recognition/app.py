@@ -22,11 +22,14 @@ def check_face():
       actions=('emotion'),
     )
 
-    if analyze[0]['dominant_emotion'] != 'neutral' or analyze[0]['dominant_emotion'] != 'happy':
+    print(analyze[0]['dominant_emotion'])
+    print(analyze[0]['dominant_emotion'].strip().lower() != 'neutral')
+
+    if analyze[0]['dominant_emotion'].strip().lower() != 'neutral':
       return jsonify({"message": "Please take neutral face expression"})
 
     for file_name in os.listdir(STORAGE_PATH):
-      file_path = os.path.join(STORAGE_PATH, file_name)
+      file_path = STORAGE_PATH + '/' + file_name
             
       result = DeepFace.verify(
         img1_path=temp_image_path, 

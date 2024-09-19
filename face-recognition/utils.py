@@ -4,7 +4,6 @@ import os
 from io import BytesIO
 from PIL import Image
 from datetime import datetime
-import time
 
 TEMP_PATH = 'temp'
 
@@ -15,7 +14,8 @@ def decode_image(image_data):
   return np.array(image)
 
 def save_temp_image(image_array):
-  file_name = f"{TEMP_PATH}/temp_image_{int(time.time())}.jpg"
+  timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+  file_name = f"{TEMP_PATH}/temp_{timestamp}.jpg"
     
   temp_image = Image.fromarray(image_array)
   temp_image.save(file_name)
