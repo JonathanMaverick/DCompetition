@@ -53,7 +53,7 @@ function ContestDetail() {
                     </div>
                </div>
                <div className="w-3/4 bg-black bg-opacity-40 h-full rounded-lg justify-center items-center overflow-y-scroll p-6">
-                    <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5 w-full justify-items-center">
+                    <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-full justify-items-center">
                          {Array.from({ length: 7 }).map((_, idx) => (
                               <div className="bg-opacity-40 flex flex-col items-center justify-center gap-y-2 p-3">
                                    <div className="text-sm font-semibold">
@@ -61,7 +61,7 @@ function ContestDetail() {
                                    </div>
                                    <img
                                         src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                                        className="w-52 h-52 rounded-lg shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer"
+                                        className="w-56 h-52 rounded-lg shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer"
                                    />
                               </div>
                          ))} 
