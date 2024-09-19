@@ -87,8 +87,6 @@ const Face = () => {
 
       const data = await response.json();
       setMessage(data.message);
-
-      
     } catch (error) {
       console.error("Error:", error);
       setShowToast(true);
@@ -98,7 +96,6 @@ const Face = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="relative">
