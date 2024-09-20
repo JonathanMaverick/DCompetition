@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import BottomCard from "../components/BottomCard";
 import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
+import { DCompetition_backend_contestant } from "declarations/DCompetition_backend_contestant";
 import { convertDate } from "../tools/date";
 import { Button, Card, Skeleton, CardBody } from "@nextui-org/react";
+import { useUserAuth } from "../context/UserContext";
 
 function ContestDetail() {
   const statusColors = {
@@ -13,10 +15,28 @@ function ContestDetail() {
     Completed: "bg-fuchsia-700",
   };
 
+  const { getPrincipal } = useUserAuth();
+  const [id, setID] = useState("");
   const { competitionID } = useParams();
   const [contest, setContest] = useState(null);
   const [loading, setLoading] = useState(true);
   const currentDate = new Date().getTime();
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    const principalID = async () => {
+      try {
+        const principal = await getPrincipal();
+        setID(principal);
+        console.log(principal);
+      } catch (error) {
+        console.error("Error getting principal:", error);
+      }
+    };
+    principalID();
+  }, [getPrincipal]);
+
+  console.log(id)
 
   const updatedCompetitions = (comp) => {
     const startDate = convertDate(Number(comp.startDate));
@@ -54,12 +74,22 @@ function ContestDetail() {
       const con =
         await DCompetition_backend_competition.getCompetitionById(contestID);
       setContest(updatedCompetitions(con[0]));
-      setLoading(false); // Set loading to false once data is fetched
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching contest:", error);
-      setLoading(false); // Set loading to false even if there is an error
+      setLoading(false); 
     }
   };
+
+  const handleOnSubmit = async(e) =>{
+    e.preventDefault()
+    const file = inputRef.current.files[0]
+    const picture = new Uint8Array(await file.arrayBuffer());
+
+    await DCompetition_backend_contestant.addContestant(id,Number(competitionID),picture)
+
+    alert("Success Bang Gacor!")
+}
 
   useEffect(() => {
     if (contest === null && loading) {
@@ -68,16 +98,13 @@ function ContestDetail() {
   }, [contest, loading]);
 
   if (loading) {
-    // Display skeleton loading UI while data is being fetched
+  
     return (
       <div className="flex w-full gap-x-4">
-        {/* Left Column: Contest Details */}
         <div className="flex flex-col w-2/5 h-full gap-y-3">
-          {/* Skeleton for Contest Name and Category */}
           <Skeleton className="h-12 w-full mb-3 rounded-lg bg-default-300" />
           <Skeleton className="h-8 w-1/3 mb-6 rounded-lg bg-default-300" />
 
-          {/* Skeleton for BottomCard (Reward, Submissions, Deadline, Status) */}
           <Card radius="lg">
             <CardBody className="p-4 space-y-4">
               <Skeleton className="h-10 w-2/3 rounded-lg bg-default-300" />
@@ -86,18 +113,16 @@ function ContestDetail() {
             </CardBody>
           </Card>
 
-          {/* Skeleton for Description Section */}
           <Skeleton className="h-6 w-1/4 mt-4 mb-2 rounded-lg bg-default-300" />
           <Skeleton className="h-24 w-full rounded-lg bg-default-300" />
 
-          {/* Skeleton for Join Button */}
           <Skeleton className="h-12 w-full rounded-lg mt-4 bg-default-300" />
         </div>
 
-        {/* Right Column: Submissions Grid */}
+
         <div className="w-3/4 bg-black bg-opacity-40 h-full rounded-lg p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Skeletons for the individual cards */}
+
             {Array.from({ length: 6 }).map((_, idx) => (
               <div key={idx} className="w-full">
                 <Skeleton className="h-52 w-full mb-2 rounded-lg bg-default-300" />
@@ -109,6 +134,7 @@ function ContestDetail() {
       </div>
     );
   }
+
 
   return (
     <div className="flex w-full gap-x-4">
@@ -135,6 +161,10 @@ function ContestDetail() {
         <Button className={`w-full ${statusColors[contest.status]}`}>
           Join
         </Button>
+        <form onSubmit={handleOnSubmit}>
+        <input ref={inputRef} type="file" accept="image/*"/>
+        <input type="submit" onSubmit={handleOnSubmit}/>
+        </form>
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 h-full rounded-lg justify-center items-center overflow-y-scroll p-6">
         <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">

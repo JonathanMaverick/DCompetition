@@ -24,10 +24,7 @@ actor Main {
         tree.put(currentId, newContestant);
     };
 
-    public func getContestantByCompetition(competition_id : Nat) : async ?Contestant.Contestant {
-        var contestant = tree.get(competition_id);
-        return contestant;
-    };
+     
 
     public func getAllContestant() : async [Contestant.Contestant] {
         var contestant : [Contestant.Contestant] = [];
@@ -37,6 +34,10 @@ actor Main {
         };
 
         return contestant;
+    };
+
+    public func deleteData(currentId : Nat) : async () {
+        tree.delete(currentId);
     };
 
 };
