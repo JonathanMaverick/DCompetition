@@ -95,7 +95,7 @@ function BottomCard({ reward, submissions, deadline, status, endDate }) {
             </>
           ) : (
             <>
-              <p className={` ${titleColors[status]}`}>
+              <p className={` ${titleColors[status]} mt-[3px]`}>
                 {status === "Not Started" ? "Starts In" : "Ends In"}
               </p>
               <p
