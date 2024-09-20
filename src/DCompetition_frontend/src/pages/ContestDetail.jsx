@@ -54,19 +54,23 @@ function ContestDetail() {
             officia ad dicta! Doloribus, repudiandae officia.
           </div>
         </div>
-        <div className="bg-purple-600 font-semibold h-10 w-full text-center flex items-center justify-center rounded-lg">
+        <div className="bg-purple-700 font-semibold h-10 w-full text-center flex items-center justify-center rounded-lg">
           Join
         </div>
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 h-full rounded-lg justify-center items-center overflow-y-scroll p-6">
         <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-full justify-items-center">
           {Array.from({ length: 7 }).map((_, idx) => (
-            <div className="bg-opacity-40 flex flex-col items-center justify-center gap-y-2 p-3">
-              <div className="text-sm font-semibold">username</div>
+            <div className="bg-opacity-40 flex flex-col items-center justify-center p-3 transition-transform transform hover:scale-[1.02] cursor-pointer">
               <img
                 src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                className="w-56 h-52 rounded-lg shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer"
+                className="w-56 h-52 rounded-t-lg"
               />
+              <div className="w-56 h-16 bg-white rounded-b-lg bg-purple-700 flex flex-col py-1 px-2">
+                <div className="text-lg font-semibold">#username</div>
+                <div className="text-xs font-semibold">timestamp</div>
+                {/* <div className="w-full h-6 bg-green-500 text-sm text-center rounded-lg mt-4">Detail</div> */}
+              </div>
             </div>
           ))}
         </div>
