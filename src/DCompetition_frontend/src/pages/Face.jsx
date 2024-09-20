@@ -4,11 +4,11 @@ import { Button, CircularProgress, Spinner } from "@nextui-org/react";
 import "../style/capture.css";
 import "../style/toast.css";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Face = () => {
   const webcamRef = useRef(null);
   const [image, setImage] = useState(null);
-  const [message, setMessage] = useState("");
   const [isCaptureDisabled, setIsCaptureDisabled] = useState(true);
   const [showGuidance, setShowGuidance] = useState(true);
   const [countdown, setCountdown] = useState(5);
@@ -16,7 +16,6 @@ const Face = () => {
   const [countdownSeconds, setCountdownSeconds] = useState(3);
   const [showCaptureEffect, setShowCaptureEffect] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
 
   const navigate = useNavigate();
 
@@ -43,14 +42,6 @@ const Face = () => {
       return () => clearInterval(timer);
     }
   }, [isCaptureDisabled]);
-
-  useEffect(() => {
-    let toastTimeout;
-    if (showToast) {
-      toastTimeout = setTimeout(() => setShowToast(false), 5000);
-    }
-    return () => clearTimeout(toastTimeout);
-  }, [showToast]);
 
   const capture = () => {
     if (loading) return;
@@ -92,19 +83,36 @@ const Face = () => {
       });
 
       const data = await response.json();
-      setMessage(data.message);
 
-      if (data.message === "No match found") {
-        // TODO: redirect after register
+      if (data.message === "No match found.") {
         navigate("/");
+        toast.success("Success!", {
+          style: {
+            borderRadius: "8px",
+            background: "#000",
+            color: "#fff",
+          },
+        });
       } else {
-        setShowToast(true);
+        toast.error(data.message, {
+          style: {
+            borderRadius: "8px",
+            background: "#000",
+            color: "#fff",
+          },
+        });
         setCountdownSeconds(3);
         setShowGuidance(true);
       }
     } catch (error) {
       console.error("Error:", error);
-      setShowToast(true);
+      toast.error("Error: " + error, {
+        style: {
+          borderRadius: "8px",
+          background: "#000",
+          color: "#fff",
+        },
+      });
       setCountdownSeconds(3);
       setShowGuidance(true);
     } finally {
@@ -173,27 +181,6 @@ const Face = () => {
           videoConstraints={videoConstraints}
           className="mb-4"
         />
-
-        {showToast && (
-          <div className={"toast-container"}>
-            <div className="toast">
-              <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
-                <svg
-                  className="w-5 h-5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
-                </svg>
-              </div>
-              <div className="ml-3 text-sm font-bold text-purple-900">
-                {message || "Could not connect to server"}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

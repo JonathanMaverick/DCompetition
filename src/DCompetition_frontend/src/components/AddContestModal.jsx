@@ -110,7 +110,13 @@ export default function AddContestModal({ userId, fetchData }) {
       onOpenChange(false);
       setContestData(initialContestData);
     } catch (error) {
-      toast.error("Submission failed!");
+      toast.error("Submission failed!", {
+        style: {
+          borderRadius: "8px",
+          background: "#000",
+          color: "#fff",
+        },
+      });
       console.error("Error submitting contest:", error);
     } finally {
       setLoading(false);
