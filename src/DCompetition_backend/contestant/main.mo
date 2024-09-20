@@ -24,20 +24,31 @@ actor Main {
         tree.put(currentId, newContestant);
     };
 
-     
-
-    public func getAllContestant() : async [Contestant.Contestant] {
-        var contestant : [Contestant.Contestant] = [];
+    public func getAllContestants() : async [Contestant.Contestant] {
+        var contestants : [Contestant.Contestant] = [];
 
         for (entry in RBTree.iter(tree.share(), #bwd)) {
-            contestant := Array.append<Contestant.Contestant>(contestant, [entry.1]);
+            contestants := Array.append<Contestant.Contestant>(contestants, [entry.1]);
         };
 
-        return contestant;
+        return contestants;
     };
 
-    public func deleteData(currentId : Nat) : async () {
-        tree.delete(currentId);
+    public func getContestantsByCompetitionId(competition_id : Nat) : async [Contestant.Contestant] {
+        var contestantsByCompetition : [Contestant.Contestant] = [];
+
+        for (entry in RBTree.iter(tree.share(), #bwd)) {
+            let contestant = entry.1;
+            if (contestant.competition_id == competition_id) {
+                contestantsByCompetition := Array.append<Contestant.Contestant>(contestantsByCompetition, [contestant]);
+            };
+        };
+
+        return contestantsByCompetition;
+    };
+
+    public func deleteData(contestantId : Nat) : async () {
+        tree.delete(contestantId);
     };
 
 };
