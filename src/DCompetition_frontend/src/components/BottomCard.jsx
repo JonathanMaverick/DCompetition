@@ -86,20 +86,22 @@ function BottomCard({ reward, submissions, deadline, status, endDate }) {
           <FaClock className={`text-3xl ${iconColors[status]}`} />
           {status === "Completed" ? (
             <>
-              <p className={` ${titleColors[status]}`}>Completed On</p>
+              <p className={` ${titleColors[status]} translate-y-[2px]`}>
+                Completed On
+              </p>
               <p
-                className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}
+                className={`text-sm sm:text-lg font-bold ${titleColors[status]} mb-[4px] translate-y-[1px]`}
               >
                 {formatEndDate(endDate)}
               </p>
             </>
           ) : (
             <>
-              <p className={` ${titleColors[status]} mt-[3px]`}>
+              <p className={` ${titleColors[status]} translate-y-[2px]`}>
                 {status === "Not Started" ? "Starts In" : "Ends In"}
               </p>
               <p
-                className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}
+                className={`text-sm sm:text-lg font-bold ${titleColors[status]} translate-y-[1px]`}
               >
                 {timeLeft}
               </p>
