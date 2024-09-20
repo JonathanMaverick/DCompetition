@@ -6,7 +6,7 @@ import Face from "./pages/Face";
 import Contests from "./pages/Contests";
 import ContestDetail from "./pages/ContestDetail";
 import Contestant from "./pages/Contestant";
-import Register from "./pages/register";
+import Register from "./pages/Register";
 
 function App() {
   return (
