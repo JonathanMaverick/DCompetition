@@ -2,23 +2,27 @@ import { useParams } from "react-router-dom";
 import { FaTrophy, FaUsers } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
 import BottomCard from "../components/BottomCard";
+import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
 
 function ContestDetail() {
   const { competitionID } = useParams();
+  const [contest, setContests] = useState(null);
 
-  const iconColors = {
-    "Not Started": "text-gray-400",
-    Ongoing: "text-purple-300",
-    "Winner Selection": "text-purple-200",
-    Completed: "text-fuchsia-200",
+  const getContestByID = async () => {
+    try {
+      const contestID = parseInt(competitionID);
+      const contest = await DCompetition_backend_competition.getCompetitionById(contestID);
+      console.log("helloo");
+      console.log(contest);
+      setContests(contest[0]);
+    } catch (error) {
+      console.error("Error fetching contest:", error);
+    }
   };
 
-  const titleColors = {
-    "Not Started": "text-gray-100",
-    Ongoing: "text-purple-100",
-    "Winner Selection": "text-purple-50",
-    Completed: "text-fuchsia-100",
-  };
+  useEffect(() => {
+    getContestByID();
+  }, [competitionID]);
 
   const targetDate = new Date("Fri Sep 20 2024 11:14:29 GMT+0700");
 
@@ -26,15 +30,15 @@ function ContestDetail() {
     <div className="flex w-full gap-x-4">
       <div className="flex flex-col w-2/5 h-full gap-y-3">
         <div className="py-3 px-4 gap-1 h-1/5">
-          <div className="text-4xl font-medium text-left">Contest Name</div>
+          <div className="text-4xl font-medium text-left">{contest.name}</div>
           <div className="text-1xl font-medium text-left pl-1">
-            Contest Category
+          {contest.category}
           </div>
         </div>
         <BottomCard
-          reward="1000"
+          reward={contest.reward}
           submissions="20"
-          deadline=""
+          deadline={contest.deadline}
           status="Not Started"
         />
         <div className="bg-black bg-opacity-40 rounded-lg p-4 gap-1 flex flex-col ">
