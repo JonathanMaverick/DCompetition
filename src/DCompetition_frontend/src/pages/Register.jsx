@@ -49,27 +49,49 @@ const Register = () => {
       const { username, email } = formData;
       const principal = await getPrincipal();
 
-      const file = inputRef.current.files[0];
+      const file = inputRef.current?.files[0];
+      if (!file) {
+        toast.error("Please select a profile picture.", {
+          style: {
+            borderRadius: "8px",
+            background: "#000",
+            color: "#fff",
+          },
+        });
+        return;
+      }
+
       const profilePic = new Uint8Array(await file.arrayBuffer());
 
-      await DCompetition_backend_user.register(
+      const result = await DCompetition_backend_user.register(
         principal,
         username,
         email,
         profilePic
       );
 
-      toast.success("Success!", {
-        style: {
-          borderRadius: "8px",
-          background: "#000",
-          color: "#fff",
-        },
-      });
+      console.log(result);
 
-      navigate("/");
-      // window.location.reload();
+      if ("err" in result) {
+        toast.error(result.err, {
+          style: {
+            borderRadius: "8px",
+            background: "#000",
+            color: "#fff",
+          },
+        });
+      } else if ("ok" in result) {
+        toast.success(result.ok, {
+          style: {
+            borderRadius: "8px",
+            background: "#000",
+            color: "#fff",
+          },
+        });
+        navigate("/");
+      }
     } catch (error) {
+      console.log(error);
       toast.error("Failed to register!", {
         style: {
           borderRadius: "8px",
