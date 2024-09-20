@@ -23,3 +23,7 @@ dist/
 
 # environment variables
 .env
+
+# face_recog_data
+face-recognition/storage/*
+face-recognition/temp/*
