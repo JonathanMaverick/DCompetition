@@ -14,7 +14,7 @@ function ContestDetail() {
       const contest = await DCompetition_backend_competition.getCompetitionById(contestID);
       console.log("helloo");
       console.log(contest);
-      setContests(contest[0]);
+      setContest(contest[0]);
     } catch (error) {
       console.error("Error fetching contest:", error);
     }
