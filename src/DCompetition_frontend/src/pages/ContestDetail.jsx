@@ -6,14 +6,14 @@ import { DCompetition_backend_competition } from "declarations/DCompetition_back
 
 function ContestDetail() {
   const { competitionID } = useParams();
-  const [contest, setContests] = useState(null);
+  const [contest, setContest] = useState(null);
 
   const getContestByID = async () => {
     try {
       const contestID = parseInt(competitionID);
-      const contest = await DCompetition_backend_competition.getCompetitionById(contestID);
+      const con = await DCompetition_backend_competition.getCompetitionById(contestID);
       console.log("helloo");
-      console.log(contest);
+      console.log(con);
       setContest(contest[0]);
     } catch (error) {
       console.error("Error fetching contest:", error);
