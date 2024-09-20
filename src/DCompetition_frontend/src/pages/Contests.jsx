@@ -264,7 +264,7 @@ function Contests() {
                     </div>
                     <div className="flex flex-col">
                       <div className="flex flex-col ml-0.5">
-                        <h2 className="text-2xl font-bold text-gray-200">
+                        <h2 className="text-2xl font-bold text-gray-200 truncate">
                           {contest.name}
                         </h2>
                         <p className="mb-4">
