@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 
 const Face = () => {
   const webcamRef = useRef(null);
+  const [capturedImage, setCapturedImage] = useState(null);
   const [isCaptureDisabled, setIsCaptureDisabled] = useState(true);
   const [showGuidance, setShowGuidance] = useState(true);
   const [countdown, setCountdown] = useState(5);
@@ -57,6 +58,9 @@ const Face = () => {
           setTimeout(() => {
             setShowCaptureEffect(false);
             const imageSrc = webcamRef.current.getScreenshot();
+
+            setCapturedImage(imageSrc);
+
             processFace(imageSrc);
           }, 300);
 
@@ -99,6 +103,9 @@ const Face = () => {
             color: "#fff",
           },
         });
+
+        setCapturedImage(null);
+
         setCountdownSeconds(3);
         setShowGuidance(true);
       }
@@ -111,6 +118,9 @@ const Face = () => {
           color: "#fff",
         },
       });
+
+      // setCapturedImage(null);
+
       setCountdownSeconds(3);
       setShowGuidance(true);
     } finally {
@@ -170,6 +180,14 @@ const Face = () => {
               label="Checking Face... Please wait"
             />
           </div>
+        )}
+
+        {capturedImage && (
+          <img
+            src={capturedImage}
+            alt="Captured"
+            className="absolute top-0 left-0 w-full h-full object-cover z-10"
+          />
         )}
 
         <Webcam
