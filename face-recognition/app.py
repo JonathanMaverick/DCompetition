@@ -17,13 +17,18 @@ def check_face():
     image_array = decode_image(image_base64)
     temp_image_path = save_temp_image(image_array)
 
-    analyze = DeepFace.analyze(
-      img_path=temp_image_path,
-      actions=('emotion'),
-    )
+    try:
+      analyze = DeepFace.analyze(
+        img_path=temp_image_path,
+        actions=('emotion',),
+        enforce_detection=True
+      )
+    except ValueError as e:
+      return jsonify({"message": "Face not detected. Make sure your face aligned in camera"}), 400
 
-    print(analyze[0]['dominant_emotion'])
-    print(analyze[0]['dominant_emotion'].strip().lower() != 'neutral')
+    # Uncomment this to debug easier
+    # print(analyze[0]['dominant_emotion'])
+    # print(analyze[0]['dominant_emotion'].strip().lower() != 'neutral')
 
     if analyze[0]['dominant_emotion'].strip().lower() != 'neutral':
       return jsonify({"message": "Please take neutral face expression"})
@@ -33,12 +38,14 @@ def check_face():
             
       result = DeepFace.verify(
         img1_path=temp_image_path, 
-        img2_path=file_path
+        img2_path=file_path,
+        enforce_detection=False
       )
-      print(f"Comparing with {file_name}: {result['distance']}, {result['verified']} ")
+      # Uncomment this to debug easier
+      # print(f"Comparing with {file_name}: {result['distance']}, {result['verified']} ")
             
       if result['distance'] < 0.4 and result['verified']:
-        return jsonify({"message": "Face already used."}), 200
+        return jsonify({"message": "Face already used. Try again."}), 200
         
     save_image(image_array, STORAGE_PATH)
     return jsonify({"message": "No match found."}), 200
