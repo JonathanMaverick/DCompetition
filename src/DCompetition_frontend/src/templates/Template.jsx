@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FaSun, FaMoon } from "react-icons/fa";
 import Nav from "../components/Nav";
 import ParticlesBackground from "../components/ParticlesBackground";
+import { Toaster } from "react-hot-toast";
 
 export default function Template({ children }) {
   const [theme, setTheme] = useState("dark");
@@ -26,8 +27,9 @@ export default function Template({ children }) {
 
   return (
     <div
-      className={`dark min-h-screen flex flex-col text-foreground bg-gradient-to-b from-black to-purple-900`}
+      className={`dark min-h-screen flex flex-col text-foreground bg-fixed bg-gradient-to-b from-black to-purple-900`}
     >
+      <Toaster />
       <Nav></Nav>
       <ParticlesBackground />
       <div className="flex-grow">

@@ -19,7 +19,6 @@ export function UserAuthProvider({ children }) {
     return user;
   };
 
-
   const value = { getUserData, getPrincipal, setPrincipal };
 
   return (

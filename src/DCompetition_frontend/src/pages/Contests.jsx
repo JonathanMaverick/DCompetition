@@ -42,9 +42,9 @@ function Contests() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const { getPrincipal } = useUserAuth();
+  const { getPrincipal, getUserData } = useUserAuth();
   const [userId, setUserId] = useState();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchPrincipal = async () => {
@@ -55,6 +55,15 @@ function Contests() {
 
     fetchPrincipal();
   }, [getPrincipal]);
+
+  const fetchUser = async () => {
+    const user = await getUserData(userId);
+    setUser(user);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, [userId]);
 
   const getContest = async () => {
     const competitions =
@@ -162,7 +171,7 @@ function Contests() {
           Contests
         </h1>
         <div className="absolute right-0 top-1">
-          {userId && <AddContestModal userId={userId} fetchData={getContest} />}
+          {user && <AddContestModal userId={userId} fetchData={getContest} />}
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-8">

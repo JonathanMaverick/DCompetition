@@ -10,7 +10,7 @@ import {
 import { useUserAuth } from "../context/UserContext";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
 import { AuthClient } from "@dfinity/auth-client";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 export default function Nav() {
   const { getPrincipal, setPrincipal, getUserData } = useUserAuth();
@@ -19,6 +19,7 @@ export default function Nav() {
   const [loading, setLoading] = useState(true);
   const [profilePicURL, setProfilePicURL] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const principalID = async () => {
@@ -42,7 +43,9 @@ export default function Nav() {
           setUser(fetchedUser[0]);
 
           if (fetchedUser[0]?.profilePic) {
-            const blob = new Blob([fetchedUser[0].profilePic], { type: "image/jpeg" });
+            const blob = new Blob([fetchedUser[0].profilePic], {
+              type: "image/jpeg",
+            });
             const url = URL.createObjectURL(blob);
             setProfilePicURL(url);
           }
@@ -62,7 +65,7 @@ export default function Nav() {
 
   const signOut = async () => {
     await DCompetition_backend_user.clearPrincipalID();
-    window.location.href = "/";
+    navigate("/");
   };
 
   const loginAndStorePrincipal = async () => {
@@ -161,9 +164,7 @@ export default function Nav() {
                 <img
                   src={profilePicURL}
                   alt="Profile"
-                  width={40}
-                  height={40}
-                  style={{ borderRadius: "50%" }}
+                  className="aspect-square w-8 rounded-full"
                 />
               )}
               <p>{user.username}</p>

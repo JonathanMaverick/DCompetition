@@ -49,6 +49,8 @@ export default function AddContestModal({ userId, fetchData }) {
   };
 
   const handleSubmit = async () => {
+    if (loading) return;
+
     setLoading(true);
 
     try {
@@ -117,7 +119,6 @@ export default function AddContestModal({ userId, fetchData }) {
 
   return (
     <>
-      <Toaster />
       <Button onPress={onOpen} variant="ghost">
         <IoAdd className="text-xl" />
         Create

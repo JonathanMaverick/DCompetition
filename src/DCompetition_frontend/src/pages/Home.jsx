@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
 
-
 function Home() {
-
   return (
     <div className="absolute top-0 left-0 w-screen min-h-screen flex flex-col justify-center items-center text-white overflow-hidden px-8">
       <motion.div

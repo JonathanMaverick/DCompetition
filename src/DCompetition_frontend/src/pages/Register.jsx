@@ -1,11 +1,18 @@
 import React, { useRef, useState } from "react";
 import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
-import { Button, Card, CardBody, Input } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CircularProgress,
+  Input,
+} from "@nextui-org/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useUserAuth } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
   const { getPrincipal } = useUserAuth();
   const navigate = useNavigate();
   const inputRef = useRef(null);
@@ -15,6 +22,8 @@ const Register = () => {
     email: "",
   });
 
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -23,30 +32,58 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { username, email } = formData;
-    const principal = await getPrincipal();
+  const handleImageClick = () => {
+    inputRef.current.click();
+  };
 
-    const file = inputRef.current.files[0];
-    const profilePic = new Uint8Array(await file.arrayBuffer());
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(URL.createObjectURL(file));
+    }
+  };
 
-    toast.promise(
-      DCompetition_backend_user.register(principal, username, email,profilePic),
-      {
-        loading: "Registering...",
-        success: "Success...",
-        error: <b>Registration failed. Please try again.</b>,
-      }
-    )
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const { username, email } = formData;
+      const principal = await getPrincipal();
 
-    navigate("/home", { replace: true });
-    window.location.reload();
+      const file = inputRef.current.files[0];
+      const profilePic = new Uint8Array(await file.arrayBuffer());
+
+      await DCompetition_backend_user.register(
+        principal,
+        username,
+        email,
+        profilePic
+      );
+
+      toast.success("Success!", {
+        style: {
+          borderRadius: "8px",
+          background: "#000",
+          color: "#fff",
+        },
+      });
+
+      navigate("/");
+      // window.location.reload();
+    } catch (error) {
+      toast.error("Failed to register!", {
+        style: {
+          borderRadius: "8px",
+          background: "#000",
+          color: "#fff",
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      <Toaster />
       <div
         className="flex items-center justify-center"
         style={{ height: "calc(100vh - 12rem)" }}
@@ -59,7 +96,7 @@ const Register = () => {
             <p className="text-center mb-6 text-gray-300">
               Please fill in your details
             </p>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-wrap gap-4">
                 <Input
                   type="email"
@@ -86,13 +123,57 @@ const Register = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="flex flex-wrap gap-4">
-                <input type="file" ref={inputRef} />
+              <div className="flex flex-col flex-wrap gap-4">
+                <p className="text-sm">Avatar</p>
+                <div
+                  className="relative w-40 h-40 rounded-full m-auto mb-4 cursor-pointer group"
+                  onClick={handleImageClick}
+                >
+                  <img
+                    src={
+                      selectedImage ||
+                      "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+                    }
+                    alt="Profile Avatar"
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                    <span className="text-white text-sm">Change Image</span>
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  ref={inputRef}
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
               </div>
-              <Button color="secondary" type="submit" fullWidth>
-                Submit
-              </Button>
-            </form>
+              {loading ? (
+                <Button color="secondary" className="w-full">
+                  <CircularProgress
+                    classNames={{
+                      svg: "w-6 h-6 drop-shadow-md",
+                      indicator: "stroke-white",
+                      track: "stroke-purple-500/10",
+                      value: "text-3xl font-semibold text-white",
+                    }}
+                    color="secondary"
+                    aria-label="Loading..."
+                  />
+                </Button>
+              ) : (
+                <Button
+                  color="secondary"
+                  onPress={() => {
+                    handleSubmit();
+                  }}
+                  className="w-full"
+                >
+                  Continue
+                </Button>
+              )}
+            </div>
           </CardBody>
         </Card>
       </div>
