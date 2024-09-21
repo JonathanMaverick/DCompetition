@@ -50,7 +50,7 @@ actor Main {
         endDate : Time.Time, 
         votingEndDate : Time.Time
     ) : async Result<Null, Text> {
-
+        
         if (principal_id == "" or name == "" or desc == "" or category == "") {
             return #err("All Fields must been filled")
         };

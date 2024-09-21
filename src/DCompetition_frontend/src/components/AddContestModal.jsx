@@ -88,19 +88,24 @@ export default function AddContestModal({ userId, fetchData }) {
       const endDateNanoseconds = endDate.getTime() * 1_000_000;
       const endVotingDateNanoseconds = endVotingDate.getTime() * 1_000_000;
 
-      const result = await DContest_backend_contest.addContest(
-        userId,
-        contestData.title,
-        Number(contestData.reward),
-        contestData.description,
-        contestData.category,
-        startDateNanoseconds,
-        endDateNanoseconds,
-        endVotingDateNanoseconds
+      const result = {
+        userId: userId,
+        title: contestData.title,
+        reward: Number(contestData.reward),
+        description: contestData.description,
+        category: contestData.category,
+        startDate: startDateNanoseconds,
+        endDate: endDateNanoseconds,
+        endVotingDate: endVotingDateNanoseconds,
+      };
+
+      console.log(result)
+      const addContestResult = await DContest_backend_contest.addContest(
+        ...Object.values(result)
       );
 
-      if ("err" in result) {
-        toast.error(result.err, {
+      if ("err" in addContestResult) {
+        toast.error(addContestResult.err, {
           style: {
             borderRadius: "8px",
             background: "#000",
@@ -108,8 +113,8 @@ export default function AddContestModal({ userId, fetchData }) {
           },
         });
         return;
-      } else if ("ok" in result) {
-        toast.success(result.ok, {
+      } else if ("ok" in addContestResult) {
+        toast.success(addContestResult.ok, {
           style: {
             borderRadius: "8px",
             background: "#000",
