@@ -4,8 +4,8 @@
       "main": "src/DCompetition_backend/user/main.mo",
       "type": "motoko"
     },
-    "DCompetition_backend_competition": {
-      "main": "src/DCompetition_backend/competition/main.mo",
+    "DCompetition_backend_contest": {
+      "main": "src/DCompetition_backend/contest/main.mo",
       "type": "motoko"
     },
     "DCompetition_backend_contestant": {
@@ -15,7 +15,7 @@
     "DCompetition_frontend": {
       "dependencies": [
         "DCompetition_backend_user",
-        "DCompetition_backend_competition",
+        "DCompetition_backend_contest",
         "DCompetition_backend_contestant"
       ],
       "source": ["src/DCompetition_frontend/dist"],

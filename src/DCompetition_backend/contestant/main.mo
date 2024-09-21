@@ -24,8 +24,6 @@ actor Main {
         tree.put(currentId, newContestant);
     };
 
-     
-
     public func getAllContestant() : async [Contestant.Contestant] {
         var contestant : [Contestant.Contestant] = [];
 

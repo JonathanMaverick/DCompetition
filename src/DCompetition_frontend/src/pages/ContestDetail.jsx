@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import BottomCard from "../components/BottomCard";
-import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
+import { DCompetition_backend_contest } from "declarations/DCompetition_backend_contest";
 import { DCompetition_backend_contestant } from "declarations/DCompetition_backend_contestant";
 import { convertDate } from "../tools/date";
 import { Button, Card, Skeleton, CardBody } from "@nextui-org/react";
@@ -72,7 +72,7 @@ function ContestDetail() {
     try {
       const contestID = Number(competitionID);
       const con =
-        await DCompetition_backend_competition.getCompetitionById(contestID);
+        await DCompetition_backend_contest.getCompetitionById(contestID);
       setContest(updatedCompetitions(con[0]));
       setLoading(false);
     } catch (error) {
