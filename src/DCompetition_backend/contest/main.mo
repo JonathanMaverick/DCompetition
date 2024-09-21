@@ -66,7 +66,7 @@ actor Main {
         };   
 
         if (votingEndDate <= endDate) {
-            return #err("Voting end date must be less than the end date.");
+            return #err("Voting end date must be greater than the end date.");
         };
 
         currentId := currentId + 1;
