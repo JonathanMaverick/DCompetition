@@ -50,12 +50,26 @@ actor Main {
         endDate : Time.Time, 
         votingEndDate : Time.Time
     ) : async Result<Null, Text> {
-        currentId := currentId + 1;
 
         if (principal_id == "" or name == "" or desc == "" or category == "") {
             return #err("All Fields must been filled")
         };
 
+        let now = Time.now();
+
+        if (startDate < now) {
+            return #err("Start date must be greater than or equal to the current date.");
+        };
+
+        if (endDate <= startDate) {
+            return #err("End date must be greater than the start date.");
+        };   
+
+        if (votingEndDate >= endDate) {
+            return #err("Voting end date must be less than the end date.");
+        };
+
+        currentId := currentId + 1;
         let newContest : Contest.Contest = {
             contest_id = currentId;
             principal_id = principal_id;
