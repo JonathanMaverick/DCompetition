@@ -2,8 +2,8 @@ import Text "mo:base/Text";
 import Nat "mo:base/Nat";
 import Time "mo:base/Time";
 module {
-  public type Competition = {
-    competition_id : Nat;
+  public type Contest = {
+    contest_id : Nat;
     principal_id : Text;
     name : Text;
     reward : Nat;

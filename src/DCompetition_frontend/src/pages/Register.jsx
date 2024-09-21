@@ -70,8 +70,6 @@ const Register = () => {
         profilePic
       );
 
-      console.log(result);
-
       if ("err" in result) {
         toast.error(result.err, {
           style: {
