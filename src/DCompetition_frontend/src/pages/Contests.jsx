@@ -66,11 +66,11 @@ function Contests() {
   }, [userId]);
 
   const getContest = async () => {
-    const competitions = await DCompetition_backend_contest.getAllContest();
+    const contests = await DCompetition_backend_contest.getAllContest();
 
     const currentDate = new Date().getTime();
 
-    const updatedCompetitions = competitions.map((comp) => {
+    const updatedContests = contests.map((comp) => {
       const startDate = convertDate(Number(comp.startDate));
       const endDate = convertDate(Number(comp.endDate));
       const votingEndDate = convertDate(Number(comp.votingEndDate));
@@ -90,7 +90,7 @@ function Contests() {
 
       return {
         ...comp,
-        competition_id: Number(comp.competition_id),
+        contest_id: Number(comp.contest_id),
         startDate,
         endDate,
         votingEndDate,
@@ -101,8 +101,8 @@ function Contests() {
       };
     });
 
-    setContests(updatedCompetitions);
-    setFilteredContests(updatedCompetitions);
+    setContests(updatedContests);
+    setFilteredContests(updatedContests);
     setLoading(false);
   };
 
@@ -257,7 +257,7 @@ function Contests() {
           {filteredContests.map((contest, index) => {
             const status = contest.status;
             return (
-              <Link to={`/contestDetail/${contest.competition_id}`} key={index}>
+              <Link to={`/contestDetail/${contest.contest_id}`} key={index}>
                 <Card className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer">
                   <Status status={status} />
                   <CardBody className="p-4 space-y-4">

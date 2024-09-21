@@ -117,8 +117,7 @@ function ContestDetail() {
   const getContestByID = async () => {
     try {
       const contestID = Number(competitionID);
-      const con =
-        await DCompetition_backend_contest.getCompetitionById(contestID);
+      const con = await DCompetition_backend_contest.getContestById(contestID);
       setContest(updatedCompetitions(con[0]));
     } catch (error) {
       console.error("Error fetching contest:", error);
