@@ -11,7 +11,7 @@ import {
 import { IoAdd } from "react-icons/io5";
 import { useRef, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import { DCompetition_backend_contestant } from "declarations/DCompetition_backend_contestant";
+import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
 
 export default function ParticipateContestModal({
   competitionId,
@@ -46,7 +46,7 @@ export default function ParticipateContestModal({
     const picture = new Uint8Array(await file.arrayBuffer());
 
     try {
-      await DCompetition_backend_contestant.addContestant(
+      await DContest_backend_contestant.addContestant(
         userId,
         Number(competitionId),
         picture

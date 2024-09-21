@@ -8,7 +8,7 @@ import {
   CircularProgress,
 } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
-import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
+import { DContest_backend_user } from "declarations/DContest_backend_user";
 import { AuthClient } from "@dfinity/auth-client";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 
@@ -64,7 +64,7 @@ export default function Nav() {
   }, [id, getUserData]);
 
   const signOut = async () => {
-    await DCompetition_backend_user.clearPrincipalID();
+    await DContest_backend_user.clearPrincipalID();
     navigate("/");
   };
 
@@ -81,7 +81,7 @@ export default function Nav() {
           try {
             console.log("Logged in Principal ID:", principal);
 
-            const user = await DCompetition_backend_user.login(principal);
+            const user = await DContest_backend_user.login(principal);
 
             if (Array.isArray(user) && user.length > 0) {
               window.location.href = "/home";

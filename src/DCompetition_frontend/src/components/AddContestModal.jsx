@@ -17,7 +17,7 @@ import { IoAdd } from "react-icons/io5";
 import { now, getLocalTimeZone } from "@internationalized/date";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import { DCompetition_backend_contest } from "declarations/DCompetition_backend_contest";
+import { DContest_backend_contest } from "declarations/DContest_backend_contest";
 
 export default function AddContestModal({ userId, fetchData }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -88,7 +88,7 @@ export default function AddContestModal({ userId, fetchData }) {
       const endDateNanoseconds = endDate.getTime() * 1_000_000;
       const endVotingDateNanoseconds = endVotingDate.getTime() * 1_000_000;
 
-      await DCompetition_backend_contest.addCompetition(
+      await DContest_backend_contest.addContest(
         userId,
         contestData.title,
         Number(contestData.reward),

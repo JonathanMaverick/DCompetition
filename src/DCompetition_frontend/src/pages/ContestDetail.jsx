@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import BottomCard from "../components/BottomCard";
-import { DCompetition_backend_contest } from "declarations/DCompetition_backend_contest";
-import { DCompetition_backend_contestant } from "declarations/DCompetition_backend_contestant";
+import { DContest_backend_contest } from "declarations/DContest_backend_contest";
+import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
 import { convertDate } from "../tools/date";
 import { Button, Card, Skeleton, CardBody } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
@@ -40,7 +40,7 @@ function ContestDetail() {
   const getContestant = async () => {
     try {
       const c =
-        await DCompetition_backend_contestant.getContestantsByCompetitionId(
+        await DContest_backend_contestant.getContestantsByCompetitionId(
           Number(competitionID)
         );
 
@@ -117,7 +117,7 @@ function ContestDetail() {
   const getContestByID = async () => {
     try {
       const contestID = Number(competitionID);
-      const con = await DCompetition_backend_contest.getContestById(contestID);
+      const con = await DContest_backend_contest.getContestById(contestID);
       setContest(updatedCompetitions(con[0]));
     } catch (error) {
       console.error("Error fetching contest:", error);

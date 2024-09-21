@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DCompetition_backend_contestant } from "declarations/DCompetition_backend_contestant";
+import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
 
 function Contestant() {
   const [contestantData, setContestantData] = useState({
@@ -35,7 +35,7 @@ function Contestant() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Contestant Data:', contestantData);
-    DCompetition_backend_contestant.addContestant(contestantData.principal_id,Number(contestantData.competition_id),contestantData.photo_url)
+    DContest_backend_contestant.addContestant(contestantData.principal_id,Number(contestantData.competition_id),contestantData.photo_url)
 
     console.log("success")
 

@@ -40,7 +40,7 @@ actor Main {
         return contests;
     };
 
-    public func addCompetition(
+    public func addContest(
         principal_id : Text, 
         name : Text, 
         reward : Nat, 
@@ -65,7 +65,7 @@ actor Main {
             return #err("End date must be greater than the start date.");
         };   
 
-        if (votingEndDate >= endDate) {
+        if (votingEndDate <= endDate) {
             return #err("Voting end date must be less than the end date.");
         };
 

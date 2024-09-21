@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { DCompetition_backend_user } from "declarations/DCompetition_backend_user";
+import { DContest_backend_user } from "declarations/DContest_backend_user";
 import {
   Button,
   Card,
@@ -63,7 +63,7 @@ const Register = () => {
 
       const profilePic = new Uint8Array(await file.arrayBuffer());
 
-      const result = await DCompetition_backend_user.register(
+      const result = await DContest_backend_user.register(
         principal,
         username,
         email,
