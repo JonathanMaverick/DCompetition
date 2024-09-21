@@ -59,6 +59,7 @@ export default function ParticipateContestModal({
           color: "#fff",
         },
       });
+      setPreview(null);
     } catch (error) {
       toast.error("Submission failed!", {
         style: {
@@ -71,12 +72,13 @@ export default function ParticipateContestModal({
     } finally {
       onOpenChange(false);
       setLoading(false);
+      setPreview(null);
     }
   };
 
   const handleClick = (e) => {
-    e.stopPropagation(); // Stop event from propagating to avoid multiple clicks
-    inputRef.current.click(); // Trigger the file input
+    e.stopPropagation();
+    inputRef.current.click();
   };
 
   return (
@@ -91,7 +93,10 @@ export default function ParticipateContestModal({
       </Button>
       <Modal
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        onOpenChange={(open) => {
+          onOpenChange(open);
+          if (!open) setPreview(null);
+        }}
         scrollBehavior="inside"
       >
         <ModalContent>
@@ -103,7 +108,7 @@ export default function ParticipateContestModal({
               <ModalBody className="overflow-y-auto">
                 <div
                   className="relative w-full h-48 border-dashed border-2 border-gray-400 rounded-md cursor-pointer"
-                  onClick={handleClick} // Attach click handler only to this parent div
+                  onClick={handleClick}
                 >
                   {!preview ? (
                     <div className="flex flex-col items-center justify-center h-full">
@@ -119,7 +124,7 @@ export default function ParticipateContestModal({
                       />
                       <div
                         className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
-                        onClick={handleClick} // Attach click handler to the overlay to allow changing the image
+                        onClick={handleClick}
                       >
                         Change image
                       </div>
