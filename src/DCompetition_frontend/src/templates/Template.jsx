@@ -27,7 +27,7 @@ export default function Template({ children }) {
 
   return (
     <div
-      className={`dark min-h-screen flex flex-col text-foreground bg-fixed bg-gradient-to-b from-black to-purple-900`}
+      className={`dark min-h-screen flex flex-col text-foreground bg-fixed bg-gradient-to-b from-black to-purple-900 bg-[length:100%_300vh]`}
     >
       <Toaster />
       <Nav></Nav>

@@ -66,7 +66,7 @@ function Contests() {
   }, [userId]);
 
   const getContest = async () => {
-    const competitions = await DCompetition_backend_contest.getAllCompetition();
+    const competitions = await DCompetition_backend_contest.getAllContest();
 
     const currentDate = new Date().getTime();
 
@@ -224,26 +224,36 @@ function Contests() {
               .map((_, index) => (
                 <Card key={index} radius="lg">
                   <Skeleton className="rounded-t-lg">
-                    <div className="h-12 rounded-t-lg bg-default-300"></div>{" "}
+                    <div className="h-12 rounded-t-lg bg-default-300"></div>
                   </Skeleton>
                   <CardBody className="p-4 space-y-4">
                     <Skeleton className="rounded-lg">
-                      <div className="h-[16rem] rounded-lg bg-default-300"></div>{" "}
+                      <div className="h-[16rem] rounded-lg bg-default-300"></div>
                     </Skeleton>
                     <div>
                       <Skeleton className="w-3/5 rounded-lg mt-4">
-                        <div className="h-2.5 rounded-lg bg-default-200"></div>{" "}
+                        <div className="h-2.5 rounded-lg bg-default-200"></div>
                       </Skeleton>
                       <Skeleton className="w-4/5 rounded-lg mt-4 mb-2">
-                        <div className="h-2.5 rounded-lg bg-default-200"></div>{" "}
+                        <div className="h-2.5 rounded-lg bg-default-200"></div>
                       </Skeleton>
                     </div>
                     <Skeleton className="rounded-lg">
-                      <div className="h-[7rem] rounded-lg bg-default-300"></div>{" "}
+                      <div className="h-[7rem] rounded-lg bg-default-300"></div>
                     </Skeleton>
                   </CardBody>
                 </Card>
               ))}
+
+          {!loading && filteredContests.length === 0 && (
+            <div className="col-span-full">
+              {" "}
+              <div className="col-span-full text-center text-gray-300 text-xl bg-black bg-opacity-40 py-4 w-full">
+                No contests available.
+              </div>
+            </div>
+          )}
+
           {filteredContests.map((contest, index) => {
             const status = contest.status;
             return (
