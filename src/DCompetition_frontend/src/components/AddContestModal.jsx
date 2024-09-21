@@ -107,7 +107,6 @@ export default function AddContestModal({ userId, fetchData }) {
           color: "#fff",
         },
       });
-      onOpenChange(false);
       setContestData(initialContestData);
     } catch (error) {
       toast.error("Submission failed!", {
@@ -119,6 +118,7 @@ export default function AddContestModal({ userId, fetchData }) {
       });
       console.error("Error submitting contest:", error);
     } finally {
+      onOpenChange(false);
       setLoading(false);
     }
   };

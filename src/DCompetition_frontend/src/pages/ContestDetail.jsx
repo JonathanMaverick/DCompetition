@@ -6,6 +6,7 @@ import { DCompetition_backend_contestant } from "declarations/DCompetition_backe
 import { convertDate } from "../tools/date";
 import { Button, Card, Skeleton, CardBody } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
+import ParticipateContestModal from "../components/ParticipateContestModal";
 
 function ContestDetail() {
   const statusColors = {
@@ -36,23 +37,27 @@ function ContestDetail() {
     return url;
   };
 
-  useEffect(() => {
-    const getContestant = async () => {
-      try {
-        const c = await DCompetition_backend_contestant.getContestantsByCompetitionId(Number(competitionID));
+  const getContestant = async () => {
+    try {
+      const c =
+        await DCompetition_backend_contestant.getContestantsByCompetitionId(
+          Number(competitionID)
+        );
 
-        const ct = c.map((cont) => ({
-          ...cont,
-          contestant_id: Number(cont.contestant_id),
-          principal_id: cont.principal_id,
-          competition_id: Number(cont.competition_id),
-          photo_url: changeToUrl(cont.photo_url),
-        }));
-        setContestants(ct);
-      } catch (error) {
-        console.error("Error fetching contestants:", error);
-      }
-    };
+      const ct = c.map((cont) => ({
+        ...cont,
+        contestant_id: Number(cont.contestant_id),
+        principal_id: cont.principal_id,
+        competition_id: Number(cont.competition_id),
+        photo_url: changeToUrl(cont.photo_url),
+      }));
+      setContestants(ct);
+    } catch (error) {
+      console.error("Error fetching contestants:", error);
+    }
+  };
+
+  useEffect(() => {
     getContestant();
   }, [competitionID]);
 
@@ -105,13 +110,15 @@ function ContestDetail() {
       status,
       deadline,
       category: comp.category,
+      description: comp.desc,
     };
   };
 
   const getContestByID = async () => {
     try {
       const contestID = Number(competitionID);
-      const con = await DCompetition_backend_competition.getCompetitionById(contestID);
+      const con =
+        await DCompetition_backend_competition.getCompetitionById(contestID);
       setContest(updatedCompetitions(con[0]));
     } catch (error) {
       console.error("Error fetching contest:", error);
@@ -120,35 +127,16 @@ function ContestDetail() {
     }
   };
 
-  const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    const file = inputRef.current.files[0];
-    if (!file) {
-      alert("Please select a file.");
-      return;
-    }
-    const picture = new Uint8Array(await file.arrayBuffer());
-
-    try {
-      await DCompetition_backend_contestant.addContestant(id, Number(competitionID), picture);
-      alert("Success! Your contestant has been added.");
-    } catch (error) {
-      console.error("Error adding contestant:", error);
-      alert("Failed to add contestant.");
-    }
-  };
-
   useEffect(() => {
     if (contest === null && loading) {
       getContestByID();
     }
   }, [contest, loading]);
-  console.log(user)
+  console.log(user);
 
   if (loading || user === null) {
     return (
       <div className="flex w-full gap-x-4">
-        {/* Loading Skeleton */}
         <div className="flex flex-col w-2/5 h-full gap-y-3">
           <Skeleton className="h-12 w-full mb-3 rounded-lg bg-default-300" />
           <Skeleton className="h-8 w-1/3 mb-6 rounded-lg bg-default-300" />
@@ -166,7 +154,9 @@ function ContestDetail() {
       <div className="flex flex-col w-2/5 h-full gap-y-3">
         <div className="py-3 px-4 gap-1 h-1/5">
           <div className="text-4xl font-medium text-left">{contest.name}</div>
-          <div className="text-1xl font-medium text-left pl-1">{contest.category}</div>
+          <div className="text-1xl font-medium text-left pl-1">
+            {contest.category}
+          </div>
         </div>
         <BottomCard
           reward={Number(contest.reward)}
@@ -181,11 +171,14 @@ function ContestDetail() {
             {contest.description || "No description available."}
           </div>
         </div>
-        <Button className={`w-full ${statusColors[contest.status]}`}>Join</Button>
-        <form onSubmit={handleOnSubmit} className="mt-4">
-          <input ref={inputRef} type="file" accept="image/*" className="mb-2" />
-          <Button type="submit">Submit</Button>
-        </form>
+        <ParticipateContestModal
+          competitionId={competitionID}
+          userId={id}
+          fetchData={getContestant}
+          className={`w-full ${statusColors[contest.status]}`}
+        >
+          Join
+        </ParticipateContestModal>
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 h-full rounded-lg justify-center items-center overflow-y-scroll p-6">
         <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
