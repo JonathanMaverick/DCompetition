@@ -6,15 +6,9 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Input,
-  Textarea,
-  Autocomplete,
-  AutocompleteItem,
-  DatePicker,
   CircularProgress,
 } from "@nextui-org/react";
 import { IoAdd } from "react-icons/io5";
-import { now, getLocalTimeZone } from "@internationalized/date";
 import { useRef, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { DCompetition_backend_contestant } from "declarations/DCompetition_backend_contestant";
@@ -27,7 +21,17 @@ export default function ParticipateContestModal({
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState(null);
   const inputRef = useRef(null);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    } else {
+      setPreview(null);
+    }
+  };
 
   const handleSubmit = async () => {
     if (loading) return;
@@ -55,6 +59,7 @@ export default function ParticipateContestModal({
           color: "#fff",
         },
       });
+      setPreview(null);
     } catch (error) {
       toast.error("Submission failed!", {
         style: {
@@ -67,7 +72,13 @@ export default function ParticipateContestModal({
     } finally {
       onOpenChange(false);
       setLoading(false);
+      setPreview(null);
     }
+  };
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    inputRef.current.click();
   };
 
   return (
@@ -78,12 +89,14 @@ export default function ParticipateContestModal({
         color="secondary"
         className={className}
       >
-        {/* <IoAdd className="text-xl" /> */}
         Participate
       </Button>
       <Modal
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        onOpenChange={(open) => {
+          onOpenChange(open);
+          if (!open) setPreview(null);
+        }}
         scrollBehavior="inside"
       >
         <ModalContent>
@@ -93,20 +106,44 @@ export default function ParticipateContestModal({
                 Participate in this Contest
               </ModalHeader>
               <ModalBody className="overflow-y-auto">
+                <div
+                  className="relative w-full h-48 border-dashed border-2 border-gray-400 rounded-md cursor-pointer"
+                  onClick={handleClick}
+                >
+                  {!preview ? (
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <p className="text-gray-400">No image selected</p>
+                      <p className="text-gray-400">Click to choose image</p>
+                    </div>
+                  ) : (
+                    <div className="relative w-full h-full">
+                      <img
+                        src={preview}
+                        alt="Preview"
+                        className="w-full h-full object-cover rounded-md"
+                      />
+                      <div
+                        className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
+                        onClick={handleClick}
+                      >
+                        Change image
+                      </div>
+                    </div>
+                  )}
+                </div>
                 <input
                   ref={inputRef}
                   type="file"
                   accept="image/*"
-                  className="mb-2"
+                  className="hidden"
+                  onChange={handleImageChange}
                 />
               </ModalBody>
               <ModalFooter>
                 {loading ? (
                   <Button
                     color="secondary"
-                    onPress={() => {
-                      handleSubmit();
-                    }}
+                    onPress={handleSubmit}
                     className="w-full"
                   >
                     <CircularProgress
@@ -123,9 +160,7 @@ export default function ParticipateContestModal({
                 ) : (
                   <Button
                     color="secondary"
-                    onPress={() => {
-                      handleSubmit();
-                    }}
+                    onPress={handleSubmit}
                     className="w-full"
                   >
                     Participate
