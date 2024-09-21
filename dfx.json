@@ -12,7 +12,7 @@
       "main": "src/DCompetition_backend/contestant/main.mo",
       "type": "motoko"
     },
-    "DCompetition_frontend": {
+    "DContest_frontend": {
       "dependencies": [
         "DContest_backend_user",
         "DContest_backend_contest",

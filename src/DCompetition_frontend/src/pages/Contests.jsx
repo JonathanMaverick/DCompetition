@@ -57,13 +57,17 @@ function Contests() {
   }, [getPrincipal]);
 
   const fetchUser = async () => {
-    const user = await getUserData(userId);
-    setUser(user);
+    console.log(userId)
+    if(userId !== undefined){
+      const user = await getUserData(userId);
+      setUser(user);
+    }
+    console.log(user)
   };
 
   useEffect(() => {
     fetchUser();
-  }, [userId]);
+  }, [userId,userId,getPrincipal]);
 
   const getContest = async () => {
     const contests = await DContest_backend_contest.getAllContest();
