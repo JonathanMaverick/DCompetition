@@ -107,6 +107,7 @@ export default function AddContestModal({ userId, fetchData }) {
             color: "#fff",
           },
         });
+        return;
       } else if ("ok" in result) {
         toast.success(result.ok, {
           style: {
@@ -118,13 +119,6 @@ export default function AddContestModal({ userId, fetchData }) {
       }
 
       fetchData();
-      toast.success("Success!", {
-        style: {
-          borderRadius: "8px",
-          background: "#000",
-          color: "#fff",
-        },
-      });
       setContestData(initialContestData);
     } catch (error) {
       toast.error(error, {
