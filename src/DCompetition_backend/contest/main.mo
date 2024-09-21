@@ -52,6 +52,10 @@ actor Main {
     ) : async Result<Null, Text> {
         currentId := currentId + 1;
 
+        if (principal_id == "" or name == "" or desc == "" or category == "") {
+            return #err("All Fields must been filled")
+        };
+
         let newContest : Contest.Contest = {
             contest_id = currentId;
             principal_id = principal_id;

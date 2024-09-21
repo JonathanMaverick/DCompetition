@@ -1,22 +1,22 @@
 {
   "canisters": {
-    "DCompetition_backend_user": {
+    "DContest_backend_user": {
       "main": "src/DCompetition_backend/user/main.mo",
       "type": "motoko"
     },
-    "DCompetition_backend_contest": {
+    "DContest_backend_contest": {
       "main": "src/DCompetition_backend/contest/main.mo",
       "type": "motoko"
     },
-    "DCompetition_backend_contestant": {
+    "DContest_backend_contestant": {
       "main": "src/DCompetition_backend/contestant/main.mo",
       "type": "motoko"
     },
     "DCompetition_frontend": {
       "dependencies": [
-        "DCompetition_backend_user",
-        "DCompetition_backend_contest",
-        "DCompetition_backend_contestant"
+        "DContest_backend_user",
+        "DContest_backend_contest",
+        "DContest_backend_contestant"
       ],
       "source": ["src/DCompetition_frontend/dist"],
       "type": "assets",
