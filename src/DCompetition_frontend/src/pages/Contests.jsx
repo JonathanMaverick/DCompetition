@@ -12,7 +12,7 @@ import { IoAdd } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import { FaClock, FaTrophy, FaUsers } from "react-icons/fa";
 import { convertDate } from "../tools/date";
-import { DCompetition_backend_competition } from "declarations/DCompetition_backend_competition";
+import { DCompetition_backend_contest } from "declarations/DCompetition_backend_contest";
 import AddContestModal from "../components/AddContestModal";
 import { useUserAuth } from "../context/UserContext";
 import { Link } from "react-router-dom";
@@ -66,8 +66,7 @@ function Contests() {
   }, [userId]);
 
   const getContest = async () => {
-    const competitions =
-      await DCompetition_backend_competition.getAllCompetition();
+    const competitions = await DCompetition_backend_contest.getAllCompetition();
 
     const currentDate = new Date().getTime();
 
