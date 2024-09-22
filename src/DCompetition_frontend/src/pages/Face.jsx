@@ -34,7 +34,7 @@ const Face = () => {
           (device) => device.kind === "videoinput"
         );
         if (videoDevices.length === 0) {
-          setHasCamera(false); // Jika tidak ada kamera
+          setHasCamera(false); 
         }
       } catch (error) {
         console.error("Error checking for camera devices:", error);

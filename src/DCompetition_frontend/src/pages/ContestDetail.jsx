@@ -8,6 +8,7 @@ import { convertDate } from "../tools/date";
 import { Button, Card, Skeleton, CardBody } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
 import ParticipateContestModal from "../components/ParticipateContestModal";
+import { idlFactory } from "../../../declarations/DContest_backend_user";
 
 function ContestDetail() {
   const statusColors = {
@@ -17,13 +18,14 @@ function ContestDetail() {
     Completed: "bg-fuchsia-700",
   };
 
-  const { userData } = useUserAuth();
+  const { getPrincipal } = useUserAuth();
   const { competitionID } = useParams();
   const [contest, setContest] = useState(null);
   const [loading, setLoading] = useState(true);
   const currentDate = new Date().getTime();
   const [contestants, setContestants] = useState([]);
   const [allUser, setAllUser] = useState([]);
+  const [principalID, setPrincipalID] = useState();
 
   const changeToUrl = (picture) => {
     let url = "";
@@ -36,6 +38,16 @@ function ContestDetail() {
     return url;
   };
 
+
+  useEffect(() => {
+    const getPrincipalID = async() => {
+      const id = await getPrincipal()
+      setPrincipalID(id)
+    }
+    getPrincipalID()
+  },[])
+
+
   useEffect(() => {
     const getAllUser = async () => {
       const datas = await DContest_backend_user.getAllUsers();
@@ -43,7 +55,8 @@ function ContestDetail() {
       console.log(datas);
     };
     getAllUser();
-  }, [id]);
+  }, [competitionID]);
+
 
   const getContestant = async () => {
     try {
@@ -117,7 +130,7 @@ function ContestDetail() {
     }
   }, [contest, loading]);
 
-  if (loading || user === null) {
+  if (loading) {
     return (
       <div className="flex w-full gap-x-4">
         <div className="flex flex-col w-2/5 h-full gap-y-3">
@@ -167,7 +180,7 @@ function ContestDetail() {
         </div>
         <ParticipateContestModal
           competitionId={competitionID}
-          userId={userData.principal_id}
+          userId={principalID}
           fetchData={getContestant}
           className={`w-full ${statusColors[contest.status]}`}
         >

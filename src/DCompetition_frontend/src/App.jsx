@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 import Face from "./pages/Face";
 import Contests from "./pages/Contests";
 import ContestDetail from "./pages/ContestDetail";
-import Contestant from "./pages/Contestant";
 import Register from "./pages/Register";
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
             path="/contestDetail/:competitionID"
             element={<ContestDetail />}
           />
-          <Route path="/contestant" element={<Contestant />} />
         </Routes>
       </Template>
     </Router>
