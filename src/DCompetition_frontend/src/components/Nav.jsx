@@ -19,7 +19,6 @@ export default function Nav() {
   const [loading, setLoading] = useState(true);
   const [profilePicURL, setProfilePicURL] = useState(null);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const principalID = async () => {
@@ -38,7 +37,6 @@ export default function Nav() {
     const fetchUserData = async () => {
       if (id !== "") {
         try {
-          // setLoading(true);
           const fetchedUser = await getUserData(id);
           setUserData(fetchedUser[0]);
 
@@ -65,7 +63,7 @@ export default function Nav() {
 
   const signOut = async () => {
     await DContest_backend_user.clearPrincipalID();
-    navigate("/");
+    window.location.href = "/";
   };
 
   const loginAndStorePrincipal = async () => {
@@ -84,7 +82,8 @@ export default function Nav() {
             const user = await DContest_backend_user.login(principal);
 
             if (Array.isArray(user) && user.length > 0) {
-              window.location.href = "/home";
+              console.log(user);
+              window.location.href = "/";
             } else {
               window.location.href = "/register";
             }

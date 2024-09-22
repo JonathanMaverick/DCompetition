@@ -13,7 +13,7 @@ import {
   DatePicker,
   CircularProgress,
 } from "@nextui-org/react";
-import { IoAdd, IoRemove } from "react-icons/io5"; 
+import { IoAdd, IoRemove, IoTrash, IoTrashBinOutline } from "react-icons/io5";
 import { now, getLocalTimeZone } from "@internationalized/date";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
@@ -52,7 +52,7 @@ export default function AddContestModal({ userId, fetchData }) {
     industry_name: "",
     additional_information: "",
     colors: ["#FFFFFF"],
-    files: [], 
+    files: [],
   };
 
   const [contestData, setContestData] = useState(initialContestData);
@@ -76,7 +76,7 @@ export default function AddContestModal({ userId, fetchData }) {
   const handleFileChange = async (index, file) => {
     const newFiles = [...contestData.files];
     newFiles[index] = new Uint8Array(await file.arrayBuffer());
-    console.log(newFiles[index])
+    console.log(newFiles[index]);
     setContestData((prev) => ({
       ...prev,
       files: newFiles,
@@ -101,7 +101,7 @@ export default function AddContestModal({ userId, fetchData }) {
   const addFileField = () => {
     setContestData((prev) => ({
       ...prev,
-      files: [...prev.files, null], 
+      files: [...prev.files, null],
     }));
   };
 
@@ -151,13 +151,16 @@ export default function AddContestModal({ userId, fetchData }) {
 
       const startDateNanoseconds = BigInt(startDate.getTime()) * 1_000_000n;
       const endDateNanoseconds = BigInt(endDate.getTime()) * 1_000_000n;
-      const endVotingDateNanoseconds = BigInt(endVotingDate.getTime()) * 1_000_000n;
+      const endVotingDateNanoseconds =
+        BigInt(endVotingDate.getTime()) * 1_000_000n;
+
+      const descriptionHTML = contestData.description.replace(/\n/g, "<br>");
 
       const result = {
         userId: userId,
         title: contestData.title,
         reward: Number(contestData.reward),
-        description: contestData.description,
+        description: descriptionHTML,
         category: contestData.category,
         startDate: startDateNanoseconds,
         endDate: endDateNanoseconds,
@@ -195,13 +198,14 @@ export default function AddContestModal({ userId, fetchData }) {
         });
         return;
       } else if ("ok" in addContestResult) {
-        toast.success("Contest created successfully!", {
+        toast.success("Success", {
           style: {
             borderRadius: "8px",
             background: "#000",
             color: "#fff",
           },
         });
+        onOpenChange(false);
       }
 
       fetchData();
@@ -216,7 +220,6 @@ export default function AddContestModal({ userId, fetchData }) {
       });
       console.error("Error submitting contest:", error);
     } finally {
-      onOpenChange(false);
       setLoading(false);
     }
   };
@@ -234,6 +237,7 @@ export default function AddContestModal({ userId, fetchData }) {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
+        size="3xl"
       >
         <ModalContent>
           {(onClose) => (
@@ -241,170 +245,189 @@ export default function AddContestModal({ userId, fetchData }) {
               <ModalHeader className="flex flex-col gap-1">
                 Create Contest
               </ModalHeader>
-              <ModalBody className="overflow-y-auto space-y-4">
-                <Input
-                  label="Title"
-                  placeholder="Enter contest title"
-                  variant="bordered"
-                  labelPlacement="outside"
-                  value={contestData.title}
-                  onChange={(e) => handleChange("title", e.target.value)}
-                  required
-                />
+              <ModalBody className="overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-3">
+                  <Input
+                    label="Title"
+                    placeholder="Enter contest title"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    value={contestData.title}
+                    onChange={(e) => handleChange("title", e.target.value)}
+                    required
+                  />
 
-                <Textarea
-                  label="Description"
-                  placeholder="Enter contest description"
-                  variant="bordered"
-                  labelPlacement="outside"
-                  value={contestData.description}
-                  onChange={(e) => handleChange("description", e.target.value)}
-                  required
-                />
+                  <Textarea
+                    label="Description"
+                    placeholder="Enter contest description"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    value={contestData.description}
+                    onChange={(e) =>
+                      handleChange("description", e.target.value)
+                    }
+                    required
+                  />
 
-                <Autocomplete
-                  label="Category"
-                  placeholder="Pick a category"
-                  items={categories}
-                  labelPlacement="outside"
-                  variant="bordered"
-                  value={contestData.category}
-                  onSelectionChange={(value) => handleChange("category", value)}
-                  required
-                >
-                  {(item) => (
-                    <AutocompleteItem key={item.value} value={item.value}>
-                      {item.label}
-                    </AutocompleteItem>
-                  )}
-                </Autocomplete>
-
-                <Input
-                  label="Reward"
-                  placeholder="Enter contest reward"
-                  variant="bordered"
-                  labelPlacement="outside"
-                  type="number"
-                  value={contestData.reward}
-                  onChange={(e) => handleChange("reward", e.target.value)}
-                  required
-                />
-
-                <Input
-                  label="Industry Name"
-                  placeholder="Enter Industry Name"
-                  variant="bordered"
-                  labelPlacement="outside"
-                  value={contestData.industry_name}
-                  onChange={(e) => handleChange("industry_name", e.target.value)}
-                  required
-                />
-
-                <Input
-                  label="Additional Information"
-                  placeholder="Enter Additional Information"
-                  variant="bordered"
-                  labelPlacement="outside"
-                  value={contestData.additional_information}
-                  onChange={(e) => handleChange("additional_information", e.target.value)}
-                  required
-                />
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Colors
-                  </label>
-                  {contestData.colors.map((color, index) => (
-                    <div key={index} className="flex items-center mt-2">
-                      <Input
-                        type="color"
-                        variant="bordered"
-                        value={color}
-                        onChange={(e) => handleColorChange(index, e.target.value)}
-                        required
-                        className="w-24" 
-                      />
-                      {contestData.colors.length > 1 && (
-                        <Button
-                          onPress={() => removeColorField(index)}
-                          className="ml-2"
-                          variant="flat"
-                        >
-                          <IoRemove />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                  <Button
-                    variant="light"
-                    color="secondary"
-                    onPress={addColorField}
-                    className="mt-2"
-                    startIcon={<IoAdd />}
+                  <Autocomplete
+                    label="Category"
+                    placeholder="Pick a category"
+                    items={categories}
+                    labelPlacement="outside"
+                    variant="bordered"
+                    value={contestData.category}
+                    onSelectionChange={(value) =>
+                      handleChange("category", value)
+                    }
+                    required
                   >
-                    Add Color
-                  </Button>
+                    {(item) => (
+                      <AutocompleteItem key={item.value} value={item.value}>
+                        {item.label}
+                      </AutocompleteItem>
+                    )}
+                  </Autocomplete>
+
+                  <Input
+                    label="Reward"
+                    placeholder="Enter contest reward"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    type="number"
+                    value={contestData.reward}
+                    onChange={(e) => handleChange("reward", e.target.value)}
+                    required
+                  />
+
+                  <Input
+                    label="Industry Name"
+                    placeholder="Enter Industry Name"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    value={contestData.industry_name}
+                    onChange={(e) =>
+                      handleChange("industry_name", e.target.value)
+                    }
+                    required
+                  />
+                  <Input
+                    label="Additional Information"
+                    placeholder="Enter Additional Information"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    value={contestData.additional_information}
+                    onChange={(e) =>
+                      handleChange("additional_information", e.target.value)
+                    }
+                    required
+                  />
                 </div>
 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Photos
-                  </label>
-                  {contestData.files.map((file, index) => (
-                    <div key={index} className="flex items-center mt-2">
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleFileChange(index, e.target.files[0])}
-                        className="w-60"
-                      />
-                      {contestData.files.length > 1 && (
-                        <Button
-                          onPress={() => removeFileField(index)}
-                          className="ml-2"
-                          variant="flat"
-                        >
-                          <IoRemove />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                  <Button
-                    variant="light"
-                    color="secondary"
-                    onPress={addFileField}
-                    className="mt-2"
-                    startIcon={<IoAdd />}
-                  >
-                    Add Photo
-                  </Button>
+                <div className="flex flex-col gap-3">
+                  <p className="text-sm">Desired Colors</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {contestData.colors.map((color, index) => (
+                      <div key={index} className="flex items-center">
+                        <Input
+                          type="color"
+                          variant="bordered"
+                          value={color}
+                          onChange={(e) =>
+                            handleColorChange(index, e.target.value)
+                          }
+                          required
+                          fullWidth
+                        />
+                        {contestData.colors.length > 1 && (
+                          <Button
+                            onPress={() => removeColorField(index)}
+                            className="ml-1 rounded-full"
+                            variant="bordered"
+                            isIconOnly
+                          >
+                            <IoTrash />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <Button
+                      variant="light"
+                      color="secondary"
+                      onPress={addColorField}
+                      startIcon={<IoAdd />}
+                    >
+                      Add Color
+                    </Button>
+                  </div>
+
+                  <p className="text-sm mb-2">Attachments</p>
+                  <div className="mb-4">
+                    {contestData.files.map((file, index) => (
+                      <div key={index} className="flex items-center mt-2">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) =>
+                            handleFileChange(index, e.target.files[0])
+                          }
+                          className="w-60"
+                        />
+                        {contestData.files.length > 1 && (
+                          <Button
+                            onPress={() => removeFileField(index)}
+                            className="ml-2"
+                            variant="flat"
+                          >
+                            <IoRemove />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <Button
+                      variant="light"
+                      color="secondary"
+                      onPress={addFileField}
+                      className="mt-2"
+                      startIcon={<IoAdd />}
+                    >
+                      Add Photo
+                    </Button>
+                  </div>
+
+                  <DatePicker
+                    label="Start Date"
+                    value={contestData.startDate}
+                    onChange={(value) => handleChange("startDate", value)}
+                    labelPlacement="outside"
+                    required
+                  />
+
+                  <DatePicker
+                    label="End Date"
+                    value={contestData.endDate}
+                    onChange={(value) => handleChange("endDate", value)}
+                    labelPlacement="outside"
+                    required
+                  />
+
+                  <DatePicker
+                    label="End Voting Date"
+                    value={contestData.endVotingDate}
+                    onChange={(value) => handleChange("endVotingDate", value)}
+                    labelPlacement="outside"
+                    required
+                  />
                 </div>
-
-                <DatePicker
-                  label="Start Date"
-                  value={contestData.startDate}
-                  onChange={(value) => handleChange("startDate", value)}
-                  required
-                />
-
-                <DatePicker
-                  label="End Date"
-                  value={contestData.endDate}
-                  onChange={(value) => handleChange("endDate", value)}
-                  required
-                />
-
-                <DatePicker
-                  label="End Voting Date"
-                  value={contestData.endVotingDate}
-                  onChange={(value) => handleChange("endVotingDate", value)}
-                  required
-                />
               </ModalBody>
 
               <ModalFooter>
-                <Button onPress={handleSubmit} disabled={loading}>
-                  {loading ? <CircularProgress /> : "Submit"}
+                <Button
+                  onPress={handleSubmit}
+                  disabled={loading}
+                  fullWidth
+                  color="secondary"
+                >
+                  {loading ? <CircularProgress /> : "Create"}
                 </Button>
               </ModalFooter>
             </>

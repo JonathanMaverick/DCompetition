@@ -92,7 +92,7 @@ function Contests() {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6 text-gray-100 backdrop-blur-xl">
+    <div className="flex flex-col gap-6 p-6 text-gray-100">
       <div className="relative">
         <h1 className="text-4xl font-bold text-left md:text-center text-purple-400 mb-4">
           Contests

@@ -79,7 +79,7 @@ const Register = () => {
           },
         });
       } else if ("ok" in result) {
-        toast.success(result.ok, {
+        toast.success("Success", {
           style: {
             borderRadius: "8px",
             background: "#000",
