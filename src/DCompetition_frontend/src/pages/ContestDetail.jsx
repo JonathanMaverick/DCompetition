@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import BottomCard from "../components/BottomCard";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
 import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
+import { DContest_backend_user } from "declarations/DContest_backend_user";
 import { convertDate } from "../tools/date";
 import { Button, Card, Skeleton, CardBody } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
@@ -22,9 +23,9 @@ function ContestDetail() {
   const [contest, setContest] = useState(null);
   const [loading, setLoading] = useState(true);
   const currentDate = new Date().getTime();
-  const inputRef = useRef(null);
   const [contestants, setContestants] = useState([]);
   const [user, setUser] = useState(null);
+  const [allUser, setAllUser] = useState([]);
 
   const changeToUrl = (picture) => {
     let url = "";
@@ -36,6 +37,16 @@ function ContestDetail() {
     }
     return url;
   };
+
+
+  useEffect(() =>{
+    const getAllUser = async() => {
+      const datas = await DContest_backend_user.getAllUsers()
+      setAllUser(datas)
+      console.log(datas)
+    }
+    getAllUser()
+  },[id, getUserData])
 
   const getContestant = async () => {
     try {
@@ -148,6 +159,13 @@ function ContestDetail() {
     );
   }
 
+  contestants.forEach(c => {
+    let user = allUser.find(user => user.principal_id === c.principal_id)
+    if (user){
+      c.username = user.username
+    }
+  })
+
   return (
     <div className="flex w-full gap-x-4">
       <div className="flex flex-col w-2/5 h-full gap-y-3">
@@ -194,7 +212,7 @@ function ContestDetail() {
                 <div
                   className={`w-56 h-16 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
                 >
-                  <div className="text-lg font-semibold">{user.username}</div>
+                  <div className="text-lg font-semibold">{contestant.username}</div>
                   <div className="text-xs font-semibold">ganteng</div>
                 </div>
               </div>
