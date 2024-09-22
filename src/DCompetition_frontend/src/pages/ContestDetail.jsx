@@ -5,7 +5,7 @@ import { DContest_backend_contest } from "declarations/DContest_backend_contest"
 import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
 import { DContest_backend_user } from "declarations/DContest_backend_user";
 import { convertDate } from "../tools/date";
-import { Button, Card, Skeleton, CardBody } from "@nextui-org/react";
+import { Button, Card, Skeleton, CardBody, Modal, ModalContent } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
 import ParticipateContestModal from "../components/ParticipateContestModal";
 import { idlFactory } from "../../../declarations/DContest_backend_user";
@@ -18,6 +18,8 @@ function ContestDetail() {
     Completed: "bg-fuchsia-700",
   };
 
+  const [ isOpen, setOpen ] = useState(false);
+  const [ urlImg, setUrlImg ] = useState(null);
   const { getPrincipal } = useUserAuth();
   const { competitionID } = useParams();
   const [contest, setContest] = useState(null);
@@ -26,6 +28,11 @@ function ContestDetail() {
   const [contestants, setContestants] = useState([]);
   const [allUser, setAllUser] = useState([]);
   const [principalID, setPrincipalID] = useState();
+
+  const openDetailImg = (url) => {
+    setUrlImg(url);
+    setOpen(true);
+  }
 
   const changeToUrl = (picture) => {
     let url = "";
@@ -182,7 +189,7 @@ function ContestDetail() {
           competitionId={competitionID}
           userId={principalID}
           fetchData={getContestant}
-          className={`w-full ${statusColors[contest.status]}`}
+          className={`w-full ${statusColors[contest.status]} transition-transform transform hover:scale-[1.02] cursor-pointer`}
         >
           Join
         </ParticipateContestModal>
@@ -194,6 +201,7 @@ function ContestDetail() {
               <div
                 key={idx}
                 className="bg-opacity-40 flex flex-col items-center justify-center p-3 transition-transform transform hover:scale-[1.02] cursor-pointer"
+                onClick={() => openDetailImg(contestant.photo_url)}
               >
                 <img
                   src={contestant.photo_url}
@@ -213,6 +221,14 @@ function ContestDetail() {
             <div className="text-white">No contestants available.</div>
           )}
         </div>
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={setOpen}
+        >
+          <ModalContent>
+            <img src={urlImg} alt="kosong" />
+          </ModalContent>
+        </Modal>
       </div>
     </div>
   );
