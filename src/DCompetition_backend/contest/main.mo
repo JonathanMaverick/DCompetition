@@ -4,6 +4,7 @@ import Text "mo:base/Text";
 import Array "mo:base/Array";
 import Nat "mo:base/Nat";
 import Time "mo:base/Time";
+import Blob "mo:base/Blob";
 
 actor Main {
 
@@ -41,18 +42,25 @@ actor Main {
     };
 
     public func addContest(
-        principal_id : Text, 
-        name : Text, 
-        reward : Nat, 
-        desc : Text, 
-        category : Text, 
-        startDate : Time.Time, 
-        endDate : Time.Time, 
-        votingEndDate : Time.Time
+        principal_id : Text,
+        name : Text,
+        reward : Nat,
+        desc : Text,
+        category : Text,
+        startDate : Time.Time,
+        endDate : Time.Time,
+        votingEndDate : Time.Time,
+        industry_name : Text,
+        additional_information : Text,
+        color : [Text],
+        file : [Blob],
     ) : async Result<Null, Text> {
-        
-        if (principal_id == "" or name == "" or desc == "" or category == "") {
-            return #err("All Fields must been filled")
+
+        if (
+            principal_id == "" or name == "" or desc == "" or category == "" or
+            additional_information == "" or industry_name == ""
+        ) {
+            return #err("All Fields must been filled");
         };
 
         let now = Time.now();
@@ -63,7 +71,7 @@ actor Main {
 
         if (endDate <= startDate) {
             return #err("End date must be greater than the start date.");
-        };   
+        };
 
         if (votingEndDate <= endDate) {
             return #err("Voting end date must be greater than the end date.");
@@ -80,6 +88,10 @@ actor Main {
             startDate = startDate;
             endDate = endDate;
             votingEndDate = votingEndDate;
+            industry_name = industry_name;
+            additional_information = additional_information;
+            color = color;
+            file = file;
         };
 
         tree.put(currentId, newContest);

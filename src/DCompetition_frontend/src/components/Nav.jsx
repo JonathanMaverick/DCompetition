@@ -32,7 +32,7 @@ export default function Nav() {
       }
     };
     principalID();
-  }, [getPrincipal]);
+  }, [id]);
 
   useEffect(() => {
     const fetchUserData = async () => {

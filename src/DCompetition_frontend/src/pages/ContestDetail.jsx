@@ -46,7 +46,7 @@ function ContestDetail() {
       console.log(datas)
     }
     getAllUser()
-  },[id, getUserData])
+  },[id])
 
   const getContestant = async () => {
     try {
@@ -142,8 +142,7 @@ function ContestDetail() {
       getContestByID();
     }
   }, [contest, loading]);
-  console.log(user);
-
+  
   if (loading || user === null) {
     return (
       <div className="flex w-full gap-x-4">

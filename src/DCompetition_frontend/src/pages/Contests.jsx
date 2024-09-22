@@ -52,6 +52,8 @@ function Contests() {
         status = "Completed";
       }
 
+      console.log(comp)
+
       return {
         ...comp,
         contest_id: Number(comp.contest_id),
@@ -62,6 +64,10 @@ function Contests() {
         status,
         deadline,
         category: comp.category,
+        industry_name: comp.industry_name,
+        additional_information: comp.additional_information,
+        color: comp.color,
+        file: comp.file
       };
     });
 
@@ -73,6 +79,17 @@ function Contests() {
   useEffect(() => {
     getContest();
   }, []);
+
+  const changeToUrl = (picture) => {
+    let url = "";
+    if (picture) {
+      let blob = new Blob([picture], {
+        type: "image/jpeg",
+      });
+      url = URL.createObjectURL(blob);
+    }
+    return url;
+  };
 
   return (
     <div className="flex flex-col gap-6 p-6 text-gray-100 backdrop-blur-xl">
@@ -158,7 +175,21 @@ function Contests() {
                               contest.category.slice(1).toLowerCase()}
                           </p>
                         </div>
+                        <h2>industry name: {contest.industry_name}</h2>
+                        <h2>additional information: {contest.additional_information}</h2>
+                        <ul>
+                        {contest.color.map((color, colorIndex)=> (
+                            <li key={colorIndex} style={{ backgroundColor:color }}>{color}</li>
+                        ))}
+                        </ul>
 
+                        <ul>
+                        {contest.file.map((file, fileIndex)=> (
+                            <li className="mt-10" key={fileIndex}> 
+                              <img src={changeToUrl(file)}></img>
+                            </li>
+                        ))}
+                        </ul>
                         <BottomCard
                           reward={contest.reward}
                           submissions="20"
@@ -166,6 +197,8 @@ function Contests() {
                           status={status}
                           endDate={contest.endDate}
                         />
+
+                        
                       </div>
                     </CardBody>
                   </Card>
