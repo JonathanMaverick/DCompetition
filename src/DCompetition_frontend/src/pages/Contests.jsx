@@ -1,22 +1,12 @@
-import {
-  Autocomplete,
-  AutocompleteItem,
-  Button,
-  Card,
-  CardBody,
-  Input,
-  Skeleton,
-} from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import { IoAdd } from "react-icons/io5";
-import { IoIosSearch } from "react-icons/io";
-import { FaClock, FaTrophy, FaUsers } from "react-icons/fa";
+import { Card, CardBody, Skeleton } from "@nextui-org/react";
+import { Link } from "react-router-dom";
+import { useUserAuth } from "../context/UserContext";
+import AddContestModal from "../components/AddContestModal";
+import BottomCard from "../components/BottomCard";
+import ContestFilter from "../components/ContestFilter";
 import { convertDate } from "../tools/date";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
-import AddContestModal from "../components/AddContestModal";
-import { useUserAuth } from "../context/UserContext";
-import { Link } from "react-router-dom";
-import BottomCard from "../components/BottomCard";
 
 function Status({ status }) {
   const statusColors = {
@@ -38,40 +28,11 @@ function Status({ status }) {
 function Contests() {
   const [contests, setContests] = useState([]);
   const [filteredContests, setFilteredContests] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { getPrincipal, getUserData } = useUserAuth();
-  const [userId, setUserId] = useState();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchPrincipal = async () => {
-      const principal = await getPrincipal();
-      setUserId(principal);
-      console.log(principal);
-    };
-
-    fetchPrincipal();
-  }, [getPrincipal]);
-
-  const fetchUser = async () => {
-    console.log(userId)
-    if(userId !== undefined){
-      const user = await getUserData(userId);
-      setUser(user);
-    }
-    console.log(user)
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, [userId,userId,getPrincipal]);
+  const { userData } = useUserAuth();
 
   const getContest = async () => {
     const contests = await DContest_backend_contest.getAllContest();
-
     const currentDate = new Date().getTime();
 
     const updatedContests = contests.map((comp) => {
@@ -84,7 +45,6 @@ function Contests() {
       if (currentDate >= startDate && currentDate < endDate) {
         status = "Ongoing";
         deadline = endDate;
-        console.log(endDate);
       } else if (currentDate >= endDate && currentDate < votingEndDate) {
         status = "Winner Selection";
         deadline = votingEndDate;
@@ -114,113 +74,26 @@ function Contests() {
     getContest();
   }, []);
 
-  const categories = [
-    { label: "All Category", value: "" },
-    { label: "Logo", value: "logo" },
-    { label: "Poster", value: "poster" },
-    { label: "Design", value: "design" },
-    { label: "Infographic", value: "infographic" },
-  ];
-
-  const statuses = [
-    { label: "All Status", value: "" },
-    { label: "Not Started", value: "Not Started" },
-    { label: "Ongoing Contest", value: "Ongoing" },
-    { label: "Winner Selection", value: "Winner Selection" },
-    { label: "Completed Contest", value: "Completed" },
-  ];
-
-  const applyFilters = () => {
-    let filtered = contests;
-
-    if (searchTerm) {
-      filtered = filtered.filter((contest) =>
-        contest.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (selectedCategory) {
-      filtered = filtered.filter(
-        (contest) => contest.category === selectedCategory
-      );
-    }
-
-    if (selectedStatus) {
-      console.log(selectedStatus);
-      filtered = filtered.filter(
-        (contest) => contest.status === selectedStatus
-      );
-    }
-
-    setFilteredContests(filtered);
-  };
-
-  useEffect(() => {
-    applyFilters();
-  }, [searchTerm, selectedCategory, selectedStatus, contests]);
-
-  const handleCategoryChange = (value) => {
-    setSelectedCategory(value);
-  };
-
-  const handleStatusChange = (value) => {
-    setSelectedStatus(value);
-  };
-
   return (
-    <div className="flex flex-col gap-6 p-6 text-gray-100">
+    <div className="flex flex-col gap-6 p-6 text-gray-100 backdrop-blur-xl">
       <div className="relative">
         <h1 className="text-4xl font-bold text-left md:text-center text-purple-400 mb-4">
           Contests
         </h1>
         <div className="absolute right-0 top-1">
-          {user && <AddContestModal userId={userId} fetchData={getContest} />}
+          {userData && (
+            <AddContestModal
+              userId={userData.principal_id}
+              fetchData={getContest}
+            />
+          )}
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-8">
-        <div className="filter-section w-full md:w-1/4 flex flex-col gap-4 backdrop-blur-md max-h-80">
-          <Input
-            type="text"
-            label="Search Contest"
-            placeholder="Enter a Contest Title"
-            variant="bordered"
-            className="backdrop-blur-md"
-            labelPlacement="outside"
-            onValueChange={setSearchTerm}
-            endContent={
-              <button className="focus:outline-none" type="button">
-                <IoIosSearch className="text-xl" />
-              </button>
-            }
-          />
-          <Autocomplete
-            label="Category"
-            placeholder="All Category"
-            defaultItems={categories}
-            labelPlacement="outside"
-            variant="bordered"
-            className="backdrop-blur-md"
-            onSelectionChange={handleCategoryChange}
-          >
-            {(item) => (
-              <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
-            )}
-          </Autocomplete>
-          <Autocomplete
-            label="Status"
-            placeholder="All Status"
-            defaultItems={statuses}
-            labelPlacement="outside"
-            variant="bordered"
-            className="backdrop-blur-md"
-            onSelectionChange={handleStatusChange}
-          >
-            {(item) => (
-              <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
-            )}
-          </Autocomplete>
-        </div>
-
+        <ContestFilter
+          contests={contests}
+          setFilteredContests={setFilteredContests}
+        />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 contest-section w-full md:w-3/4">
           {loading &&
             Array(6)
@@ -251,54 +124,54 @@ function Contests() {
 
           {!loading && filteredContests.length === 0 && (
             <div className="col-span-full">
-              {" "}
-              <div className="col-span-full text-center text-gray-300 text-xl bg-black bg-opacity-40 py-4 w-full">
+              <div className="col-span-full text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
                 No contests available.
               </div>
             </div>
           )}
 
-          {filteredContests.map((contest, index) => {
-            const status = contest.status;
-            return (
-              <Link to={`/contestDetail/${contest.contest_id}`} key={index}>
-                <Card className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer">
-                  <Status status={status} />
-                  <CardBody className="p-4 space-y-4">
-                    <div className="grid grid-cols-2 gap-2 mb-2">
-                      {Array.from({ length: 4 }).map((_, imgIndex) => (
-                        <img
-                          key={imgIndex}
-                          src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                          alt={`Placeholder ${imgIndex + 1}`}
-                          className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm"
-                        />
-                      ))}
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex flex-col ml-0.5">
-                        <h2 className="text-2xl font-bold text-gray-200 truncate">
-                          {contest.name}
-                        </h2>
-                        <p className="mb-4">
-                          {contest.category.charAt(0).toUpperCase() +
-                            contest.category.slice(1).toLowerCase()}
-                        </p>
+          {!loading &&
+            filteredContests.map((contest, index) => {
+              const status = contest.status;
+              return (
+                <Link to={`/contestDetail/${contest.contest_id}`} key={index}>
+                  <Card className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer">
+                    <Status status={status} />
+                    <CardBody className="p-4 space-y-4">
+                      <div className="grid grid-cols-2 gap-2 mb-2">
+                        {Array.from({ length: 4 }).map((_, imgIndex) => (
+                          <img
+                            key={imgIndex}
+                            src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+                            alt={`Placeholder ${imgIndex + 1}`}
+                            className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm"
+                          />
+                        ))}
                       </div>
+                      <div className="flex flex-col">
+                        <div className="flex flex-col ml-0.5">
+                          <h2 className="text-2xl font-bold text-gray-200 truncate">
+                            {contest.name}
+                          </h2>
+                          <p className="mb-4">
+                            {contest.category.charAt(0).toUpperCase() +
+                              contest.category.slice(1).toLowerCase()}
+                          </p>
+                        </div>
 
-                      <BottomCard
-                        reward={contest.reward}
-                        submissions="20"
-                        deadline={contest.deadline}
-                        status={status}
-                        endDate={contest.endDate}
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
-              </Link>
-            );
-          })}
+                        <BottomCard
+                          reward={contest.reward}
+                          submissions="20"
+                          deadline={contest.deadline}
+                          status={status}
+                          endDate={contest.endDate}
+                        />
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Link>
+              );
+            })}
         </div>
       </div>
     </div>

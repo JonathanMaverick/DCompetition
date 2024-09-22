@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 const UserAuthContext = createContext(null);
 
 export function UserAuthProvider({ children }) {
+  const [userData, setUserData] = useState(null);
+
   const getPrincipal = async () => {
     const principalID = await DContest_backend_user.getPrincipalID();
     return principalID;
@@ -19,7 +21,13 @@ export function UserAuthProvider({ children }) {
     return user;
   };
 
-  const value = { getUserData, getPrincipal, setPrincipal };
+  const value = {
+    getUserData,
+    getPrincipal,
+    setPrincipal,
+    userData,
+    setUserData,
+  };
 
   return (
     <UserAuthContext.Provider value={value}>

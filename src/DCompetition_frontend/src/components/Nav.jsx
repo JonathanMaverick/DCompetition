@@ -13,9 +13,9 @@ import { AuthClient } from "@dfinity/auth-client";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 
 export default function Nav() {
-  const { getPrincipal, setPrincipal, getUserData } = useUserAuth();
+  const { getPrincipal, setPrincipal, getUserData, userData, setUserData } =
+    useUserAuth();
   const [id, setID] = useState("");
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profilePicURL, setProfilePicURL] = useState(null);
   const location = useLocation();
@@ -38,9 +38,9 @@ export default function Nav() {
     const fetchUserData = async () => {
       if (id !== "") {
         try {
-          setLoading(true);
+          // setLoading(true);
           const fetchedUser = await getUserData(id);
-          setUser(fetchedUser[0]);
+          setUserData(fetchedUser[0]);
 
           if (fetchedUser[0]?.profilePic) {
             const blob = new Blob([fetchedUser[0].profilePic], {
@@ -158,7 +158,7 @@ export default function Nav() {
               color="secondary"
               aria-label="Loading..."
             />
-          ) : user ? (
+          ) : userData ? (
             <div className="flex gap-3 items-center">
               {profilePicURL && (
                 <img
@@ -167,8 +167,8 @@ export default function Nav() {
                   className="aspect-square w-8 rounded-full"
                 />
               )}
-              <p>{user.username}</p>
-              <p>ICP: {Number(user.money)}</p>
+              <p>{userData.username}</p>
+              <p>ICP: {Number(userData.money)}</p>
               <Button
                 color="secondary"
                 variant="flat"
