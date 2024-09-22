@@ -12,6 +12,8 @@ import {
   CardBody,
   Modal,
   ModalContent,
+  Tabs,
+  Tab,
 } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
 import ParticipateContestModal from "../components/ParticipateContestModal";
@@ -176,14 +178,48 @@ function ContestDetail() {
           endDate={contest.endDate}
           updateStatus={refresh}
         />
-        <div className="bg-black bg-opacity-40 rounded-lg p-4 gap-1 flex flex-col">
-          <div className="text-xl font-semibold">Description :</div>
-          <div
-            className="text-sm text-justify"
-            dangerouslySetInnerHTML={{
-              __html: contest.description || "No description available.",
+        <div className="bg-black backdrop-blur-lg bg-opacity-40 rounded-lg px-4 py-2 gap-1 flex flex-col">
+          {/* <div className="text-xl font-semibold">Description :</div> */}
+
+          <Tabs
+            aria-label="details"
+            color="primary"
+            variant="underlined"
+            classNames={{
+              tabList:
+                "flex gap-6 w-full relative rounded-none p-0 border-b border-divider",
+              tab: "flex-1 text-center h-12",
+              cursor: "w-full bg-[#FFF]",
+              tabContent: "group-data-[selected=true]:text-[#FFF]",
             }}
-          ></div>
+          >
+            <Tab key="description" title="Description" className="text-md">
+              <div
+                className="text-sm text-justify"
+                dangerouslySetInnerHTML={{
+                  __html: contest.description || "No description available.",
+                }}
+              ></div>
+            </Tab>
+            <Tab key="timeline" title="Timeline" className="text-md">
+              <Card>
+                <CardBody>
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur.
+                </CardBody>
+              </Card>
+            </Tab>
+            <Tab key="additional" title="More Details" className="text-md">
+              <Card>
+                <CardBody>
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                  qui officia deserunt mollit anim id est laborum.
+                </CardBody>
+              </Card>
+            </Tab>
+          </Tabs>
         </div>
         <ParticipateContestModal
           competitionId={competitionID}
