@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaClock, FaTrophy, FaUsers } from "react-icons/fa";
 
-function BottomCard({ reward, submissions, deadline, status, endDate }) {
+function BottomCard({
+  reward,
+  submissions,
+  deadline,
+  status,
+  endDate,
+  updateStatus,
+}) {
   const formatTime = (time) => {
     if (isNaN(time)) return "-";
     const days = String(Math.floor(time / (3600 * 24)));
@@ -18,19 +25,26 @@ function BottomCard({ reward, submissions, deadline, status, endDate }) {
     );
   };
 
-  const [timeLeft, setTimeLeft] = useState(
-    formatTime(Math.max((deadline - new Date()) / 1000, 0))
-  );
+  const calculateTimeLeft = () => Math.max((deadline - new Date()) / 1000, 0);
+
+  const [timeLeft, setTimeLeft] = useState(formatTime(calculateTimeLeft()));
 
   useEffect(() => {
     if (status !== "Completed") {
       const interval = setInterval(() => {
-        setTimeLeft(formatTime(Math.max((deadline - new Date()) / 1000, 0)));
+        const remainingTime = calculateTimeLeft();
+        setTimeLeft(formatTime(remainingTime));
+        if (remainingTime === 0) {
+          clearInterval(interval);
+          updateStatus();
+        }
       }, 1000);
 
-      return () => clearInterval(interval);
+      return () => {
+        clearInterval(interval);
+      };
     }
-  }, [deadline, status]);
+  }, [deadline, status, updateStatus]);
 
   const statusGradients = {
     "Not Started": "from-gray-600 to-gray-800",

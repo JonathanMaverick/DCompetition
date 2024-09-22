@@ -52,7 +52,7 @@ function Contests() {
         status = "Completed";
       }
 
-      console.log(comp)
+      console.log(comp);
 
       return {
         ...comp,
@@ -67,7 +67,7 @@ function Contests() {
         industry_name: comp.industry_name,
         additional_information: comp.additional_information,
         color: comp.color,
-        file: comp.file
+        file: comp.file,
       };
     });
 
@@ -79,6 +79,22 @@ function Contests() {
   useEffect(() => {
     getContest();
   }, []);
+
+  const updateStatus = (index, currentStatus) => {
+    setContests((prevContests) => {
+      const updatedContests = [...prevContests];
+      if (currentStatus === "Not Started") {
+        updatedContests[index].status = "Ongoing";
+        updatedContests[index].deadline = updatedContests[index].endDate;
+      } else if (currentStatus === "Ongoing") {
+        updatedContests[index].status = "Winner Selection";
+        updatedContests[index].deadline = updatedContests[index].votingEndDate;
+      } else if (currentStatus === "Winner Selection") {
+        updatedContests[index].status = "Completed";
+      }
+      return updatedContests;
+    });
+  };
 
   const changeToUrl = (picture) => {
     let url = "";
@@ -175,7 +191,7 @@ function Contests() {
                               contest.category.slice(1).toLowerCase()}
                           </p>
                         </div>
-                        <h2>industry name: {contest.industry_name}</h2>
+                        {/* <h2>industry name: {contest.industry_name}</h2>
                         <h2>additional information: {contest.additional_information}</h2>
                         <ul>
                         {contest.color.map((color, colorIndex)=> (
@@ -189,16 +205,15 @@ function Contests() {
                               <img src={changeToUrl(file)}></img>
                             </li>
                         ))}
-                        </ul>
+                        </ul> */}
                         <BottomCard
                           reward={contest.reward}
                           submissions="20"
                           deadline={contest.deadline}
                           status={status}
                           endDate={contest.endDate}
+                          updateStatus={() => updateStatus(index, status)}
                         />
-
-                        
                       </div>
                     </CardBody>
                   </Card>

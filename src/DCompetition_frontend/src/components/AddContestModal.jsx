@@ -228,7 +228,7 @@ export default function AddContestModal({ userId, fetchData }) {
     <>
       <Toaster />
 
-      <Button onPress={onOpen} variant="ghost">
+      <Button onPress={onOpen} variant="ghost" className="backdrop-blur-lg">
         <IoAdd className="text-xl" />
         Create
       </Button>
@@ -246,7 +246,7 @@ export default function AddContestModal({ userId, fetchData }) {
                 Create Contest
               </ModalHeader>
               <ModalBody className="overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3.5 pt-0.5">
                   <Input
                     label="Title"
                     placeholder="Enter Contest Title"
@@ -254,19 +254,6 @@ export default function AddContestModal({ userId, fetchData }) {
                     labelPlacement="outside"
                     value={contestData.title}
                     onChange={(e) => handleChange("title", e.target.value)}
-                    required
-                  />
-
-                  <Textarea
-                    label="Description"
-                    placeholder="Enter Contest Description"
-                    variant="bordered"
-                    labelPlacement="outside"
-                    value={contestData.description}
-                    minRows={5}
-                    onChange={(e) =>
-                      handleChange("description", e.target.value)
-                    }
                     required
                   />
 
@@ -290,8 +277,8 @@ export default function AddContestModal({ userId, fetchData }) {
                   </Autocomplete>
 
                   <Input
-                    label="Company Name"
-                    placeholder="Enter Company Name"
+                    label="Brand Name"
+                    placeholder="Enter Brand Name"
                     variant="bordered"
                     labelPlacement="outside"
                     value={contestData.industry_name}
@@ -301,11 +288,24 @@ export default function AddContestModal({ userId, fetchData }) {
                     required
                   />
                   <Textarea
+                    className="-mt-[3px]"
+                    label="Description"
+                    placeholder="Enter Contest Description"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    value={contestData.description}
+                    minRows={5}
+                    onChange={(e) =>
+                      handleChange("description", e.target.value)
+                    }
+                    required
+                  />
+                  <Textarea
                     label="Additional Information"
                     placeholder="Enter Additional Information"
                     variant="bordered"
                     labelPlacement="outside"
-                    className=""
+                    className="-mt-[3px]"
                     value={contestData.additional_information}
                     onChange={(e) =>
                       handleChange("additional_information", e.target.value)
@@ -314,7 +314,7 @@ export default function AddContestModal({ userId, fetchData }) {
                   />
                 </div>
 
-                <div className="flex flex-col gap-3 -mt-0.5">
+                <div className="flex flex-col gap-3">
                   <DatePicker
                     variant="bordered"
                     label="Start Date"
@@ -399,7 +399,7 @@ export default function AddContestModal({ userId, fetchData }) {
                         <div key={index} className="flex items-center">
                           <Input
                             type="file"
-                            accept="image/*"
+                            accept="image/*,.pdf,.doc,.docx,.ppt,.pptx"
                             onChange={(e) =>
                               handleFileChange(index, e.target.files[0])
                             }

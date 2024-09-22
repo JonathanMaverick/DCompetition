@@ -35,6 +35,10 @@ function ContestDetail() {
   const [contestants, setContestants] = useState([]);
   const [allUser, setAllUser] = useState([]);
 
+  const refresh = () => {
+    window.location.reload();
+  };
+
   const openDetailImg = (url) => {
     setUrlImg(url);
     setOpen(true);
@@ -170,6 +174,7 @@ function ContestDetail() {
           deadline={contest.deadline}
           status={contest.status}
           endDate={contest.endDate}
+          updateStatus={refresh}
         />
         <div className="bg-black bg-opacity-40 rounded-lg p-4 gap-1 flex flex-col">
           <div className="text-xl font-semibold">Description :</div>
@@ -190,9 +195,9 @@ function ContestDetail() {
         </ParticipateContestModal>
       </div>
       <div className="w-3/4 bg-black bg-opacity-40 flex-grow rounded-lg justify-center items-center overflow-y-scroll p-6">
-        <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
-          {contestants.length > 0 ? (
-            contestants.map((contestant, idx) => (
+        {contestants.length > 0 ? (
+          <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
+            {contestants.map((contestant, idx) => (
               <div
                 key={idx}
                 className="bg-opacity-40 flex flex-col items-center justify-center p-3 transition-transform transform hover:scale-[1.02] cursor-pointer"
@@ -211,11 +216,13 @@ function ContestDetail() {
                   <div className="text-xs font-semibold">ganteng</div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="text-white">No contestants available.</div>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
+            No contestants available.
+          </div>
+        )}
         <Modal isOpen={isOpen} onOpenChange={setOpen}>
           <ModalContent>
             <img src={urlImg} alt="kosong" />

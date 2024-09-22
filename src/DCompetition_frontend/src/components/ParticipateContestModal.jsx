@@ -107,7 +107,7 @@ export default function ParticipateContestModal({
               </ModalHeader>
               <ModalBody className="overflow-y-auto">
                 <div
-                  className="relative w-full h-48 border-dashed border-2 border-gray-400 rounded-md cursor-pointer"
+                  className="relative w-full h-72 border-dashed border-2 border-gray-400 rounded-md cursor-pointer"
                   onClick={handleClick}
                 >
                   {!preview ? (

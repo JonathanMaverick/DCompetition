@@ -52,13 +52,13 @@ function ContestFilter({ contests, setFilteredContests }) {
   }, [searchTerm, selectedCategory, selectedStatus, contests]);
 
   return (
-    <div className="filter-section w-full md:w-1/4 flex flex-col gap-4 backdrop-blur-md max-h-80">
+    <div className="filter-section w-full md:w-1/4 flex flex-col gap-4">
       <Input
         type="text"
         label="Search Contest"
         placeholder="Enter a Contest Title"
         variant="bordered"
-        className="backdrop-blur-md"
+        className="backdrop-blur-lg"
         labelPlacement="outside"
         value={searchTerm}
         onValueChange={setSearchTerm}
@@ -68,32 +68,39 @@ function ContestFilter({ contests, setFilteredContests }) {
           </button>
         }
       />
-      <Autocomplete
-        label="Category"
-        placeholder="All Category"
-        defaultItems={categories}
-        labelPlacement="outside"
-        variant="bordered"
-        className="backdrop-blur-md"
-        onSelectionChange={setSelectedCategory}
-      >
-        {(item) => (
-          <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
-        )}
-      </Autocomplete>
-      <Autocomplete
-        label="Status"
-        placeholder="All Status"
-        defaultItems={statuses}
-        labelPlacement="outside"
-        variant="bordered"
-        className="backdrop-blur-md"
-        onSelectionChange={setSelectedStatus}
-      >
-        {(item) => (
-          <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
-        )}
-      </Autocomplete>
+      <div className="flex flex-col gap-1.5">
+        <p className="text-sm">Category</p>
+        <Autocomplete
+          // label="Category"
+          placeholder="All Category"
+          defaultItems={categories}
+          labelPlacement="outside"
+          variant="bordered"
+          className="backdrop-blur-lg"
+          onSelectionChange={setSelectedCategory}
+        >
+          {(item) => (
+            <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
+          )}
+        </Autocomplete>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <p className="text-sm">Status</p>{" "}
+        <Autocomplete
+          // label="Status"
+          placeholder="All Status"
+          defaultItems={statuses}
+          labelPlacement="outside"
+          variant="bordered"
+          className="backdrop-blur-md"
+          onSelectionChange={setSelectedStatus}
+        >
+          {(item) => (
+            <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
+          )}
+        </Autocomplete>
+      </div>
     </div>
   );
 }
