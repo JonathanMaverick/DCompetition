@@ -249,7 +249,7 @@ export default function AddContestModal({ userId, fetchData }) {
                 <div className="flex flex-col gap-3">
                   <Input
                     label="Title"
-                    placeholder="Enter contest title"
+                    placeholder="Enter Contest Title"
                     variant="bordered"
                     labelPlacement="outside"
                     value={contestData.title}
@@ -259,10 +259,11 @@ export default function AddContestModal({ userId, fetchData }) {
 
                   <Textarea
                     label="Description"
-                    placeholder="Enter contest description"
+                    placeholder="Enter Contest Description"
                     variant="bordered"
                     labelPlacement="outside"
                     value={contestData.description}
+                    minRows={5}
                     onChange={(e) =>
                       handleChange("description", e.target.value)
                     }
@@ -271,7 +272,7 @@ export default function AddContestModal({ userId, fetchData }) {
 
                   <Autocomplete
                     label="Category"
-                    placeholder="Pick a category"
+                    placeholder="Pick a Category"
                     items={categories}
                     labelPlacement="outside"
                     variant="bordered"
@@ -289,19 +290,8 @@ export default function AddContestModal({ userId, fetchData }) {
                   </Autocomplete>
 
                   <Input
-                    label="Reward"
-                    placeholder="Enter contest reward"
-                    variant="bordered"
-                    labelPlacement="outside"
-                    type="number"
-                    value={contestData.reward}
-                    onChange={(e) => handleChange("reward", e.target.value)}
-                    required
-                  />
-
-                  <Input
-                    label="Industry Name"
-                    placeholder="Enter Industry Name"
+                    label="Company Name"
+                    placeholder="Enter Company Name"
                     variant="bordered"
                     labelPlacement="outside"
                     value={contestData.industry_name}
@@ -310,11 +300,12 @@ export default function AddContestModal({ userId, fetchData }) {
                     }
                     required
                   />
-                  <Input
+                  <Textarea
                     label="Additional Information"
                     placeholder="Enter Additional Information"
                     variant="bordered"
                     labelPlacement="outside"
+                    className=""
                     value={contestData.additional_information}
                     onChange={(e) =>
                       handleChange("additional_information", e.target.value)
@@ -323,78 +314,9 @@ export default function AddContestModal({ userId, fetchData }) {
                   />
                 </div>
 
-                <div className="flex flex-col gap-3">
-                  <p className="text-sm">Desired Colors</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {contestData.colors.map((color, index) => (
-                      <div key={index} className="flex items-center">
-                        <Input
-                          type="color"
-                          variant="bordered"
-                          value={color}
-                          onChange={(e) =>
-                            handleColorChange(index, e.target.value)
-                          }
-                          required
-                          fullWidth
-                        />
-                        {contestData.colors.length > 1 && (
-                          <Button
-                            onPress={() => removeColorField(index)}
-                            className="ml-1 rounded-full"
-                            variant="bordered"
-                            isIconOnly
-                          >
-                            <IoTrash />
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                    <Button
-                      variant="light"
-                      color="secondary"
-                      onPress={addColorField}
-                      startIcon={<IoAdd />}
-                    >
-                      Add Color
-                    </Button>
-                  </div>
-
-                  <p className="text-sm mb-2">Attachments</p>
-                  <div className="mb-4">
-                    {contestData.files.map((file, index) => (
-                      <div key={index} className="flex items-center mt-2">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) =>
-                            handleFileChange(index, e.target.files[0])
-                          }
-                          className="w-60"
-                        />
-                        {contestData.files.length > 1 && (
-                          <Button
-                            onPress={() => removeFileField(index)}
-                            className="ml-2"
-                            variant="flat"
-                          >
-                            <IoRemove />
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                    <Button
-                      variant="light"
-                      color="secondary"
-                      onPress={addFileField}
-                      className="mt-2"
-                      startIcon={<IoAdd />}
-                    >
-                      Add Photo
-                    </Button>
-                  </div>
-
+                <div className="flex flex-col gap-3 -mt-0.5">
                   <DatePicker
+                    variant="bordered"
                     label="Start Date"
                     value={contestData.startDate}
                     onChange={(value) => handleChange("startDate", value)}
@@ -403,6 +325,7 @@ export default function AddContestModal({ userId, fetchData }) {
                   />
 
                   <DatePicker
+                    variant="bordered"
                     label="End Date"
                     value={contestData.endDate}
                     onChange={(value) => handleChange("endDate", value)}
@@ -411,12 +334,97 @@ export default function AddContestModal({ userId, fetchData }) {
                   />
 
                   <DatePicker
+                    variant="bordered"
                     label="End Voting Date"
                     value={contestData.endVotingDate}
                     onChange={(value) => handleChange("endVotingDate", value)}
                     labelPlacement="outside"
                     required
                   />
+
+                  <Input
+                    label="Reward (ICP)"
+                    placeholder="Enter Contest Reward"
+                    variant="bordered"
+                    labelPlacement="outside"
+                    pattern="\d*"
+                    value={contestData.reward}
+                    onChange={(e) =>
+                      handleChange("reward", e.target.value.replace(/\D/, ""))
+                    }
+                    required
+                  />
+                  <div className="colors">
+                    <p className="text-sm mb-1.5">Desired Colors</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {contestData.colors.map((color, index) => (
+                        <div key={index} className="flex items-center">
+                          <Input
+                            type="color"
+                            variant="bordered"
+                            value={color}
+                            onChange={(e) =>
+                              handleColorChange(index, e.target.value)
+                            }
+                            required
+                            fullWidth
+                          />
+                          {contestData.colors.length > 1 && (
+                            <Button
+                              onPress={() => removeColorField(index)}
+                              className="ml-1 rounded-full"
+                              variant="bordered"
+                              isIconOnly
+                            >
+                              <IoTrash />
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                      <Button
+                        variant="bordered"
+                        onPress={addColorField}
+                        className="rounded-full"
+                      >
+                        <IoAdd />
+                        New
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="attachments">
+                    <p className="text-sm mb-1">Attachments</p>
+                    <div className="grid grid-cols-1 gap-2">
+                      {contestData.files.map((file, index) => (
+                        <div key={index} className="flex items-center">
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) =>
+                              handleFileChange(index, e.target.files[0])
+                            }
+                            className="w-full"
+                          />
+                          <Button
+                            onPress={() => removeFileField(index)}
+                            className="ml-1 rounded-full"
+                            variant="bordered"
+                            isIconOnly
+                          >
+                            <IoTrash />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        variant="bordered"
+                        onPress={addFileField}
+                        className="rounded-full"
+                      >
+                        <IoAdd />
+                        New
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </ModalBody>
 
@@ -427,7 +435,20 @@ export default function AddContestModal({ userId, fetchData }) {
                   fullWidth
                   color="secondary"
                 >
-                  {loading ? <CircularProgress /> : "Create"}
+                  {loading ? (
+                    <CircularProgress
+                      classNames={{
+                        svg: "w-6 h-6 drop-shadow-md",
+                        indicator: "stroke-white",
+                        track: "stroke-purple-500/10",
+                        value: "text-3xl font-semibold text-white",
+                      }}
+                      color="secondary"
+                      aria-label="Loading..."
+                    />
+                  ) : (
+                    "Create"
+                  )}
                 </Button>
               </ModalFooter>
             </>

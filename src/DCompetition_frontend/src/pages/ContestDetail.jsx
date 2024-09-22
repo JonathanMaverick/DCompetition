@@ -5,7 +5,14 @@ import { DContest_backend_contest } from "declarations/DContest_backend_contest"
 import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
 import { DContest_backend_user } from "declarations/DContest_backend_user";
 import { convertDate } from "../tools/date";
-import { Button, Card, Skeleton, CardBody, Modal, ModalContent } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  Skeleton,
+  CardBody,
+  Modal,
+  ModalContent,
+} from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
 import ParticipateContestModal from "../components/ParticipateContestModal";
 import { idlFactory } from "../../../declarations/DContest_backend_user";
@@ -18,21 +25,20 @@ function ContestDetail() {
     Completed: "bg-fuchsia-700",
   };
 
-  const [ isOpen, setOpen ] = useState(false);
-  const [ urlImg, setUrlImg ] = useState(null);
-  const { getPrincipal } = useUserAuth();
+  const [isOpen, setOpen] = useState(false);
+  const [urlImg, setUrlImg] = useState(null);
+  const { userData } = useUserAuth();
   const { competitionID } = useParams();
   const [contest, setContest] = useState(null);
   const [loading, setLoading] = useState(true);
   const currentDate = new Date().getTime();
   const [contestants, setContestants] = useState([]);
   const [allUser, setAllUser] = useState([]);
-  const [principalID, setPrincipalID] = useState();
 
   const openDetailImg = (url) => {
     setUrlImg(url);
     setOpen(true);
-  }
+  };
 
   const changeToUrl = (picture) => {
     let url = "";
@@ -45,16 +51,6 @@ function ContestDetail() {
     return url;
   };
 
-
-  useEffect(() => {
-    const getPrincipalID = async() => {
-      const id = await getPrincipal()
-      setPrincipalID(id)
-    }
-    getPrincipalID()
-  },[])
-
-
   useEffect(() => {
     const getAllUser = async () => {
       const datas = await DContest_backend_user.getAllUsers();
@@ -63,7 +59,6 @@ function ContestDetail() {
     };
     getAllUser();
   }, [competitionID]);
-
 
   const getContestant = async () => {
     try {
@@ -137,7 +132,7 @@ function ContestDetail() {
     }
   }, [contest, loading]);
 
-  if (loading) {
+  if (loading || !userData) {
     return (
       <div className="flex w-full gap-x-4">
         <div className="flex flex-col w-2/5 h-full gap-y-3">
@@ -187,7 +182,7 @@ function ContestDetail() {
         </div>
         <ParticipateContestModal
           competitionId={competitionID}
-          userId={principalID}
+          userId={userData.principal_id}
           fetchData={getContestant}
           className={`w-full ${statusColors[contest.status]} transition-transform transform hover:scale-[1.02] cursor-pointer`}
         >
@@ -221,10 +216,7 @@ function ContestDetail() {
             <div className="text-white">No contestants available.</div>
           )}
         </div>
-        <Modal
-          isOpen={isOpen}
-          onOpenChange={setOpen}
-        >
+        <Modal isOpen={isOpen} onOpenChange={setOpen}>
           <ModalContent>
             <img src={urlImg} alt="kosong" />
           </ModalContent>
