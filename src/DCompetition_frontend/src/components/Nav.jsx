@@ -151,7 +151,7 @@ export default function Nav() {
                 <img
                   src={profilePicURL}
                   alt="Profile"
-                  className="aspect-square w-8 rounded-full"
+                  className="aspect-square w-8 rounded-full object-cover"
                 />
               )}
               <p>{userData.username}</p>
