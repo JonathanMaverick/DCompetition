@@ -79,14 +79,7 @@ const Register = () => {
           },
         });
       } else if ("ok" in result) {
-        toast.success("Success", {
-          style: {
-            borderRadius: "8px",
-            background: "#000",
-            color: "#fff",
-          },
-        });
-        navigate("/");
+        window.location.href = "/";
       }
     } catch (error) {
       console.log(error);
