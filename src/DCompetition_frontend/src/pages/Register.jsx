@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-import { DContest_backend_user } from "declarations/DContest_backend_user";
+import React, { createContext, useContext, useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -11,16 +10,27 @@ import { Toaster, toast } from "react-hot-toast";
 import { useUserAuth } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
+const registerData = {
+  principal: "",
+  username: "",
+  email: "",
+  profile_pic: "",
+}
+
+export const RegisterContext = createContext(registerData)
+
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const { getPrincipal } = useUserAuth();
   const navigate = useNavigate();
   const inputRef = useRef(null);
-
   const [formData, setFormData] = useState({
     username: "",
     email: "",
   });
+  
+  const { setRegister } = useContext(RegisterContext)
+
 
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -48,7 +58,7 @@ const Register = () => {
     try {
       const { username, email } = formData;
       const principal = await getPrincipal();
-
+  
       const file = inputRef.current?.files[0];
       if (!file) {
         toast.error("Please select a profile picture.", {
@@ -60,27 +70,22 @@ const Register = () => {
         });
         return;
       }
-
+  
       const profilePic = new Uint8Array(await file.arrayBuffer());
-
-      const result = await DContest_backend_user.register(
+  
+      const newRegisterData = {
         principal,
         username,
         email,
-        profilePic
-      );
+        profile_pic: profilePic,
+      };
+  
+      setRegister(newRegisterData);
+  
+      console.log(newRegisterData); 
 
-      if ("err" in result) {
-        toast.error(result.err, {
-          style: {
-            borderRadius: "8px",
-            background: "#000",
-            color: "#fff",
-          },
-        });
-      } else if ("ok" in result) {
-        window.location.href = "/";
-      }
+  
+      navigate('/face');
     } catch (error) {
       console.log(error);
       toast.error("Failed to register!", {
@@ -94,6 +99,7 @@ const Register = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <>
@@ -190,7 +196,7 @@ const Register = () => {
           </CardBody>
         </Card>
       </div>
-    </>
+      </>
   );
 };
 

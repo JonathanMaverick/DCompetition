@@ -1,10 +1,12 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import Webcam from "react-webcam";
 import { Button, Card, CardBody, CircularProgress } from "@nextui-org/react";
+import { DContest_backend_user } from "declarations/DContest_backend_user";
 import "../style/capture.css";
 import "../style/toast.css";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { RegisterContext } from "./Register";
 
 const Face = () => {
   const webcamRef = useRef(null);
@@ -17,9 +19,10 @@ const Face = () => {
   const [showCaptureEffect, setShowCaptureEffect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasCamera, setHasCamera] = useState(true);
-
+  const { register } = useContext(RegisterContext)
   const navigate = useNavigate();
 
+  console.log(register)
   const videoConstraints = {
     width: 500,
     height: 500,
@@ -107,6 +110,12 @@ const Face = () => {
       const data = await response.json();
 
       if (data.message === "No match found.") {
+        DContest_backend_user.register(
+          register.principal,
+          register.username,
+          register.email,
+          register.profile_pic
+        )
         navigate("/");
         toast.success("Success!", {
           style: {

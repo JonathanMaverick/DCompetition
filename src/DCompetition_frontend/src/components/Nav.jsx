@@ -131,18 +131,6 @@ export default function Nav() {
             Contests
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={location.pathname === "/face"}>
-          <Link
-            to={"/face"}
-            className={
-              location.pathname === "/face"
-                ? "text-purple-500"
-                : "text-white hover:text-gray-300 transition-all"
-            }
-          >
-            Face
-          </Link>
-        </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
