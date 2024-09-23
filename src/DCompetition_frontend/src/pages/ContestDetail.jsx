@@ -217,8 +217,8 @@ function ContestDetail() {
   });
 
   return (
-    <div className="flex w-full gap-x-4 mt-4 lg:flex-row flex-col">
-      <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3">
+    <div className="flex w-full gap-4 mt-4 lg:flex-row flex-col">
+      <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3 px-2 md:px-0">
         <div className="flex flex-col gap-2 mb-2 ml-1">
           <div className="text-4xl font-bold text-left">{contest.name}</div>
           <div className="text-1xl font-medium text-left pl-1">
@@ -443,9 +443,9 @@ function ContestDetail() {
           </Tabs>
         </div>
       </div>
-      <div className="lg:w-3/4 w-full flex-grow rounded-lg justify-center items-center overflow-y-scroll">
+      <div className="lg:w-3/4 w-full flex rounded-lg justify-center items-center overflow-y-scroll">
         {contestants.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
+          <div className="ml-3.5 lg:ml-0 m-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
             {contestants.map((contestant, idx) => (
               <Card
                 key={idx}
