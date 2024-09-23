@@ -16,6 +16,14 @@ import {
   Tab,
   Tooltip,
   Snippet,
+  Table, 
+  TableHeader, 
+  TableColumn, 
+  TableBody, 
+  TableRow, 
+  TableCell,
+  Accordion, 
+  AccordionItem
 } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
 import ParticipateContestModal from "../components/ParticipateContestModal";
@@ -31,6 +39,17 @@ function ContestDetail() {
     "Winner Selection": "bg-purple-600",
     Completed: "bg-fuchsia-700",
   };
+
+  const statusColors1 = {
+    "Winner Selection": "bg-purple-700",
+    Completed: "bg-fuchsia-800",
+  };
+
+  const rankColors = {
+    1 : "bg-yellow-500",
+    2 : "bg-gray-400",
+    3 : "bg-amber-700",
+  }
 
   const [isOpen, setOpen] = useState(false);
   const [isOpenConfirmation, setOpenConfirmation] = useState(false);
@@ -380,52 +399,88 @@ function ContestDetail() {
               </div>
             </Tab>
           </Tabs>
-          <ParticipateContestModal
+          {contest.status == "Ongoing" && (
+            <ParticipateContestModal
             competitionId={competitionID}
             userId={userData.principal_id}
             fetchData={getContestant}
             className={`w-full ${statusColors[contest.status]} cursor-pointer`}
             category={contest.category}
-          ></ParticipateContestModal>
+            ></ParticipateContestModal>
+          )}
         </div>
       </div>
       <div className="lg:w-3/4 w-full bg-black backdrop-blur-lg bg-opacity-40 flex-grow rounded-lg justify-center items-center overflow-y-scroll p-6">
+      <Accordion defaultExpandedKeys={[contest.status === "Completed" ? "1" : "2"]}>
+        {contest.status == "Completed" && (
+          <AccordionItem key="1" aria-label="Results" title="Results">
+          {/* <div className="text-center text-3xl font-semibold">Results</div> */}
+          <Table removeWrapper aria-label="Example static collection table" className="mt-3">
+            <TableHeader>
+              <TableColumn className="bg-fuchsia-600 text-white text-center">Rank</TableColumn>
+              <TableColumn className="bg-fuchsia-600 text-white text-center">Username</TableColumn>
+              <TableColumn className="bg-fuchsia-600 text-white text-center">Total Vote</TableColumn>
+            </TableHeader>
+            <TableBody>
+            {Array.from({length:7}).map((_, idx) => (
+              <TableRow key={idx} className="h-14">
+                <TableCell className="w-full flex justify-center items-center">
+                <div className={`w-9 h-9 rounded-full ${rankColors[idx+1]} flex justify-center items-center`}>{idx+1}</div>
+                </TableCell>
+                <TableCell className="text-center">Username {idx}</TableCell>
+                <TableCell className="text-center">{100-idx}</TableCell>
+              </TableRow>
+            ))}
+            </TableBody>
+          </Table>
+        </AccordionItem>
+        )}
+        <AccordionItem key="2" aria-label="Contestant" title="Contestant">
         {contestants.length > 0 ? (
           <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
             {contestants.map((contestant, idx) => (
               <div
                 key={idx}
                 className="bg-opacity-40 flex flex-col items-center justify-center p-3"
+                
               >
                 <img
                   src={contestant.photo_url}
                   className="w-56 h-52 rounded-t-lg transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
                   onClick={() => openDetailImg(contestant.photo_url)}
                 />
-                <div
-                  className={`w-56 h-28 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
-                >
-                  <div className="text-lg font-semibold">
-                    {contestant.username}
-                  </div>
-                  <div className="text-xs font-semibold">
-                    {formatTime(contestant.upload_time.toLocaleString())}
-                  </div>
-                  <div
-                    className="text-sm w-full h-8 bg-purple-600 rounded-lg mt-4 transition-transform transform hover:scale-[1.04] cursor-pointer flex justify-center items-center"
-                    onClick={() => openVotingConfirmation(contestant.username)}
-                  >
-                    Vote
-                  </div>
-                </div>
+                {contest.status == "Winner Selection" ? (
+                    <div
+                      className={`w-56 h-28 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
+                    >
+                      <div className="text-lg font-semibold">
+                        {contestant.username}
+                      </div>
+                      <div className="text-xs font-semibold">{formatTime(contestant.upload_time.toLocaleString())}</div>
+                      <div className="text-sm w-full h-8 bg-purple-900 rounded-lg mt-4 transition-transform transform hover:scale-[1.04] cursor-pointer flex justify-center items-center"
+                      onClick={() => openVotingConfirmation(contestant.username)}
+                      >Vote</div>
+                    </div>
+                ) : (
+                    <div
+                      className={`w-56 h-16 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
+                    >
+                      <div className="text-lg font-semibold">
+                        {contestant.username}
+                      </div>
+                      <div className="text-xs font-semibold">{formatTime(contestant.upload_time.toLocaleString())}</div>
+                    </div>
+                )}
               </div>
             ))}
           </div>
-        ) : (
-          <div className="text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
-            No contestants available.
-          </div>
-        )}
+          ) : (
+            <div className="text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
+              No contestants available.
+            </div>
+          )}
+        </AccordionItem>
+      </Accordion>
         <Modal isOpen={isOpen} onOpenChange={setOpen}>
           <ModalContent className="w-96 h-96 p-4">
             <img
