@@ -46,11 +46,11 @@ function ContestDetail() {
   };
 
   const rankColors = (idx) => {
-    if(idx == 1) return "bg-yellow-500";
-    else if(idx == 2) return "bg-gray-400";
-    else if(idx == 3) return "bg-amber-700";
+    if (idx == 1) return "bg-yellow-500";
+    else if (idx == 2) return "bg-gray-400";
+    else if (idx == 3) return "bg-amber-700";
     else return "bg-fuchsia-800";
-  }
+  };
 
   const [isOpen, setOpen] = useState(false);
   const [isOpenConfirmation, setOpenConfirmation] = useState(false);
@@ -240,6 +240,15 @@ function ContestDetail() {
           updateStatus={refresh}
           showSeconds={true}
         />
+        {contest.status == "Ongoing" && (
+          <ParticipateContestModal
+            competitionId={competitionID}
+            userId={userData.principal_id}
+            fetchData={getContestant}
+            className={`w-full cursor-pointer backdrop-blur-lg `}
+            category={contest.category}
+          ></ParticipateContestModal>
+        )}
         <div className="bg-black backdrop-blur-lg bg-opacity-40 rounded-lg px-4 py-2 pb-4 gap-1 flex flex-col">
           {/* <div className="text-xl font-semibold">Description :</div> */}
 
@@ -299,6 +308,9 @@ function ContestDetail() {
                               day: "numeric",
                               month: "short",
                               year: "numeric",
+                              hour: "numeric",
+                              minute: "numeric",
+                              hour12: true,
                             })}
                           </p>
                           <p className="text-[13px] text-gray-400">
@@ -317,6 +329,9 @@ function ContestDetail() {
                               day: "numeric",
                               month: "short",
                               year: "numeric",
+                              hour: "numeric",
+                              minute: "numeric",
+                              hour12: true,
                             })}
                           </p>
                           <p className="text-[13px] text-gray-400">
@@ -335,6 +350,9 @@ function ContestDetail() {
                               day: "numeric",
                               month: "short",
                               year: "numeric",
+                              hour: "numeric",
+                              minute: "numeric",
+                              hour12: true,
                             })}
                           </p>
                           <p className="text-[13px] text-gray-400">
@@ -422,90 +440,80 @@ function ContestDetail() {
               </div>
             </Tab>
           </Tabs>
-          {contest.status == "Ongoing" && (
-            <ParticipateContestModal
-              competitionId={competitionID}
-              userId={userData.principal_id}
-              fetchData={getContestant}
-              className={`w-full ${statusColors[contest.status]} cursor-pointer`}
-              category={contest.category}
-            ></ParticipateContestModal>
-          )}
         </div>
       </div>
       <div className="lg:w-3/4 w-full bg-black backdrop-blur-lg bg-opacity-40 flex-grow rounded-lg justify-center items-center overflow-y-scroll p-6">
-      {contestants.length > 0 ? (
-              <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
-                {contestants.map((contestant, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-opacity-40 flex flex-col items-center justify-center p-3"
-                  >
-                    {idx+1 == 1 ? (
-                      <div className="">
-                        <div className="w-56 h-8 bg-yellow-500 flex justify-center items-center rounded-t-lg">Winner</div>
-                        <img
-                          src={contestant.photo_url}
-                          className="w-56 h-44 transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
-                          onClick={() => openDetailImg(contestant.photo_url)}
-                        />
-                      </div>
-                    ) : (
-                      <img
-                        src={contestant.photo_url}
-                        className="w-56 h-52 rounded-t-lg transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
-                        onClick={() => openDetailImg(contestant.photo_url)}
-                      />
-                    )}
-                    {contest.status == "Ongoing" || contest.status == "Winner Selection"  ? (
-                      <div
-                        className={`w-56 h-28 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
-                      >
-                        <div className="flex justify-between">
-                          <div className="text-lg font-semibold">
-                            {contestant.username}
-                          </div>
-                          <div className="text-sm font-semibold">
-                            1000 votes
-                          </div>
-                        </div>
-                        <div className="text-xs font-semibold">
-                          {formatTime(contestant.upload_time.toLocaleString())}
-                        </div>
-                        <div
-                          className="text-sm w-full h-8 bg-purple-900 rounded-lg mt-4 transition-transform transform hover:scale-[1.04] cursor-pointer flex justify-center items-center"
-                          onClick={() =>
-                            openVotingConfirmation(contestant.username)
-                          }
-                        >
-                          Vote
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className={`w-56 h-16 ${rankColors(idx+1)} rounded-b-lg flex flex-col py-1 px-2`}
-                      >
-                        <div className="flex justify-between">
-                          <div className="text-lg font-semibold">
-                            {contestant.username}
-                          </div>
-                          <div className="text-sm font-semibold">
-                            1000 votes
-                          </div>
-                        </div>
-                        <div className="text-xs font-semibold">
-                          {formatTime(contestant.upload_time.toLocaleString())}
-                        </div>
-                      </div>
-                    )}
+        {contestants.length > 0 ? (
+          <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
+            {contestants.map((contestant, idx) => (
+              <div
+                key={idx}
+                className="bg-opacity-40 flex flex-col items-center justify-center p-3"
+              >
+                {idx + 1 == 1 ? (
+                  <div className="">
+                    <div className="w-56 h-8 bg-yellow-500 flex justify-center items-center rounded-t-lg">
+                      Winner
+                    </div>
+                    <img
+                      src={contestant.photo_url}
+                      className="w-56 h-44 transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
+                      onClick={() => openDetailImg(contestant.photo_url)}
+                    />
                   </div>
-                ))}
+                ) : (
+                  <img
+                    src={contestant.photo_url}
+                    className="w-56 h-52 rounded-t-lg transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
+                    onClick={() => openDetailImg(contestant.photo_url)}
+                  />
+                )}
+                {contest.status == "Ongoing" ||
+                contest.status == "Winner Selection" ? (
+                  <div
+                    className={`w-56 h-28 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
+                  >
+                    <div className="flex justify-between">
+                      <div className="text-lg font-semibold">
+                        {contestant.username}
+                      </div>
+                      <div className="text-sm font-semibold">1000 votes</div>
+                    </div>
+                    <div className="text-xs font-semibold">
+                      {formatTime(contestant.upload_time.toLocaleString())}
+                    </div>
+                    <div
+                      className="text-sm w-full h-8 bg-purple-900 rounded-lg mt-4 transition-transform transform hover:scale-[1.04] cursor-pointer flex justify-center items-center"
+                      onClick={() =>
+                        openVotingConfirmation(contestant.username)
+                      }
+                    >
+                      Vote
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className={`w-56 h-16 ${rankColors(idx + 1)} rounded-b-lg flex flex-col py-1 px-2`}
+                  >
+                    <div className="flex justify-between">
+                      <div className="text-lg font-semibold">
+                        {contestant.username}
+                      </div>
+                      <div className="text-sm font-semibold">1000 votes</div>
+                    </div>
+                    <div className="text-xs font-semibold">
+                      {formatTime(contestant.upload_time.toLocaleString())}
+                    </div>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
-                No contestants available.
-              </div>
-            )}
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
+            No contestants available.
+          </div>
+        )}
         <Modal isOpen={isOpen} onOpenChange={setOpen}>
           <ModalContent className="w-96 h-96 p-4">
             <img

@@ -20,7 +20,7 @@ const Tooltip = ({ content, children, isVisible }) => {
       setIsHovered(true);
       const hideTooltip = setTimeout(() => {
         setIsHovered(false);
-      }, 1000); // Tooltip hilang setelah 1 detik
+      }, 1000);
 
       return () => clearTimeout(hideTooltip);
     }
@@ -87,7 +87,7 @@ const ColorCard = ({ contest }) => {
                   </button>
                 </div>
               }
-              isVisible={clickedColor === color} // Menampilkan tooltip saat warna diklik
+              isVisible={clickedColor === color}
             >
               <span
                 style={{ backgroundColor: color }}

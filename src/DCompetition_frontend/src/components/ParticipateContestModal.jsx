@@ -95,7 +95,7 @@ export default function ParticipateContestModal({
     <>
       <Button
         onPress={onOpen}
-        variant="solid"
+        variant="bordered"
         color="secondary"
         className={className}
       >
@@ -108,7 +108,7 @@ export default function ParticipateContestModal({
           if (!open) setPreview(null);
         }}
         scrollBehavior="inside"
-        className="bg-neutral-900 bg-opacity-70 backdrop-blur-lg"
+        className="bg-neutral-900 bg-opacity-70 backdrop-blur-3xl"
       >
         <ModalContent>
           {(onClose) => (

@@ -17,7 +17,9 @@ function BottomCard({
     const minutes = String(Math.floor((time % 3600) / 60));
     const seconds = String(Math.floor(time % 60));
     return (
-      <div className="flex gap-[5px]">
+      <div
+        className={`flex gap-[5px]  ${showSeconds && "sm:min-w-[120px] min-w-[103px] translate-x-3 sm:translate-x-4 -ml-6"}`}
+      >
         <span>
           {" "}
           {days}
@@ -98,7 +100,9 @@ function BottomCard({
     <div
       className={`relative p-4 bg-gradient-to-r ${statusGradients[status]} rounded-lg shadow-lg`}
     >
-      <div className="relative z-10 text-center text-gray-200 flex justify-center items-center gap-6 flex-row">
+      <div
+        className={`relative z-10 text-center text-gray-200 flex justify-center items-center ${showSeconds ? "gap-9" : "gap-6"} flex-row`}
+      >
         <div className="flex flex-col items-center">
           <FaUsers className={`text-3xl ${iconColors[status]}`} />
           <p className={` ${titleColors[status]}`}>Entries</p>
@@ -106,7 +110,7 @@ function BottomCard({
             {submissions} Design
           </p>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center translate-y-[0.4px]">
           <FaTrophy className={`text-3xl ${iconColors[status]}`} />
           <p className={` ${titleColors[status]}`}>Reward</p>
           <p className={`text-sm sm:text-lg font-bold ${titleColors[status]}`}>

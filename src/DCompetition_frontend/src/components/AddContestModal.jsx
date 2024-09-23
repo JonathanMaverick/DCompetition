@@ -238,7 +238,7 @@ export default function AddContestModal({ userId, fetchData }) {
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
         size="3xl"
-        className="bg-neutral-900 bg-opacity-70 backdrop-blur-lg"
+        className="bg-neutral-900 bg-opacity-70 backdrop-blur-3xl"
       >
         <ModalContent>
           {(onClose) => (
