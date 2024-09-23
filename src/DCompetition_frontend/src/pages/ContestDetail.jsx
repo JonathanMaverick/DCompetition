@@ -350,63 +350,74 @@ function ContestDetail() {
 
             <Tab key="additional" title="More Details" className="text-md">
               <div className="flex flex-col gap-3">
-                <Card className="bg-neutral-900 bg-opacity-50">
-                  <CardBody>
-                    <div>
-                      <span className="font-semibold">Brand Name</span>{" "}
-                      <p className="text-sm">{contest.industry_name}</p>
-                    </div>
-                  </CardBody>
-                </Card>
-                <Card className="bg-neutral-900 bg-opacity-50">
-                  <CardBody>
-                    <div>
-                      <span className="font-semibold">
-                        Additional Information
-                      </span>{" "}
-                      <p className="text-sm">
-                        {contest.additional_information}
-                      </p>
-                    </div>
-                  </CardBody>
-                </Card>
-                <ColorCard contest={contest} />
-                <Card className="bg-neutral-900 bg-opacity-50">
-                  <CardBody>
-                    <div>
-                      <span className="font-semibold block mb-2">
-                        Attachments
-                      </span>
-                      <div className="flex flex-col gap-4">
-                        {contest.file.map((file, fileIndex) => (
-                          <div
-                            className="flex items-center justify-between bg-neutral-800 rounded-md p-2"
-                            key={fileIndex}
-                          >
-                            <div className="flex items-center gap-4">
-                              <img
-                                src={changeToUrl(file)}
-                                className="w-8 h-8 ml-1 object-cover"
-                                alt={`file-preview-${fileIndex}`}
-                              />
-                              <span className="text-sm text-white">
-                                {file.name || `Attchment #${fileIndex + 1}`}
-                              </span>
-                            </div>
-
-                            <a
-                              href={changeToUrl(file)}
-                              download={file.name || `attachment-${fileIndex}`}
-                              className="text-gray-500 hover:text-gray-300 transition-all duration-250 rounded-full mt-0.5"
-                            >
-                              <MdFileDownload className="text-2xl mr-1" />
-                            </a>
-                          </div>
-                        ))}
+                {contest.industry_name != "" && (
+                  <Card className="bg-neutral-900 bg-opacity-50">
+                    <CardBody>
+                      <div>
+                        <span className="font-semibold">Brand Name</span>{" "}
+                        <p className="text-sm">{contest.industry_name}</p>
                       </div>
-                    </div>
-                  </CardBody>
-                </Card>
+                    </CardBody>
+                  </Card>
+                )}
+
+                {contest.additional_information != "" && (
+                  <Card className="bg-neutral-900 bg-opacity-50">
+                    <CardBody>
+                      <div>
+                        <span className="font-semibold">
+                          Additional Information
+                        </span>{" "}
+                        <p className="text-sm">
+                          {contest.additional_information}
+                        </p>
+                      </div>
+                    </CardBody>
+                  </Card>
+                )}
+
+                <ColorCard contest={contest} />
+
+                {contest.file.length > 0 && (
+                  <Card className="bg-neutral-900 bg-opacity-50">
+                    <CardBody>
+                      <div>
+                        <span className="font-semibold block mb-2">
+                          Attachments
+                        </span>
+                        <div className="flex flex-col gap-4">
+                          {contest.file.map((file, fileIndex) => (
+                            <div
+                              className="flex items-center justify-between bg-neutral-800 rounded-md p-2"
+                              key={fileIndex}
+                            >
+                              <div className="flex items-center gap-4">
+                                <img
+                                  src={changeToUrl(file)}
+                                  className="w-8 h-8 ml-1 object-cover"
+                                  alt={`file-preview-${fileIndex}`}
+                                />
+                                <span className="text-sm text-white">
+                                  {file.name || `Attchment #${fileIndex + 1}`}
+                                </span>
+                              </div>
+
+                              <a
+                                href={changeToUrl(file)}
+                                download={
+                                  file.name || `attachment-${fileIndex}`
+                                }
+                                className="text-gray-500 hover:text-gray-300 transition-all duration-250 rounded-full mt-0.5"
+                              >
+                                <MdFileDownload className="text-2xl mr-1" />
+                              </a>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </CardBody>
+                  </Card>
+                )}
               </div>
             </Tab>
           </Tabs>
