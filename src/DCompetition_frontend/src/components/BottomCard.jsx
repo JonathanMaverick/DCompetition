@@ -8,6 +8,7 @@ function BottomCard({
   status,
   endDate,
   updateStatus,
+  showSeconds,
 }) {
   const formatTime = (time) => {
     if (isNaN(time)) return "-";
@@ -16,12 +17,28 @@ function BottomCard({
     const minutes = String(Math.floor((time % 3600) / 60));
     const seconds = String(Math.floor(time % 60));
     return (
-      <>
-        {days}
-        <span className="text-[11px]">D</span> {hours}
-        <span className="text-[10px]">H</span> {minutes}
-        <span className="text-[10px]">M</span>
-      </>
+      <div className="flex gap-[5px]">
+        <span>
+          {" "}
+          {days}
+          <span className="text-[11px]">D</span>
+        </span>
+        <span>
+          {hours}
+          <span className="text-[10px]">H</span>
+        </span>
+        <span>
+          {minutes}
+          <span className="text-[10px]">M</span>
+        </span>
+
+        {showSeconds && (
+          <span>
+            {seconds}
+            <span className="text-[10px]">S</span>
+          </span>
+        )}
+      </div>
     );
   };
 
