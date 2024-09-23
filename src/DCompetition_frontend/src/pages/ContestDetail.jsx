@@ -78,6 +78,7 @@ function ContestDetail() {
         principal_id: cont.principal_id,
         competition_id: Number(cont.competition_id),
         photo_url: changeToUrl(cont.photo_url),
+        upload_time: convertDate(Number(cont.upload_time))
       }));
       setContestants(ct);
     } catch (error) {
@@ -172,7 +173,7 @@ function ContestDetail() {
         </div>
         <BottomCard
           reward={Number(contest.reward)}
-          submissions="20"
+          submissions={contestants.length}
           deadline={contest.deadline}
           status={contest.status}
           endDate={contest.endDate}
@@ -249,7 +250,7 @@ function ContestDetail() {
                   <div className="text-lg font-semibold">
                     {contestant.username}
                   </div>
-                  <div className="text-xs font-semibold">ganteng</div>
+                  <div className="text-xs font-semibold">{contestant.upload_time.toLocaleString()}</div>
                 </div>
               </div>
             ))}

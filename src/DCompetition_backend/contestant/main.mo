@@ -3,6 +3,7 @@ import Nat "mo:base/Nat";
 import Blob "mo:base/Blob";
 import Text "mo:base/Text";
 import Array "mo:base/Array";
+import Time "mo:base/Time";
 import Contestant "types";
 
 actor Main {
@@ -13,12 +14,13 @@ actor Main {
 
     public func addContestant(principal_id : Text, competition_id : Nat, photoUrl : Blob) : async () {
         currentId := currentId + 1;
-
+        let now = Time.now();
         let newContestant : Contestant.Contestant = {
             contestant_id = currentId;
             principal_id = principal_id;
             competition_id = competition_id;
             photo_url = photoUrl;
+            upload_time = now;
         };
 
         tree.put(currentId, newContestant);

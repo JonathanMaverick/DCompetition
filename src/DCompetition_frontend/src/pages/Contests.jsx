@@ -7,6 +7,8 @@ import BottomCard from "../components/BottomCard";
 import ContestFilter from "../components/ContestFilter";
 import { convertDate } from "../tools/date";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
+import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
+
 
 function Status({ status }) {
   const statusColors = {
@@ -30,6 +32,7 @@ function Contests() {
   const [filteredContests, setFilteredContests] = useState([]);
   const [loading, setLoading] = useState(true);
   const { userData } = useUserAuth();
+  const [contestants, setContestants] = useState([])
 
   const getContest = async () => {
     const contests = await DContest_backend_contest.getAllContest();
@@ -52,7 +55,6 @@ function Contests() {
         status = "Completed";
       }
 
-      console.log(comp);
 
       return {
         ...comp,
@@ -96,7 +98,43 @@ function Contests() {
     });
   };
 
-  const changeToUrl = (picture) => {
+
+  useEffect(() => {
+    const getData = async() => {
+      const contestant = await DContest_backend_contestant.getAllContestants()
+      setContestants(contestant)
+    }
+
+    getData()
+  },[])
+  
+  filteredContests.forEach((c) => {
+    c.contestants = [];
+  
+    const matchedContestants = contestants.filter((ct) => Number(ct.competition_id) === c.contest_id);
+  
+    if (matchedContestants.length > 0) {
+
+      const sortedContestants = matchedContestants.sort((a, b) => {
+        return convertDate(Number(a.upload_time)) - convertDate(Number(b.upload_time));
+      });
+  
+      const earliestContestants = sortedContestants.slice(0, 4);
+  
+      c.contestants.push(...earliestContestants);
+  
+      const remainingContestants = sortedContestants.slice(4);
+  
+      c.contestants.push(...remainingContestants);
+    }
+  });
+  
+  
+  
+  
+
+  
+  function changeToUrl(picture) {
     let url = "";
     if (picture) {
       let blob = new Blob([picture], {
@@ -105,7 +143,7 @@ function Contests() {
       url = URL.createObjectURL(blob);
     }
     return url;
-  };
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 text-gray-100">
@@ -172,14 +210,25 @@ function Contests() {
                     <Status status={status} />
                     <CardBody className="p-4 space-y-4">
                       <div className="grid grid-cols-2 gap-2 mb-2">
-                        {Array.from({ length: 4 }).map((_, imgIndex) => (
+                      {Array.from({ length: 4 }).map((_, imgIndex) => (
+                      <>
+                        {contest.contestants[imgIndex] && contest.contestants[imgIndex].photo_url ? (
+                          <img
+                            key={imgIndex}
+                            src={changeToUrl(contest.contestants[imgIndex].photo_url)}
+                            alt={`Placeholder ${imgIndex + 1}`}
+                            className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm"
+                          />
+                        ) : (
                           <img
                             key={imgIndex}
                             src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
                             alt={`Placeholder ${imgIndex + 1}`}
                             className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm"
                           />
-                        ))}
+                        )}
+                      </>
+                    ))}
                       </div>
                       <div className="flex flex-col">
                         <div className="flex flex-col ml-0.5">
@@ -208,7 +257,7 @@ function Contests() {
                         </ul> */}
                         <BottomCard
                           reward={contest.reward}
-                          submissions="20"
+                          submissions={contest.contestants.length}
                           deadline={contest.deadline}
                           status={status}
                           endDate={contest.endDate}
