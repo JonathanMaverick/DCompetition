@@ -9,7 +9,6 @@ import { convertDate } from "../tools/date";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
 import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
 
-
 function Status({ status }) {
   const statusColors = {
     "Not Started": "bg-gray-800",
@@ -32,7 +31,7 @@ function Contests() {
   const [filteredContests, setFilteredContests] = useState([]);
   const [loading, setLoading] = useState(true);
   const { userData } = useUserAuth();
-  const [contestants, setContestants] = useState([])
+  const [contestants, setContestants] = useState([]);
 
   const getContest = async () => {
     const contests = await DContest_backend_contest.getAllContest();
@@ -54,7 +53,6 @@ function Contests() {
       } else if (currentDate >= votingEndDate) {
         status = "Completed";
       }
-
 
       return {
         ...comp,
@@ -98,42 +96,40 @@ function Contests() {
     });
   };
 
-
   useEffect(() => {
-    const getData = async() => {
-      const contestant = await DContest_backend_contestant.getAllContestants()
-      setContestants(contestant)
-    }
+    const getData = async () => {
+      const contestant = await DContest_backend_contestant.getAllContestants();
+      setContestants(contestant);
+    };
 
-    getData()
-  },[])
-  
+    getData();
+  }, []);
+
   filteredContests.forEach((c) => {
     c.contestants = [];
-  
-    const matchedContestants = contestants.filter((ct) => Number(ct.competition_id) === c.contest_id);
-  
-    if (matchedContestants.length > 0) {
 
+    const matchedContestants = contestants.filter(
+      (ct) => Number(ct.competition_id) === c.contest_id
+    );
+
+    if (matchedContestants.length > 0) {
       const sortedContestants = matchedContestants.sort((a, b) => {
-        return convertDate(Number(a.upload_time)) - convertDate(Number(b.upload_time));
+        return (
+          convertDate(Number(a.upload_time)) -
+          convertDate(Number(b.upload_time))
+        );
       });
-  
+
       const earliestContestants = sortedContestants.slice(0, 4);
-  
+
       c.contestants.push(...earliestContestants);
-  
+
       const remainingContestants = sortedContestants.slice(4);
-  
+
       c.contestants.push(...remainingContestants);
     }
   });
-  
-  
-  
-  
 
-  
   function changeToUrl(picture) {
     let url = "";
     if (picture) {
@@ -206,30 +202,71 @@ function Contests() {
               const status = contest.status;
               return (
                 <Link to={`/contestDetail/${contest.contest_id}`} key={index}>
-                  <Card className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer">
+                  <Card className="bg-black backdrop-blur-lg bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer">
                     <Status status={status} />
                     <CardBody className="p-4 space-y-4">
-                      <div className="grid grid-cols-2 gap-2 mb-2">
-                      {Array.from({ length: 4 }).map((_, imgIndex) => (
-                      <>
-                        {contest.contestants[imgIndex] && contest.contestants[imgIndex].photo_url ? (
-                          <img
-                            key={imgIndex}
-                            src={changeToUrl(contest.contestants[imgIndex].photo_url)}
-                            alt={`Placeholder ${imgIndex + 1}`}
-                            className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm"
-                          />
-                        ) : (
-                          <img
-                            key={imgIndex}
-                            src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                            alt={`Placeholder ${imgIndex + 1}`}
-                            className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm"
-                          />
-                        )}
-                      </>
-                    ))}
-                      </div>
+                      {(contest.category === "logo" ||
+                        contest.category === "design") && (
+                        <div className="grid grid-cols-2 gap-2 mb-2">
+                          {Array.from({ length: 4 }).map((_, imgIndex) => (
+                            <>
+                              {contest.contestants[imgIndex] &&
+                              contest.contestants[imgIndex].photo_url ? (
+                                <img
+                                  key={imgIndex}
+                                  src={changeToUrl(
+                                    contest.contestants[imgIndex].photo_url
+                                  )}
+                                  alt={`Placeholder ${imgIndex + 1}`}
+                                  className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-square"
+                                />
+                              ) : (
+                                <div
+                                  key={imgIndex}
+                                  className="w-full h-auto min-h-24 bg-neutral-700 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-square"
+                                >
+                                  <img
+                                    src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/placeholder.png?alt=media&token=018b0ef8-2be9-4645-a2d1-d6ea9d34838d"
+                                    alt=""
+                                  />
+                                </div>
+                              )}
+                            </>
+                          ))}
+                        </div>
+                      )}
+
+                      {(contest.category === "poster" ||
+                        contest.category === "infographic") && (
+                        <div className="grid grid-cols-2 gap-2 mb-2">
+                          {Array.from({ length: 2 }).map((_, imgIndex) => (
+                            <>
+                              {contest.contestants[imgIndex] &&
+                              contest.contestants[imgIndex].photo_url ? (
+                                <img
+                                  key={imgIndex}
+                                  src={changeToUrl(
+                                    contest.contestants[imgIndex].photo_url
+                                  )}
+                                  alt={`Placeholder ${imgIndex + 1}`}
+                                  className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-[1/2.045]"
+                                />
+                              ) : (
+                                <div
+                                  key={imgIndex}
+                                  className="w-full h-auto min-h-24 bg-neutral-700 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
+                                >
+                                  <img
+                                    src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/placeholder.png?alt=media&token=018b0ef8-2be9-4645-a2d1-d6ea9d34838d"
+                                    alt=""
+                                  />
+                                </div>
+                              )}
+                            </>
+                          ))}
+                        </div>
+                      )}
+
                       <div className="flex flex-col">
                         <div className="flex flex-col ml-0.5">
                           <h2 className="text-2xl font-bold text-gray-200 truncate">

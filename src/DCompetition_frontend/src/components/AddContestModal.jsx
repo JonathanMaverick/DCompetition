@@ -37,7 +37,7 @@ export default function AddContestModal({ userId, fetchData }) {
   const categories = [
     { label: "Logo", value: "logo" },
     { label: "Poster", value: "poster" },
-    { label: "Design", value: "design" },
+    // { label: "Design", value: "design" },
     { label: "Infographic", value: "infographic" },
   ];
 

@@ -11,7 +11,7 @@ function ContestFilter({ contests, setFilteredContests }) {
     { label: "All Category", value: "" },
     { label: "Logo", value: "logo" },
     { label: "Poster", value: "poster" },
-    { label: "Design", value: "design" },
+    // { label: "Design", value: "design" },
     { label: "Infographic", value: "infographic" },
   ];
 
