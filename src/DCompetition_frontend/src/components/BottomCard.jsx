@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FaClock, FaTrophy, FaUsers } from "react-icons/fa";
+import moment from "moment";
 
 function BottomCard({
   reward,
@@ -10,18 +11,26 @@ function BottomCard({
   updateStatus,
   showSeconds,
 }) {
-  const formatTime = (time) => {
-    if (isNaN(time)) return "-";
-    const days = String(Math.floor(time / (3600 * 24)));
-    const hours = String(Math.floor((time % (3600 * 24)) / 3600));
-    const minutes = String(Math.floor((time % 3600) / 60));
-    const seconds = String(Math.floor(time % 60));
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const requestRef = useRef();
+
+  function calculateTimeLeft() {
+    const now = new Date();
+    const deadlineDate = new Date(deadline);
+    return Math.max(Math.floor((deadlineDate - now) / 1000), 0);
+  }
+
+  function formatTime(duration) {
+    const days = Math.floor(duration / (3600 * 24));
+    const hours = Math.floor((duration % (3600 * 24)) / 3600);
+    const minutes = Math.floor((duration % 3600) / 60);
+    const seconds = duration % 60;
+
     return (
       <div
-        className={`flex gap-[5px]  ${showSeconds && "sm:min-w-[120px] min-w-[103px] translate-x-3 sm:translate-x-4 -ml-6"}`}
+        className={`flex gap-[5px] ${showSeconds && "sm:min-w-[120px] min-w-[103px] translate-x-3 sm:translate-x-4 -ml-6"}`}
       >
         <span>
-          {" "}
           {days}
           <span className="text-[11px]">D</span>
         </span>
@@ -33,7 +42,6 @@ function BottomCard({
           {minutes}
           <span className="text-[10px]">M</span>
         </span>
-
         {showSeconds && (
           <span>
             {seconds}
@@ -42,25 +50,29 @@ function BottomCard({
         )}
       </div>
     );
-  };
+  }
 
-  const calculateTimeLeft = () => Math.max((deadline - new Date()) / 1000, 0);
-
-  const [timeLeft, setTimeLeft] = useState(formatTime(calculateTimeLeft()));
+  function updateTimer() {
+    const remainingTime = calculateTimeLeft();
+    setTimeLeft(remainingTime);
+    if (remainingTime <= 0) {
+      updateStatus();
+    }
+  }
 
   useEffect(() => {
     if (status !== "Completed") {
-      const interval = setInterval(() => {
-        const remainingTime = calculateTimeLeft();
-        setTimeLeft(formatTime(remainingTime));
-        if (remainingTime === 0) {
-          clearInterval(interval);
-          updateStatus();
-        }
-      }, 1000);
+      updateTimer(); // Initial call to set the correct time left immediately
+
+      function animate() {
+        updateTimer();
+        requestRef.current = requestAnimationFrame(animate);
+      }
+
+      requestRef.current = requestAnimationFrame(animate);
 
       return () => {
-        clearInterval(interval);
+        cancelAnimationFrame(requestRef.current);
       };
     }
   }, [deadline, status, updateStatus]);
@@ -87,13 +99,7 @@ function BottomCard({
   };
 
   const formatEndDate = (endDate) => {
-    console.log(endDate);
-    const date = new Date(endDate);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+    return moment(endDate).format("MMM D, YYYY");
   };
 
   return (
@@ -138,7 +144,7 @@ function BottomCard({
               <p
                 className={`text-sm sm:text-lg font-bold ${titleColors[status]} translate-y-[1px]`}
               >
-                {timeLeft}
+                {formatTime(timeLeft)}
               </p>
             </>
           )}

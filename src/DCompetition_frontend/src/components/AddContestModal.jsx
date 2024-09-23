@@ -404,7 +404,7 @@ export default function AddContestModal({ userId, fetchData }) {
                             onChange={(e) =>
                               handleFileChange(index, e.target.files[0])
                             }
-                            className="w-full"
+                            variant="bordered"
                           />
                           <Button
                             onPress={() => removeFileField(index)}
