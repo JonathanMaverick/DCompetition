@@ -400,7 +400,7 @@ export default function AddContestModal({ userId, fetchData }) {
                         <div key={index} className="flex items-center">
                           <Input
                             type="file"
-                            accept="image/*,.pdf,.doc,.docx,.ppt,.pptx"
+                            accept="image/*"
                             onChange={(e) =>
                               handleFileChange(index, e.target.files[0])
                             }

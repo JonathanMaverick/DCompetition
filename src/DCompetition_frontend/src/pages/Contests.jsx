@@ -224,7 +224,7 @@ function Contests() {
                               ) : (
                                 <div
                                   key={imgIndex}
-                                  className="w-full h-auto min-h-24 bg-neutral-800 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-square"
+                                  className="w-full h-auto min-h-24 bg-neutral-800 shadow-sm opacity-50 rounded-md flex justify-center items-center aspect-square"
                                 >
                                   <img src={img_placeholder} alt="" />
                                 </div>

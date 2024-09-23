@@ -14,10 +14,15 @@ import {
   ModalContent,
   Tabs,
   Tab,
+  Tooltip,
+  Snippet,
 } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
 import ParticipateContestModal from "../components/ParticipateContestModal";
+import { MdContentCopy, MdFileDownload } from "react-icons/md";
 import { idlFactory } from "../../../declarations/DContest_backend_user";
+import toast from "react-hot-toast";
+import ColorCard from "../components/ColorCard";
 
 function ContestDetail() {
   const statusColors = {
@@ -214,7 +219,7 @@ function ContestDetail() {
           endDate={contest.endDate}
           updateStatus={refresh}
         />
-        <div className="bg-black backdrop-blur-lg bg-opacity-40 rounded-lg px-4 py-2 gap-1 flex flex-col">
+        <div className="bg-black backdrop-blur-lg bg-opacity-40 rounded-lg px-4 py-2 pb-4 gap-1 flex flex-col">
           {/* <div className="text-xl font-semibold">Description :</div> */}
 
           <Tabs
@@ -237,35 +242,152 @@ function ContestDetail() {
                 }}
               ></div>
             </Tab>
-            <Tab key="timeline" title="Timeline" className="text-md">
-              <Card>
+            <Tab
+              key="timeline"
+              title="Timeline"
+              className="text-md flex flex-col gap-6"
+            >
+              <Card className="bg-neutral-900 bg-opacity-50">
                 <CardBody>
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur.
+                  <div className="relative flex ml-4">
+                    <div className="flex flex-col items-center pt-[26px]">
+                      <div className="w-4 h-4 bg-white rounded-full"></div>
+                      <div className="w-0.5 h-[91px] bg-white"></div>
+                      <div className="w-4 h-4 bg-white rounded-full"></div>
+                      <div className="w-0.5 h-[91px] bg-white"></div>
+                      <div className="w-4 h-4 bg-white rounded-full"></div>
+                    </div>
+
+                    <div className="flex flex-col gap-6">
+                      <div className="flex items-start">
+                        <div className="pl-8">
+                          <span className="font-semibold">Start Date</span>
+                          <p className="text-sm">
+                            {contest.startDate.toLocaleDateString("en-US", {
+                              weekday: "long",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
+                          <p className="text-[13px] text-gray-400">
+                            This is the time when the contest starts. Users can
+                            begin participating by uploading their designs.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start">
+                        <div className="pl-8">
+                          <span className="font-semibold">End Date</span>
+                          <p className="text-sm">
+                            {contest.endDate.toLocaleDateString("en-US", {
+                              weekday: "long",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
+                          <p className="text-[13px] text-gray-400">
+                            This is the deadline for users to upload their
+                            designs.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start relative">
+                        <div className="pl-8">
+                          <span className="font-semibold">End Voting Date</span>
+                          <p className="text-sm">
+                            {contest.votingEndDate.toLocaleDateString("en-US", {
+                              weekday: "long",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
+                          <p className="text-[13px] text-gray-400">
+                            This is the deadline for users to vote. After this,
+                            the contest will be marked as completed.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </CardBody>
               </Card>
             </Tab>
+
             <Tab key="additional" title="More Details" className="text-md">
-              <Card>
-                <CardBody>
-                  Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                  qui officia deserunt mollit anim id est laborum.
-                </CardBody>
-              </Card>
+              <div className="flex flex-col gap-3">
+                <Card className="bg-neutral-900 bg-opacity-50">
+                  <CardBody>
+                    <div>
+                      <span className="font-semibold">Brand Name</span>{" "}
+                      <p className="text-sm">{contest.industry_name}</p>
+                    </div>
+                  </CardBody>
+                </Card>
+                <Card className="bg-neutral-900 bg-opacity-50">
+                  <CardBody>
+                    <div>
+                      <span className="font-semibold">
+                        Additional Information
+                      </span>{" "}
+                      <p className="text-sm">
+                        {contest.additional_information}
+                      </p>
+                    </div>
+                  </CardBody>
+                </Card>
+                <ColorCard contest={contest} />
+                <Card className="bg-neutral-900 bg-opacity-50">
+                  <CardBody>
+                    <div>
+                      <span className="font-semibold block mb-2">
+                        Attachments
+                      </span>
+                      <div className="flex flex-col gap-4">
+                        {contest.file.map((file, fileIndex) => (
+                          <div
+                            className="flex items-center justify-between bg-neutral-800 rounded-md p-2"
+                            key={fileIndex}
+                          >
+                            <div className="flex items-center gap-4">
+                              <img
+                                src={changeToUrl(file)}
+                                className="w-8 h-8 ml-1 object-cover"
+                                alt={`file-preview-${fileIndex}`}
+                              />
+                              <span className="text-sm text-white">
+                                {file.name || `Attchment #${fileIndex + 1}`}
+                              </span>
+                            </div>
+
+                            <a
+                              href={changeToUrl(file)}
+                              download={file.name || `attachment-${fileIndex}`}
+                              className="text-gray-500 hover:text-gray-300 transition-all duration-250 rounded-full mt-0.5"
+                            >
+                              <MdFileDownload className="text-2xl mr-1" />
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </div>
             </Tab>
           </Tabs>
+          <ParticipateContestModal
+            competitionId={competitionID}
+            userId={userData.principal_id}
+            fetchData={getContestant}
+            className={`w-full ${statusColors[contest.status]} cursor-pointer`}
+            category={contest.category}
+          ></ParticipateContestModal>
         </div>
-        <ParticipateContestModal
-          competitionId={competitionID}
-          userId={userData.principal_id}
-          fetchData={getContestant}
-          className={`w-full ${statusColors[contest.status]} transition-transform transform hover:scale-[1.02] cursor-pointer`}
-          category={contest.category}
-        >
-          Join
-        </ParticipateContestModal>
       </div>
       <div className="lg:w-3/4 w-full bg-black backdrop-blur-lg bg-opacity-40 flex-grow rounded-lg justify-center items-center overflow-y-scroll p-6">
         {contestants.length > 0 ? (
