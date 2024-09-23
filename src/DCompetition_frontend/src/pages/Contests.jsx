@@ -223,7 +223,7 @@ function Contests() {
                               ) : (
                                 <div
                                   key={imgIndex}
-                                  className="w-full h-auto min-h-24 bg-neutral-700 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-square"
+                                  className="w-full h-auto min-h-24 bg-neutral-800 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-square"
                                 >
                                   <img
                                     src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/placeholder.png?alt=media&token=018b0ef8-2be9-4645-a2d1-d6ea9d34838d"
@@ -254,7 +254,7 @@ function Contests() {
                               ) : (
                                 <div
                                   key={imgIndex}
-                                  className="w-full h-auto min-h-24 bg-neutral-700 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
+                                  className="w-full h-auto min-h-24 bg-neutral-800 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
                                 >
                                   <img
                                     src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/placeholder.png?alt=media&token=018b0ef8-2be9-4645-a2d1-d6ea9d34838d"
