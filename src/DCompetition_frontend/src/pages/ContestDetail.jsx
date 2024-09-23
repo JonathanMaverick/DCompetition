@@ -433,50 +433,7 @@ function ContestDetail() {
         </div>
       </div>
       <div className="lg:w-3/4 w-full bg-black backdrop-blur-lg bg-opacity-40 flex-grow rounded-lg justify-center items-center overflow-y-scroll p-6">
-        <Accordion
-          defaultExpandedKeys={[contest.status === "Completed" ? "1" : "2"]}
-        >
-          {contest.status == "Completed" && (
-            <AccordionItem key="1" aria-label="Results" title="Results">
-              {/* <div className="text-center text-3xl font-semibold">Results</div> */}
-              <Table
-                removeWrapper
-                aria-label="Example static collection table"
-                className="mt-3"
-              >
-                <TableHeader>
-                  <TableColumn className="bg-fuchsia-600 text-white text-center">
-                    Rank
-                  </TableColumn>
-                  <TableColumn className="bg-fuchsia-600 text-white text-center">
-                    Username
-                  </TableColumn>
-                  <TableColumn className="bg-fuchsia-600 text-white text-center">
-                    Total Vote
-                  </TableColumn>
-                </TableHeader>
-                <TableBody>
-                  {Array.from({ length: 7 }).map((_, idx) => (
-                    <TableRow key={idx} className="h-14">
-                      <TableCell className="w-full flex justify-center items-center">
-                        <div
-                          className={`w-9 h-9 rounded-full ${rankColors[idx + 1]} flex justify-center items-center`}
-                        >
-                          {idx + 1}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        Username {idx}
-                      </TableCell>
-                      <TableCell className="text-center">{100 - idx}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </AccordionItem>
-          )}
-          <AccordionItem key="2" aria-label="Contestant" title="Contestant">
-            {contestants.length > 0 ? (
+      {contestants.length > 0 ? (
               <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
                 {contestants.map((contestant, idx) => (
                   <div
@@ -511,8 +468,13 @@ function ContestDetail() {
                       <div
                         className={`w-56 h-16 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
                       >
-                        <div className="text-lg font-semibold">
-                          {contestant.username}
+                        <div className="flex justify-between">
+                          <div className="text-lg font-semibold">
+                            {contestant.username}
+                          </div>
+                          <div className="text-sm font-semibold">
+                            1000 votes
+                          </div>
                         </div>
                         <div className="text-xs font-semibold">
                           {formatTime(contestant.upload_time.toLocaleString())}
@@ -527,8 +489,6 @@ function ContestDetail() {
                 No contestants available.
               </div>
             )}
-          </AccordionItem>
-        </Accordion>
         <Modal isOpen={isOpen} onOpenChange={setOpen}>
           <ModalContent className="w-96 h-96 p-4">
             <img
