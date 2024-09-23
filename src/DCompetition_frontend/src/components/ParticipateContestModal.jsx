@@ -108,6 +108,7 @@ export default function ParticipateContestModal({
           if (!open) setPreview(null);
         }}
         scrollBehavior="inside"
+        className="bg-neutral-900 bg-opacity-70 backdrop-blur-lg"
       >
         <ModalContent>
           {(onClose) => (
