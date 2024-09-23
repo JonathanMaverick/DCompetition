@@ -45,11 +45,12 @@ function ContestDetail() {
     Completed: "bg-fuchsia-800",
   };
 
-  const rankColors = {
-    1: "bg-yellow-500",
-    2: "bg-gray-400",
-    3: "bg-amber-700",
-  };
+  const rankColors = (idx) => {
+    if(idx == 1) return "bg-yellow-500";
+    else if(idx == 2) return "bg-gray-400";
+    else if(idx == 3) return "bg-amber-700";
+    else return "bg-fuchsia-800";
+  }
 
   const [isOpen, setOpen] = useState(false);
   const [isOpenConfirmation, setOpenConfirmation] = useState(false);
@@ -440,17 +441,33 @@ function ContestDetail() {
                     key={idx}
                     className="bg-opacity-40 flex flex-col items-center justify-center p-3"
                   >
-                    <img
-                      src={contestant.photo_url}
-                      className="w-56 h-52 rounded-t-lg transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
-                      onClick={() => openDetailImg(contestant.photo_url)}
-                    />
-                    {contest.status == "Winner Selection" ? (
+                    {idx+1 == 1 ? (
+                      <div className="">
+                        <div className="w-56 h-8 bg-yellow-500 flex justify-center items-center rounded-t-lg">Winner</div>
+                        <img
+                          src={contestant.photo_url}
+                          className="w-56 h-44 transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
+                          onClick={() => openDetailImg(contestant.photo_url)}
+                        />
+                      </div>
+                    ) : (
+                      <img
+                        src={contestant.photo_url}
+                        className="w-56 h-52 rounded-t-lg transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
+                        onClick={() => openDetailImg(contestant.photo_url)}
+                      />
+                    )}
+                    {contest.status == "Ongoing" || contest.status == "Winner Selection"  ? (
                       <div
                         className={`w-56 h-28 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
                       >
-                        <div className="text-lg font-semibold">
-                          {contestant.username}
+                        <div className="flex justify-between">
+                          <div className="text-lg font-semibold">
+                            {contestant.username}
+                          </div>
+                          <div className="text-sm font-semibold">
+                            1000 votes
+                          </div>
                         </div>
                         <div className="text-xs font-semibold">
                           {formatTime(contestant.upload_time.toLocaleString())}
@@ -466,7 +483,7 @@ function ContestDetail() {
                       </div>
                     ) : (
                       <div
-                        className={`w-56 h-16 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
+                        className={`w-56 h-16 ${rankColors(idx+1)} rounded-b-lg flex flex-col py-1 px-2`}
                       >
                         <div className="flex justify-between">
                           <div className="text-lg font-semibold">
