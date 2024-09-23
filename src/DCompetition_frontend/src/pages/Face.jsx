@@ -19,10 +19,10 @@ const Face = () => {
   const [showCaptureEffect, setShowCaptureEffect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasCamera, setHasCamera] = useState(true);
-  const { register } = useContext(RegisterContext)
+  const { register } = useContext(RegisterContext);
   const navigate = useNavigate();
 
-  console.log(register)
+  console.log(register);
   const videoConstraints = {
     width: 500,
     height: 500,
@@ -37,7 +37,7 @@ const Face = () => {
           (device) => device.kind === "videoinput"
         );
         if (videoDevices.length === 0) {
-          setHasCamera(false); 
+          setHasCamera(false);
         }
       } catch (error) {
         console.error("Error checking for camera devices:", error);
@@ -115,15 +115,15 @@ const Face = () => {
           register.username,
           register.email,
           register.profile_pic
-        )
-        navigate("/");
-        toast.success("Success!", {
-          style: {
-            borderRadius: "8px",
-            background: "#000",
-            color: "#fff",
-          },
-        });
+        );
+        window.location.href = "/";
+        // toast.success("Success!", {
+        //   style: {
+        //     borderRadius: "8px",
+        //     background: "#000",
+        //     color: "#fff",
+        //   },
+        // });
       } else {
         toast.error(data.message, {
           style: {
@@ -174,12 +174,12 @@ const Face = () => {
       >
         <Card className="w-full max-w-lg m-auto shadow-lg p-4 bg-black bg-opacity-40 backdrop-blur-md rounded-lg">
           <CardBody>
-            <h1 className="text-3xl text-center font-bold mb-4">
+            <h1 className="text-2xl text-center font-semibold mb-4">
               Check If Your Face Has Already Been Used
             </h1>
             <div className="relative">
               {showGuidance && (
-                <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-70 flex items-end justify-center z-10 pb-6">
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-black/0 to-black/90 flex items-end justify-center z-10 pb-6">
                   <div className="text-white text-center z-20">
                     <h2 className="text-2xl font-semibold">
                       Align your face within the frame

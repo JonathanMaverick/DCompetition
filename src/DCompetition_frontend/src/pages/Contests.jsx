@@ -8,6 +8,7 @@ import ContestFilter from "../components/ContestFilter";
 import { convertDate } from "../tools/date";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
 import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
+import img_placeholder from "../../public/img_placeholder.png";
 
 function Status({ status }) {
   const statusColors = {
@@ -225,10 +226,7 @@ function Contests() {
                                   key={imgIndex}
                                   className="w-full h-auto min-h-24 bg-neutral-800 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-square"
                                 >
-                                  <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/placeholder.png?alt=media&token=018b0ef8-2be9-4645-a2d1-d6ea9d34838d"
-                                    alt=""
-                                  />
+                                  <img src={img_placeholder} alt="" />
                                 </div>
                               )}
                             </>
@@ -256,10 +254,7 @@ function Contests() {
                                   key={imgIndex}
                                   className="w-full h-auto min-h-24 bg-neutral-800 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
                                 >
-                                  <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/linkasa-a354b.appspot.com/o/placeholder.png?alt=media&token=018b0ef8-2be9-4645-a2d1-d6ea9d34838d"
-                                    alt=""
-                                  />
+                                  <img src={img_placeholder} alt="" />
                                 </div>
                               )}
                             </>
