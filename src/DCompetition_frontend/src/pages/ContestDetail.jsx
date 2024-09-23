@@ -28,6 +28,8 @@ function ContestDetail() {
   };
 
   const [isOpen, setOpen] = useState(false);
+  const [isOpenConfirmation, setOpenConfirmation] = useState(false);
+  const [contestantName, setContestantName] = useState('');
   const [urlImg, setUrlImg] = useState(null);
   const { userData } = useUserAuth();
   const { competitionID } = useParams();
@@ -45,6 +47,11 @@ function ContestDetail() {
     setUrlImg(url);
     setOpen(true);
   };
+
+  const openVotingConfirmation = (username) => {
+    setContestantName(username);
+    setOpenConfirmation(true);
+  }
 
   const formatTime = (timestamp) => {
     const now = new Date();
@@ -260,12 +267,13 @@ function ContestDetail() {
             {contestants.map((contestant, idx) => (
               <div
                 key={idx}
-                className="bg-opacity-40 flex flex-col items-center justify-center p-3 transition-transform transform hover:scale-[1.02] cursor-pointer"
-                onClick={() => openDetailImg(contestant.photo_url)}
+                className="bg-opacity-40 flex flex-col items-center justify-center p-3"
+                
               >
                 <img
                   src={contestant.photo_url}
-                  className="w-56 h-52 rounded-t-lg"
+                  className="w-56 h-52 rounded-t-lg transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
+                  onClick={() => openDetailImg(contestant.photo_url)}
                 />
                 <div
                   className={`w-56 h-28 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
@@ -274,7 +282,9 @@ function ContestDetail() {
                     {contestant.username}
                   </div>
                   <div className="text-xs font-semibold">{formatTime(contestant.upload_time.toLocaleString())}</div>
-                  <div className="text-sm w-full h-8 bg-purple-600 rounded-lg mt-4 transition-transform transform hover:scale-[1.02] cursor-pointer flex justify-center items-center">Vote</div>
+                  <div className="text-sm w-full h-8 bg-purple-600 rounded-lg mt-4 transition-transform transform hover:scale-[1.04] cursor-pointer flex justify-center items-center"
+                  onClick={() => openVotingConfirmation(contestant.username)}
+                  >Vote</div>
                 </div>
               </div>
             ))}
@@ -285,8 +295,21 @@ function ContestDetail() {
           </div>
         )}
         <Modal isOpen={isOpen} onOpenChange={setOpen}>
-          <ModalContent>
-            <img src={urlImg} alt="kosong" />
+          <ModalContent className="w-96 h-96 p-4">
+            <img src={urlImg} alt="kosong" className="w-full h-full object-contain"/>
+          </ModalContent>
+        </Modal>
+        <Modal isOpen={isOpenConfirmation} onOpenChange={setOpenConfirmation} hideCloseButton={true}>
+          <ModalContent className="w-96 h-36 p-4 flex gap-3 justify-center items-center">
+            <div className="text-center m-4">Are you sure want to vote for {contestantName} ?</div>
+            <div className="flex gap-3">
+              <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-800 transition">
+                Yes
+              </button>
+              <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition" onClick={() => setOpenConfirmation(false)}>
+                Cancel
+              </button>
+            </div>
           </ModalContent>
         </Modal>
       </div>
