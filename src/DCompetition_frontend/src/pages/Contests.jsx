@@ -173,7 +173,7 @@ function Contests() {
                   </Skeleton>
                   <CardBody className="p-4 space-y-4">
                     <Skeleton className="rounded-lg">
-                      <div className="h-[16rem] rounded-lg bg-default-300"></div>
+                      <div className="h-[24rem] rounded-lg bg-default-300"></div>
                     </Skeleton>
                     <div>
                       <Skeleton className="w-3/5 rounded-lg mt-4">

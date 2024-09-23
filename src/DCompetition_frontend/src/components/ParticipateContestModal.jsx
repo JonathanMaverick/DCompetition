@@ -18,11 +18,21 @@ export default function ParticipateContestModal({
   userId,
   fetchData,
   className,
+  category,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
   const inputRef = useRef(null);
+
+  const isLogoCategory = category === "logo";
+  const aspectRatioClass = isLogoCategory ? "aspect-square" : "aspect-[1/2]";
+  const aspectRatioMessage = isLogoCategory
+    ? "Please upload a square image (1:1 aspect ratio)"
+    : "Please upload a rectangular image (1:2 aspect ratio)";
+  const placeholderText = isLogoCategory
+    ? "No image selected (1:1 aspect ratio)"
+    : "No image selected (1:2 aspect ratio)";
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -107,12 +117,12 @@ export default function ParticipateContestModal({
               </ModalHeader>
               <ModalBody className="overflow-y-auto">
                 <div
-                  className="relative w-full aspect-square border-dashed border-2 border-gray-400 rounded-md cursor-pointer"
+                  className={`relative w-full ${aspectRatioClass} border-dashed border-2 border-gray-400 rounded-md cursor-pointer`}
                   onClick={handleClick}
                 >
                   {!preview ? (
                     <div className="flex flex-col items-center justify-center h-full">
-                      <p className="text-gray-400">No image selected</p>
+                      <p className="text-gray-400">{placeholderText}</p>
                       <p className="text-gray-400">Click to choose image</p>
                     </div>
                   ) : (
@@ -138,6 +148,9 @@ export default function ParticipateContestModal({
                   className="hidden"
                   onChange={handleImageChange}
                 />
+                <p className="text-sm text-gray-500 mt-2 text-center">
+                  {aspectRatioMessage}
+                </p>
               </ModalBody>
               <ModalFooter>
                 {loading ? (

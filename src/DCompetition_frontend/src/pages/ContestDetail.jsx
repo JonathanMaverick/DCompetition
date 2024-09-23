@@ -29,7 +29,7 @@ function ContestDetail() {
 
   const [isOpen, setOpen] = useState(false);
   const [isOpenConfirmation, setOpenConfirmation] = useState(false);
-  const [contestantName, setContestantName] = useState('');
+  const [contestantName, setContestantName] = useState("");
   const [urlImg, setUrlImg] = useState(null);
   const { userData } = useUserAuth();
   const { competitionID } = useParams();
@@ -51,28 +51,33 @@ function ContestDetail() {
   const openVotingConfirmation = (username) => {
     setContestantName(username);
     setOpenConfirmation(true);
-  }
+  };
 
   const formatTime = (timestamp) => {
     const now = new Date();
     const date = new Date(timestamp);
     const seconds = Math.floor((now - date) / 1000);
-  
+
     let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) return interval === 1 ? "1 year ago" : `${interval} years ago`;
-  
+    if (interval >= 1)
+      return interval === 1 ? "1 year ago" : `${interval} years ago`;
+
     interval = Math.floor(seconds / 2592000);
-    if (interval >= 1) return interval === 1 ? "1 month ago" : `${interval} months ago`;
-  
+    if (interval >= 1)
+      return interval === 1 ? "1 month ago" : `${interval} months ago`;
+
     interval = Math.floor(seconds / 86400);
-    if (interval >= 1) return interval === 1 ? "1 day ago" : `${interval} days ago`;
-  
+    if (interval >= 1)
+      return interval === 1 ? "1 day ago" : `${interval} days ago`;
+
     interval = Math.floor(seconds / 3600);
-    if (interval >= 1) return interval === 1 ? "1 hour ago" : `${interval} hours ago`;
-  
+    if (interval >= 1)
+      return interval === 1 ? "1 hour ago" : `${interval} hours ago`;
+
     interval = Math.floor(seconds / 60);
-    if (interval >= 1) return interval === 1 ? "1 minute ago" : `${interval} minutes ago`;
-  
+    if (interval >= 1)
+      return interval === 1 ? "1 minute ago" : `${interval} minutes ago`;
+
     return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
   };
 
@@ -108,7 +113,7 @@ function ContestDetail() {
         principal_id: cont.principal_id,
         competition_id: Number(cont.competition_id),
         photo_url: changeToUrl(cont.photo_url),
-        upload_time: convertDate(Number(cont.upload_time))
+        upload_time: convertDate(Number(cont.upload_time)),
       }));
       setContestants(ct);
     } catch (error) {
@@ -192,8 +197,8 @@ function ContestDetail() {
   });
 
   return (
-    <div className="flex w-full gap-x-4 mt-4">
-      <div className="flex flex-col w-2/5 h-full gap-y-3">
+    <div className="flex w-full gap-x-4 mt-4 lg:flex-row flex-col">
+      <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3">
         <div className="flex flex-col gap-2 mb-2">
           <div className="text-4xl font-bold text-left">{contest.name}</div>
           <div className="text-1xl font-medium text-left pl-1">
@@ -257,18 +262,18 @@ function ContestDetail() {
           userId={userData.principal_id}
           fetchData={getContestant}
           className={`w-full ${statusColors[contest.status]} transition-transform transform hover:scale-[1.02] cursor-pointer`}
+          category={contest.category}
         >
           Join
         </ParticipateContestModal>
       </div>
-      <div className="w-3/4 bg-black bg-opacity-40 flex-grow rounded-lg justify-center items-center overflow-y-scroll p-6">
+      <div className="lg:w-3/4 w-full bg-black backdrop-blur-lg bg-opacity-40 flex-grow rounded-lg justify-center items-center overflow-y-scroll p-6">
         {contestants.length > 0 ? (
           <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
             {contestants.map((contestant, idx) => (
               <div
                 key={idx}
                 className="bg-opacity-40 flex flex-col items-center justify-center p-3"
-                
               >
                 <img
                   src={contestant.photo_url}
@@ -281,10 +286,15 @@ function ContestDetail() {
                   <div className="text-lg font-semibold">
                     {contestant.username}
                   </div>
-                  <div className="text-xs font-semibold">{formatTime(contestant.upload_time.toLocaleString())}</div>
-                  <div className="text-sm w-full h-8 bg-purple-600 rounded-lg mt-4 transition-transform transform hover:scale-[1.04] cursor-pointer flex justify-center items-center"
-                  onClick={() => openVotingConfirmation(contestant.username)}
-                  >Vote</div>
+                  <div className="text-xs font-semibold">
+                    {formatTime(contestant.upload_time.toLocaleString())}
+                  </div>
+                  <div
+                    className="text-sm w-full h-8 bg-purple-600 rounded-lg mt-4 transition-transform transform hover:scale-[1.04] cursor-pointer flex justify-center items-center"
+                    onClick={() => openVotingConfirmation(contestant.username)}
+                  >
+                    Vote
+                  </div>
                 </div>
               </div>
             ))}
@@ -296,17 +306,30 @@ function ContestDetail() {
         )}
         <Modal isOpen={isOpen} onOpenChange={setOpen}>
           <ModalContent className="w-96 h-96 p-4">
-            <img src={urlImg} alt="kosong" className="w-full h-full object-contain"/>
+            <img
+              src={urlImg}
+              alt="kosong"
+              className="w-full h-full object-contain"
+            />
           </ModalContent>
         </Modal>
-        <Modal isOpen={isOpenConfirmation} onOpenChange={setOpenConfirmation} hideCloseButton={true}>
+        <Modal
+          isOpen={isOpenConfirmation}
+          onOpenChange={setOpenConfirmation}
+          hideCloseButton={true}
+        >
           <ModalContent className="w-96 h-36 p-4 flex gap-3 justify-center items-center">
-            <div className="text-center m-4">Are you sure want to vote for {contestantName} ?</div>
+            <div className="text-center m-4">
+              Are you sure want to vote for {contestantName} ?
+            </div>
             <div className="flex gap-3">
               <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-800 transition">
                 Yes
               </button>
-              <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition" onClick={() => setOpenConfirmation(false)}>
+              <button
+                className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition"
+                onClick={() => setOpenConfirmation(false)}
+              >
                 Cancel
               </button>
             </div>
