@@ -189,8 +189,7 @@ const Face = () => {
                     </p>
 
                     <Button
-                      className="mt-4"
-                      color="secondary"
+                      className="mt-4 bg-purple-600"
                       variant="solid"
                       onClick={capture}
                       isLoading={isCaptureDisabled}

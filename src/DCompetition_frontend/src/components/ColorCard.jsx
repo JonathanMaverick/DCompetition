@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdContentCopy } from "react-icons/md";
 import { toast } from "react-hot-toast";
+import { Card, CardBody } from "@nextui-org/react";
 
 const Tooltip = ({ content, children, isVisible }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -69,36 +70,38 @@ const ColorCard = ({ contest }) => {
   };
 
   return (
-    <div className="bg-neutral-900 bg-opacity-50 p-4 rounded-lg">
-      <div className="flex flex-col gap-1">
-        <span className="font-semibold text-white">Desired Colors</span>
-        <div className="flex">
-          {contest.color.map((color, colorIndex) => (
-            <Tooltip
-              key={colorIndex}
-              content={
-                <div className="flex items-center gap-2">
-                  <span className="text-base uppercase">{color}</span>
-                  <button
-                    className="text-white rounded-full text-xs"
-                    onClick={() => handleColorClick(color)}
-                  >
-                    <MdContentCopy className="text-base" />
-                  </button>
-                </div>
-              }
-              isVisible={clickedColor === color}
-            >
-              <span
-                style={{ backgroundColor: color }}
-                onClick={() => handleColorClick(color)}
-                className="cursor-pointer w-6 h-6 rounded-full inline-block mx-0.5 border border-gray-500 border-opacity-80 shadow-md"
-              ></span>
-            </Tooltip>
-          ))}
+    <Card className="bg-neutral-900 bg-opacity-50 rounded-lg px-1">
+      <CardBody>
+        <div className="flex flex-col gap-1">
+          <span className="font-semibold text-white">Desired Colors</span>
+          <div className="flex">
+            {contest.color.map((color, colorIndex) => (
+              <Tooltip
+                key={colorIndex}
+                content={
+                  <div className="flex items-center gap-2">
+                    <span className="text-base uppercase">{color}</span>
+                    <button
+                      className="text-white rounded-full text-xs"
+                      onClick={() => handleColorClick(color)}
+                    >
+                      <MdContentCopy className="text-base" />
+                    </button>
+                  </div>
+                }
+                isVisible={clickedColor === color}
+              >
+                <span
+                  style={{ backgroundColor: color }}
+                  onClick={() => handleColorClick(color)}
+                  className="cursor-pointer w-6 h-6 rounded-full inline-block mx-0.5 border border-gray-500 border-opacity-80 shadow-md"
+                ></span>
+              </Tooltip>
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
+      </CardBody>
+    </Card>
   );
 };
 

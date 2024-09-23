@@ -167,7 +167,11 @@ function Contests() {
             Array(6)
               .fill()
               .map((_, index) => (
-                <Card key={index} radius="lg">
+                <Card
+                  key={index}
+                  radius="lg"
+                  className="bg-black backdrop-blur-lg bg-opacity-40"
+                >
                   <Skeleton className="rounded-t-lg">
                     <div className="h-12 rounded-t-lg bg-default-300"></div>
                   </Skeleton>
@@ -224,7 +228,7 @@ function Contests() {
                               ) : (
                                 <div
                                   key={imgIndex}
-                                  className="w-full h-auto min-h-24 bg-neutral-800 shadow-sm opacity-50 rounded-md flex justify-center items-center aspect-square"
+                                  className="w-full h-auto min-h-24 bg-neutral-900 shadow-sm opacity-50 rounded-md flex justify-center items-center aspect-square"
                                 >
                                   <img src={img_placeholder} alt="" />
                                 </div>
@@ -252,7 +256,7 @@ function Contests() {
                               ) : (
                                 <div
                                   key={imgIndex}
-                                  className="w-full h-auto min-h-24 bg-neutral-800 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
+                                  className="w-full h-auto min-h-24 bg-neutral-900 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
                                 >
                                   <img src={img_placeholder} alt="" />
                                 </div>

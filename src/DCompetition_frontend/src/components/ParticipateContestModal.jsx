@@ -108,7 +108,7 @@ export default function ParticipateContestModal({
           if (!open) setPreview(null);
         }}
         scrollBehavior="inside"
-        className="bg-neutral-900 bg-opacity-70 backdrop-blur-3xl"
+        className="bg-[#0f0c12]"
       >
         <ModalContent>
           {(onClose) => (
@@ -175,7 +175,7 @@ export default function ParticipateContestModal({
                   <Button
                     color="secondary"
                     onPress={handleSubmit}
-                    className="w-full"
+                    className="w-full bg-purple-600"
                   >
                     Participate
                   </Button>

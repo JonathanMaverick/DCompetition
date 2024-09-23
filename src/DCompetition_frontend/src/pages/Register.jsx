@@ -15,9 +15,9 @@ const registerData = {
   username: "",
   email: "",
   profile_pic: "",
-}
+};
 
-export const RegisterContext = createContext(registerData)
+export const RegisterContext = createContext(registerData);
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -28,9 +28,8 @@ const Register = () => {
     username: "",
     email: "",
   });
-  
-  const { setRegister } = useContext(RegisterContext)
 
+  const { setRegister } = useContext(RegisterContext);
 
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -58,7 +57,7 @@ const Register = () => {
     try {
       const { username, email } = formData;
       const principal = await getPrincipal();
-  
+
       const file = inputRef.current?.files[0];
       if (!file) {
         toast.error("Please select a profile picture.", {
@@ -70,22 +69,21 @@ const Register = () => {
         });
         return;
       }
-  
+
       const profilePic = new Uint8Array(await file.arrayBuffer());
-  
+
       const newRegisterData = {
         principal,
         username,
         email,
         profile_pic: profilePic,
       };
-  
-      setRegister(newRegisterData);
-  
-      console.log(newRegisterData); 
 
-  
-      navigate('/face');
+      setRegister(newRegisterData);
+
+      console.log(newRegisterData);
+
+      navigate("/face");
     } catch (error) {
       console.log(error);
       toast.error("Failed to register!", {
@@ -99,7 +97,6 @@ const Register = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <>
@@ -169,7 +166,7 @@ const Register = () => {
                 />
               </div>
               {loading ? (
-                <Button color="secondary" className="w-full">
+                <Button className="w-full bg-purple-600">
                   <CircularProgress
                     classNames={{
                       svg: "w-6 h-6 drop-shadow-md",
@@ -183,11 +180,10 @@ const Register = () => {
                 </Button>
               ) : (
                 <Button
-                  color="secondary"
                   onPress={() => {
                     handleSubmit();
                   }}
-                  className="w-full"
+                  className="w-full bg-purple-600"
                 >
                   Continue
                 </Button>
@@ -196,7 +192,7 @@ const Register = () => {
           </CardBody>
         </Card>
       </div>
-      </>
+    </>
   );
 };
 

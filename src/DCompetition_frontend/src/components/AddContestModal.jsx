@@ -238,7 +238,7 @@ export default function AddContestModal({ userId, fetchData }) {
         onOpenChange={onOpenChange}
         scrollBehavior="inside"
         size="3xl"
-        className="bg-neutral-900 bg-opacity-70 backdrop-blur-3xl"
+        className="bg-[#0f0c12]"
       >
         <ModalContent>
           {(onClose) => (
@@ -434,7 +434,7 @@ export default function AddContestModal({ userId, fetchData }) {
                   onPress={handleSubmit}
                   disabled={loading}
                   fullWidth
-                  color="secondary"
+                  className="bg-purple-600"
                 >
                   {loading ? (
                     <CircularProgress

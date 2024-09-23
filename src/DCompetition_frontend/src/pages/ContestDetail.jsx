@@ -14,20 +14,15 @@ import {
   ModalContent,
   Tabs,
   Tab,
-  Tooltip,
-  Snippet,
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Accordion,
-  AccordionItem,
 } from "@nextui-org/react";
 import { useUserAuth } from "../context/UserContext";
 import ParticipateContestModal from "../components/ParticipateContestModal";
-import { MdContentCopy, MdFileDownload } from "react-icons/md";
+import {
+  MdContentCopy,
+  MdFileDownload,
+  MdOutlineFileUpload,
+} from "react-icons/md";
+import { AiOutlineLike } from "react-icons/ai";
 import { idlFactory } from "../../../declarations/DContest_backend_user";
 import toast from "react-hot-toast";
 import ColorCard from "../components/ColorCard";
@@ -224,7 +219,7 @@ function ContestDetail() {
   return (
     <div className="flex w-full gap-x-4 mt-4 lg:flex-row flex-col">
       <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3">
-        <div className="flex flex-col gap-2 mb-2">
+        <div className="flex flex-col gap-2 mb-2 ml-1">
           <div className="text-4xl font-bold text-left">{contest.name}</div>
           <div className="text-1xl font-medium text-left pl-1">
             {contest.category.charAt(0).toUpperCase() +
@@ -249,7 +244,7 @@ function ContestDetail() {
             category={contest.category}
           ></ParticipateContestModal>
         )}
-        <div className="bg-black backdrop-blur-lg bg-opacity-40 rounded-lg px-4 py-2 pb-4 gap-1 flex flex-col">
+        <div className="bg-neutral-900 backdrop-blur-lg bg-opacity-40 rounded-lg px-4 py-2 pb-4 gap-1 flex flex-col">
           {/* <div className="text-xl font-semibold">Description :</div> */}
 
           <Tabs
@@ -370,7 +365,7 @@ function ContestDetail() {
             <Tab key="additional" title="More Details" className="text-md">
               <div className="flex flex-col gap-3">
                 {contest.industry_name != "" && (
-                  <Card className="bg-neutral-900 bg-opacity-50">
+                  <Card className="bg-neutral-900 bg-opacity-50 px-1">
                     <CardBody>
                       <div>
                         <span className="font-semibold">Brand Name</span>{" "}
@@ -381,7 +376,7 @@ function ContestDetail() {
                 )}
 
                 {contest.additional_information != "" && (
-                  <Card className="bg-neutral-900 bg-opacity-50">
+                  <Card className="bg-neutral-900 bg-opacity-50 px-1">
                     <CardBody>
                       <div>
                         <span className="font-semibold">
@@ -398,7 +393,7 @@ function ContestDetail() {
                 <ColorCard contest={contest} />
 
                 {contest.file.length > 0 && (
-                  <Card className="bg-neutral-900 bg-opacity-50">
+                  <Card className="bg-neutral-900 bg-opacity-50 px-1">
                     <CardBody>
                       <div>
                         <span className="font-semibold block mb-2">
@@ -406,31 +401,37 @@ function ContestDetail() {
                         </span>
                         <div className="flex flex-col gap-4">
                           {contest.file.map((file, fileIndex) => (
-                            <div
-                              className="flex items-center justify-between bg-neutral-800 rounded-md p-2"
-                              key={fileIndex}
-                            >
-                              <div className="flex items-center gap-4">
-                                <img
-                                  src={changeToUrl(file)}
-                                  className="w-8 h-8 ml-1 object-cover"
-                                  alt={`file-preview-${fileIndex}`}
-                                />
-                                <span className="text-sm text-white">
-                                  {file.name || `Attchment #${fileIndex + 1}`}
-                                </span>
-                              </div>
+                            <Card className="bg-neutral-800 bg-opacity-50 rounded-md p-2">
+                              <CardBody className="p-0">
+                                {" "}
+                                <div
+                                  className="flex items-center justify-between"
+                                  key={fileIndex}
+                                >
+                                  <div className="flex items-center gap-4">
+                                    <img
+                                      src={changeToUrl(file)}
+                                      className="w-8 h-8 ml-1 object-cover"
+                                      alt={`file-preview-${fileIndex}`}
+                                    />
+                                    <span className="text-sm text-white">
+                                      {file.name ||
+                                        `Attchment #${fileIndex + 1}`}
+                                    </span>
+                                  </div>
 
-                              <a
-                                href={changeToUrl(file)}
-                                download={
-                                  file.name || `attachment-${fileIndex}`
-                                }
-                                className="text-gray-500 hover:text-gray-300 transition-all duration-250 rounded-full mt-0.5"
-                              >
-                                <MdFileDownload className="text-2xl mr-1" />
-                              </a>
-                            </div>
+                                  <a
+                                    href={changeToUrl(file)}
+                                    download={
+                                      file.name || `attachment-${fileIndex}`
+                                    }
+                                    className="text-gray-500 hover:text-gray-300 transition-all duration-250 rounded-full mt-0.5"
+                                  >
+                                    <MdFileDownload className="text-2xl mr-1" />
+                                  </a>
+                                </div>
+                              </CardBody>
+                            </Card>
                           ))}
                         </div>
                       </div>
@@ -442,71 +443,90 @@ function ContestDetail() {
           </Tabs>
         </div>
       </div>
-      <div className="lg:w-3/4 w-full bg-black backdrop-blur-lg bg-opacity-40 flex-grow rounded-lg justify-center items-center overflow-y-scroll p-6">
+      <div className="lg:w-3/4 w-full flex-grow rounded-lg justify-center items-center overflow-y-scroll">
         {contestants.length > 0 ? (
-          <div className="h-5/6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full justify-items-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
             {contestants.map((contestant, idx) => (
-              <div
+              <Card
                 key={idx}
-                className="bg-opacity-40 flex flex-col items-center justify-center p-3"
+                className="flex flex-col items-center justify-center bg-neutral-900 backdrop-blur-lg bg-opacity-40"
+                radius="sm"
               >
-                {idx + 1 == 1 ? (
-                  <div className="">
-                    <div className="w-56 h-8 bg-yellow-500 flex justify-center items-center rounded-t-lg">
-                      Winner
+                <CardBody className="overflow-hidden p-0">
+                  {idx + 1 == 1 ? (
+                    <div className="">
+                      {/* <div className="w-56 h-8 bg-yellow-500 flex justify-center items-center rounded-t-lg">
+                        Winner
+                      </div> */}
+                      <img
+                        src={contestant.photo_url}
+                        className="aspect-square transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
+                        onClick={() => openDetailImg(contestant.photo_url)}
+                      />
                     </div>
+                  ) : (
                     <img
                       src={contestant.photo_url}
-                      className="w-56 h-44 transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
+                      className="aspect-square rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
                       onClick={() => openDetailImg(contestant.photo_url)}
                     />
-                  </div>
-                ) : (
-                  <img
-                    src={contestant.photo_url}
-                    className="w-56 h-52 rounded-t-lg transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
-                    onClick={() => openDetailImg(contestant.photo_url)}
-                  />
-                )}
-                {contest.status == "Ongoing" ||
-                contest.status == "Winner Selection" ? (
-                  <div
-                    className={`w-56 h-28 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
-                  >
-                    <div className="flex justify-between">
-                      <div className="text-lg font-semibold">
-                        {contestant.username}
+                  )}
+                  {contest.status == "Ongoing" ||
+                  contest.status == "Winner Selection" ? (
+                    <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
+                      <p className="font-bold text-lg">Design #{idx + 1}</p>
+                      <div className="flex justify-between">
+                        <div className="text-sm flex gap-1 -mt-1.5">
+                          <span className="font-thin">by</span>
+                          <span className="font-semibold">
+                            {contestant.username}
+                          </span>
+                        </div>
+                        {/* <div className="text-sm font-semibold">1000 votes</div> */}
                       </div>
-                      <div className="text-sm font-semibold">1000 votes</div>
+                      <div className="text-xs flex items-center gap-1.5 -ml-0.5">
+                        {/* {formatTime(contestant.upload_time.toLocaleString())} */}
+                        <MdOutlineFileUpload className="text-lg" />
+                        <span>
+                          {contestant.upload_time.toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                          })}
+                        </span>
+                      </div>
+                      <Button
+                        variant="flat"
+                        className="rounded-full absolute right-2 top-2.5"
+                        onClick={() =>
+                          openVotingConfirmation(contestant.username)
+                        }
+                        isIconOnly
+                      >
+                        <AiOutlineLike className="text-xl" />
+                      </Button>
                     </div>
-                    <div className="text-xs font-semibold">
-                      {formatTime(contestant.upload_time.toLocaleString())}
-                    </div>
+                  ) : (
                     <div
-                      className="text-sm w-full h-8 bg-purple-900 rounded-lg mt-4 transition-transform transform hover:scale-[1.04] cursor-pointer flex justify-center items-center"
-                      onClick={() =>
-                        openVotingConfirmation(contestant.username)
-                      }
+                      className={`w-56 h-16 ${rankColors(idx + 1)} rounded-b-lg flex flex-col py-1 px-2`}
                     >
-                      Vote
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className={`w-56 h-16 ${rankColors(idx + 1)} rounded-b-lg flex flex-col py-1 px-2`}
-                  >
-                    <div className="flex justify-between">
-                      <div className="text-lg font-semibold">
-                        {contestant.username}
+                      <div className="flex justify-between">
+                        <div className="text-lg font-semibold">
+                          {contestant.username}
+                        </div>
+                        <div className="text-sm font-semibold">1000 votes</div>
                       </div>
-                      <div className="text-sm font-semibold">1000 votes</div>
+                      <div className="text-xs font-semibold">
+                        {formatTime(contestant.upload_time.toLocaleString())}
+                        <div className=""></div>
+                      </div>
                     </div>
-                    <div className="text-xs font-semibold">
-                      {formatTime(contestant.upload_time.toLocaleString())}
-                    </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </CardBody>
+              </Card>
             ))}
           </div>
         ) : (
@@ -514,19 +534,25 @@ function ContestDetail() {
             No contestants available.
           </div>
         )}
-        <Modal isOpen={isOpen} onOpenChange={setOpen}>
-          <ModalContent className="w-96 h-96 p-4">
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={setOpen}
+          className="bg-[#0f0c12]"
+          radius="none"
+        >
+          <ModalContent className="w-96 h-96 p-0">
             <img
               src={urlImg}
               alt="kosong"
-              className="w-full h-full object-contain"
+              className="w-full h-full aspect-square"
             />
           </ModalContent>
         </Modal>
-        <Modal
+        {/* <Modal
           isOpen={isOpenConfirmation}
           onOpenChange={setOpenConfirmation}
           hideCloseButton={true}
+          className="bg-[#0f0c12]"
         >
           <ModalContent className="w-96 h-36 p-4 flex gap-3 justify-center items-center">
             <div className="text-center m-4">
@@ -544,7 +570,7 @@ function ContestDetail() {
               </button>
             </div>
           </ModalContent>
-        </Modal>
+        </Modal> */}
       </div>
     </div>
   );
