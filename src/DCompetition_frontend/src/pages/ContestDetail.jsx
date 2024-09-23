@@ -46,6 +46,29 @@ function ContestDetail() {
     setOpen(true);
   };
 
+  const formatTime = (timestamp) => {
+    const now = new Date();
+    const date = new Date(timestamp);
+    const seconds = Math.floor((now - date) / 1000);
+  
+    let interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) return interval === 1 ? "1 year ago" : `${interval} years ago`;
+  
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) return interval === 1 ? "1 month ago" : `${interval} months ago`;
+  
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) return interval === 1 ? "1 day ago" : `${interval} days ago`;
+  
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) return interval === 1 ? "1 hour ago" : `${interval} hours ago`;
+  
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) return interval === 1 ? "1 minute ago" : `${interval} minutes ago`;
+  
+    return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
+  };
+
   const changeToUrl = (picture) => {
     let url = "";
     if (picture) {
@@ -245,12 +268,13 @@ function ContestDetail() {
                   className="w-56 h-52 rounded-t-lg"
                 />
                 <div
-                  className={`w-56 h-16 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
+                  className={`w-56 h-28 ${statusColors[contest.status]} rounded-b-lg flex flex-col py-1 px-2`}
                 >
                   <div className="text-lg font-semibold">
                     {contestant.username}
                   </div>
-                  <div className="text-xs font-semibold">{contestant.upload_time.toLocaleString()}</div>
+                  <div className="text-xs font-semibold">{formatTime(contestant.upload_time.toLocaleString())}</div>
+                  <div className="text-sm w-full h-8 bg-purple-600 rounded-lg mt-4 transition-transform transform hover:scale-[1.02] cursor-pointer flex justify-center items-center">Vote</div>
                 </div>
               </div>
             ))}
