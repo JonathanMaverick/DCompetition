@@ -11,12 +11,11 @@ actor Main {
 
     var currentId : Nat = 0;
 
-    public func addVoting(contestant_id : Nat, principal_id : Text) : async () {
-        currentId := currentId + 1;
+    public func addVoting(competition_id:Nat,contestant_id : Nat, principal_id : [Text]) : async () {
         var current_time = Time.now();
 
         let newVote : Voting.Voting = {
-            vote_id = currentId;
+            competition_id = competition_id;
             contestant_id = contestant_id;
             principal_id = principal_id;
             voteTime = current_time;

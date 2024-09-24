@@ -4,6 +4,7 @@ import RBTree "mo:base/RBTree";
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
 import Result "mo:base/Result";
+import Nat "mo:base/Nat";
 
 actor Main {
 
@@ -27,11 +28,11 @@ actor Main {
     loginPrincipalID := "";
   };
 
-  private func validateRegister(username: Text, email: Text, profilePic: Blob) : Result<Null, Text> {
+  private func validateRegister(username : Text, email : Text, profilePic : Blob) : Result<Null, Text> {
     if (email == "") {
       return #err("Email can't be empty");
     };
-    
+
     for (entry in RBTree.iter(tree.share(), #bwd)) {
       if (entry.1.email == email) {
         return #err("Email must be unique");
@@ -65,7 +66,7 @@ actor Main {
         tree.put(principal_id, newUser);
         return #ok("User registered successfully");
       };
-    }
+    };
   };
 
   public func getAllUsers() : async [User.User] {
@@ -78,22 +79,24 @@ actor Main {
     return users;
   };
 
-  public func reduceUserBalance(principal_id: Text, amount: Nat) : async Result<(), Text> {
-    switch (tree.get(principal_id)) {
-      case (?u) {
-        let user = u;
-        if (amount <= user.money) {
-            let updatedUser = { user with money : Nat = user.money - amount };
-            tree.put(principal_id, updatedUser);
-            return #ok();
-        } else {
-            return #err("Insufficient balance");
+  public func reduceUserBalance(principal_id : Text, amount : Nat) : async () {
+
+    for (e in RBTree.iter(tree.share(), #bwd)) {
+      let key = e.0;
+      let user = e.1;
+
+      if (key == principal_id) {
+        let updatedUser : User.User = {
+          principal_id = user.principal_id;
+          username = user.username;
+          email = user.email;
+          money = user.money - amount;
+          profilePic = user.profilePic;
         };
+
+        tree.put(key, updatedUser);
       };
-      case null {
-          return #err("User not found");
-      };
-    }
+    };
   };
 
   public func login(principal_id : Text) : async ?User.User {

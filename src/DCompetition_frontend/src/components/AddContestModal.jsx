@@ -18,6 +18,7 @@ import { now, getLocalTimeZone } from "@internationalized/date";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
+import { DContest_backend_user } from "declarations/DContest_backend_user";
 
 export default function AddContestModal({ userId, fetchData }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -203,6 +204,8 @@ export default function AddContestModal({ userId, fetchData }) {
         result.colors,
         result.files
       );
+
+      await DContest_backend_user.reduceUserBalance(result.userId,10)
 
       if ("err" in addContestResult) {
         toast.error(addContestResult.err, {
