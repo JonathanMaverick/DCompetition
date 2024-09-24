@@ -108,6 +108,7 @@ actor Main {
         //         return #err(errorMessage); 
         //     };
         // };
+        currentId := currentId + 1;
         let newContest : Contest.Contest = {
             contest_id = currentId;
             principal_id = principal_id;
