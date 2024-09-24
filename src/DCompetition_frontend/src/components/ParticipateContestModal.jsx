@@ -7,6 +7,8 @@ import {
   Button,
   useDisclosure,
   CircularProgress,
+  CardBody,
+  Card,
 } from "@nextui-org/react";
 import { IoAdd } from "react-icons/io5";
 import { useRef, useState } from "react";
@@ -93,14 +95,19 @@ export default function ParticipateContestModal({
 
   return (
     <>
-      <Button
-        onPress={onOpen}
-        variant="bordered"
-        color="secondary"
-        className={className}
+      <Card
+        isPressable
+        className="w-full flex flex-col items-center bg-opacity-40 bg-black backdrop-blur-md"
+        onPress={() => onOpenChange(true)}
+        radius="sm"
       >
-        Participate
-      </Button>
+        <CardBody className="flex flex-col items-center justify-center">
+          <IoAdd className="text-6xl text-gray-400 mb-2" />
+          <p className="text-gray-400">Click to participate</p>
+        </CardBody>
+      </Card>
+
+      {/* Modal */}
       <Modal
         isOpen={isOpen}
         onOpenChange={(open) => {
@@ -133,7 +140,7 @@ export default function ParticipateContestModal({
                       <img
                         src={preview}
                         alt="Preview"
-                        className={`w-full h-auto ${isLogoCategory ? "aspect-square" : "aspect-[1/2]"}  object-cover rounded-md"`}
+                        className={`w-full h-auto ${isLogoCategory ? "aspect-square" : "aspect-[1/2]"} object-cover rounded-md"`}
                       />
                       <div
                         className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
