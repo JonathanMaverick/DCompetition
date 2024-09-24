@@ -416,7 +416,7 @@ function ContestDetail() {
                                     />
                                     <span className="text-sm text-white">
                                       {file.name ||
-                                        `Attchment #${fileIndex + 1}`}
+                                        `Attachment #${fileIndex + 1}`}
                                     </span>
                                   </div>
 

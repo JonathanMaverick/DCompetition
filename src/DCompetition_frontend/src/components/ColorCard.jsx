@@ -70,38 +70,36 @@ const ColorCard = ({ contest }) => {
   };
 
   return (
-    <Card className="bg-neutral-900 bg-opacity-50 rounded-lg px-1">
-      <CardBody>
-        <div className="flex flex-col gap-1">
-          <span className="font-semibold text-white">Desired Colors</span>
-          <div className="flex">
-            {contest.color.map((color, colorIndex) => (
-              <Tooltip
-                key={colorIndex}
-                content={
-                  <div className="flex items-center gap-2">
-                    <span className="text-base uppercase">{color}</span>
-                    <button
-                      className="text-white rounded-full text-xs"
-                      onClick={() => handleColorClick(color)}
-                    >
-                      <MdContentCopy className="text-base" />
-                    </button>
-                  </div>
-                }
-                isVisible={clickedColor === color}
-              >
-                <span
-                  style={{ backgroundColor: color }}
-                  onClick={() => handleColorClick(color)}
-                  className="cursor-pointer w-6 h-6 rounded-full inline-block mx-0.5 border border-gray-500 border-opacity-80 shadow-md"
-                ></span>
-              </Tooltip>
-            ))}
-          </div>
+    <div className="bg-neutral-900 bg-opacity-50 rounded-xl p-4 pt-3 shadow-lg border border-gray-500 border-opacity-10">
+      <div className="flex flex-col gap-1.5">
+        <span className="font-semibold text-white">Desired Colors</span>
+        <div className="flex">
+          {contest.color.map((color, colorIndex) => (
+            <Tooltip
+              key={colorIndex}
+              content={
+                <div className="flex items-center gap-2">
+                  <span className="text-base uppercase">{color}</span>
+                  <button
+                    className="text-white rounded-full text-xs"
+                    onClick={() => handleColorClick(color)}
+                  >
+                    <MdContentCopy className="text-base" />
+                  </button>
+                </div>
+              }
+              isVisible={clickedColor === color}
+            >
+              <span
+                style={{ backgroundColor: color }}
+                onClick={() => handleColorClick(color)}
+                className="cursor-pointer w-6 h-6 rounded-full inline-block mx-0.5 border border-gray-500 border-opacity-80 shadow-md"
+              ></span>
+            </Tooltip>
+          ))}
         </div>
-      </CardBody>
-    </Card>
+      </div>
+    </div>
   );
 };
 
