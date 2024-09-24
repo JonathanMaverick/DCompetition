@@ -78,7 +78,7 @@ actor Main {
             return #err("Voting end date must be greater than the end date.");
         };
 
-        if (Array.size(color) > 6){
+        if (Array.size(color) > 6) {
             return #err("Colors cannot be more than 6");
         };
 
@@ -105,7 +105,7 @@ actor Main {
         //         tree.put(currentId, newContest);
         //     };
         //     case (#err(errorMessage)) {
-        //         return #err(errorMessage); 
+        //         return #err(errorMessage);
         //     };
         // };
         currentId := currentId + 1;
@@ -127,6 +127,10 @@ actor Main {
         tree.put(currentId, newContest);
 
         return #ok(null);
+    };
+
+    public func deleteContest(contest_id : Nat) : async () {
+        tree.delete(contest_id);
     };
 
 };

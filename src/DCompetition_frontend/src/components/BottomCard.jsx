@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FaClock, FaTrophy, FaUsers } from "react-icons/fa";
-import moment from "moment";
+// import moment from "moment";
 
 function BottomCard({
   reward,
@@ -98,9 +98,9 @@ function BottomCard({
     Completed: "text-fuchsia-100",
   };
 
-  const formatEndDate = (endDate) => {
-    return moment(endDate).format("MMM D, YYYY");
-  };
+  // const formatEndDate = (endDate) => {
+  //   return moment(endDate).format("MMM D, YYYY");
+  // };
 
   return (
     <div
