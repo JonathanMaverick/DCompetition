@@ -214,7 +214,7 @@ function Contests() {
                         contest.category === "design") && (
                         <div className="grid grid-cols-2 gap-2 mb-2">
                           {Array.from({ length: 4 }).map((_, imgIndex) => (
-                            <>
+                            <React.Fragment key={imgIndex}>
                               {contest.contestants[imgIndex] &&
                               contest.contestants[imgIndex].photo_url ? (
                                 <img
@@ -233,7 +233,7 @@ function Contests() {
                                   <img src={img_placeholder} alt="" />
                                 </div>
                               )}
-                            </>
+                            </React.Fragment>
                           ))}
                         </div>
                       )}
@@ -242,7 +242,7 @@ function Contests() {
                         contest.category === "infographic") && (
                         <div className="grid grid-cols-2 gap-2 mb-2">
                           {Array.from({ length: 2 }).map((_, imgIndex) => (
-                            <>
+                            <React.Fragment key={imgIndex}>
                               {contest.contestants[imgIndex] &&
                               contest.contestants[imgIndex].photo_url ? (
                                 <img
@@ -261,7 +261,7 @@ function Contests() {
                                   <img src={img_placeholder} alt="" />
                                 </div>
                               )}
-                            </>
+                            </React.Fragment>
                           ))}
                         </div>
                       )}

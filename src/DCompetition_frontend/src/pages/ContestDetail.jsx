@@ -458,11 +458,12 @@ function ContestDetail() {
                 <CardBody className="overflow-hidden p-0">
                   <img
                     src={contestant.photo_url}
+                    width={500}
                     className={`${
                       contest.category == "logo"
                         ? "aspect-square"
                         : "aspect-[1/2]"
-                    } w-full h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
+                    } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
                     onClick={() => openDetailImg(contestant.photo_url)}
                   />
 

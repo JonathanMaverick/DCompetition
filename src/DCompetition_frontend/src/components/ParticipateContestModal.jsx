@@ -122,7 +122,9 @@ export default function ParticipateContestModal({
                   onClick={handleClick}
                 >
                   {!preview ? (
-                    <div className="flex flex-col items-center justify-center h-full">
+                    <div
+                      className={`flex flex-col items-center justify-center ${isLogoCategory ? "aspect-square" : "aspect-[1/2]"}`}
+                    >
                       <p className="text-gray-400">{placeholderText}</p>
                       <p className="text-gray-400">Click to choose image</p>
                     </div>
