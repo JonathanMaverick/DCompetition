@@ -5,7 +5,7 @@ import Array "mo:base/Array";
 import Nat "mo:base/Nat";
 import Time "mo:base/Time";
 import Blob "mo:base/Blob";
-import UserActor "../user/main";
+// import UserActor "../user/main";
 
 actor Main {
 
@@ -82,34 +82,48 @@ actor Main {
             return #err("Colors cannot be more than 6");
         };
 
-        currentId := currentId + 1;
+        // let result = (await userActor.reduceUserBalance(principal_id, reward));
 
-        let result = (await userActor.reduceUserBalance(principal_id, reward));
-
-        switch (result) {
-            case (#ok(_)) {
-                currentId := currentId + 1;
-                let newContest : Contest.Contest = {
-                    contest_id = currentId;
-                    principal_id = principal_id;
-                    name = name;
-                    reward = reward;
-                    desc = desc;
-                    category = category;
-                    startDate = startDate;
-                    endDate = endDate;
-                    votingEndDate = votingEndDate;
-                    industry_name = industry_name;
-                    additional_information = additional_information;
-                    color = color;
-                    file = file;
-                };
-                tree.put(currentId, newContest);
-            };
-            case (#err(errorMessage)) {
-                return #err(errorMessage); 
-            };
+        // switch (result) {
+        //     case (#ok(_)) {
+        //         currentId := currentId + 1;
+        //         let newContest : Contest.Contest = {
+        //             contest_id = currentId;
+        //             principal_id = principal_id;
+        //             name = name;
+        //             reward = reward;
+        //             desc = desc;
+        //             category = category;
+        //             startDate = startDate;
+        //             endDate = endDate;
+        //             votingEndDate = votingEndDate;
+        //             industry_name = industry_name;
+        //             additional_information = additional_information;
+        //             color = color;
+        //             file = file;
+        //         };
+        //         tree.put(currentId, newContest);
+        //     };
+        //     case (#err(errorMessage)) {
+        //         return #err(errorMessage); 
+        //     };
+        // };
+        let newContest : Contest.Contest = {
+            contest_id = currentId;
+            principal_id = principal_id;
+            name = name;
+            reward = reward;
+            desc = desc;
+            category = category;
+            startDate = startDate;
+            endDate = endDate;
+            votingEndDate = votingEndDate;
+            industry_name = industry_name;
+            additional_information = additional_information;
+            color = color;
+            file = file;
         };
+        tree.put(currentId, newContest);
 
         return #ok(null);
     };
