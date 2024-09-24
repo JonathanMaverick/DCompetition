@@ -194,6 +194,14 @@ function ContestDetail() {
     }
   }, [contest, loading]);
 
+  const getSort = (c) => {
+    if (c && (c.status === "Ongoing" || c.status === "Winner Selection")) {
+      return (a, b) => new Date(a.upload_time) - new Date(b.upload_time);
+    }
+    return null;
+  };
+
+
   if (loading || !userData) {
     return (
       <div className="flex w-full gap-x-4">
@@ -240,7 +248,7 @@ function ContestDetail() {
             competitionId={competitionID}
             userId={userData.principal_id}
             fetchData={getContestant}
-            className={`w-full cursor-pointer backdrop-blur-lg `}
+            className={`w-full cursor-pointer bg-purple-700 border-2 border-transparent hover:bg-transparent hover:border-purple-700 hover:text-purple-700 transition duration-300`}
             category={contest.category}
           ></ParticipateContestModal>
         )}
@@ -449,23 +457,41 @@ function ContestDetail() {
       <div className="lg:w-3/4 w-full flex rounded-lg justify-center items-start overflow-y-scroll">
         {contestants.length > 0 ? (
           <div className="ml-3.5 lg:ml-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
-            {contestants.map((contestant, idx) => (
+            {contestants.slice().sort(getSort(contest) || ((a, b) => 0)).map((contestant, idx) => (
               <Card
                 key={idx}
-                className="flex flex-col items-center justify-center bg-neutral-900 backdrop-blur-lg bg-opacity-40"
+                className="flex flex-col items-center justify-center bg-purple-800 backdrop-blur-lg bg-opacity-40"
                 radius="sm"
               >
                 <CardBody className="overflow-hidden p-0">
+                {contest.status == "Completed" && idx + 1 == 1 ? (
+                  <div>
+                    <img
+                      src={contestant.photo_url}
+                      width={500}
+                      className={`${
+                        contest.category == "logo"
+                          ? "aspect-square"
+                          : "aspect-[1/2]"
+                      } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
+                      onClick={() => openDetailImg(contestant.photo_url)}
+                    />
+                    {/* <div className="w-56 h-8 bg-fuchsia-700 flex justify-center items-center ">
+                        Winner
+                    </div> */}
+                  </div>
+                ) : (
                   <img
-                    src={contestant.photo_url}
-                    width={500}
-                    className={`${
-                      contest.category == "logo"
-                        ? "aspect-square"
-                        : "aspect-[1/2]"
-                    } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
-                    onClick={() => openDetailImg(contestant.photo_url)}
-                  />
+                      src={contestant.photo_url}
+                      width={500}
+                      className={`${
+                        contest.category == "logo"
+                          ? "aspect-square"
+                          : "aspect-[1/2]"
+                      } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
+                      onClick={() => openDetailImg(contestant.photo_url)}
+                    />
+                )}
 
                   {contest.status == "Ongoing" ||
                   contest.status == "Winner Selection" ? (
@@ -506,20 +532,32 @@ function ContestDetail() {
                       </Button>
                     </div>
                   ) : (
-                    <div
-                      className={`w-56 h-16 ${rankColors(idx + 1)} rounded-b-lg flex flex-col py-1 px-2`}
-                    >
-                      <div className="flex justify-between">
-                        <div className="text-lg font-semibold">
+                    <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
+                    <p className="font-bold text-lg">Design #{idx + 1}</p>
+                    <div className="flex justify-between">
+                      <div className="text-sm flex gap-1 -mt-1.5">
+                        <span className="font-thin">by</span>
+                        <span className="font-semibold">
                           {contestant.username}
-                        </div>
-                        <div className="text-sm font-semibold">1000 votes</div>
+                        </span>
                       </div>
-                      <div className="text-xs font-semibold">
-                        {formatTime(contestant.upload_time.toLocaleString())}
-                        <div className=""></div>
-                      </div>
+                      {/* <div className="text-sm font-semibold">1000 votes</div> */}
                     </div>
+                    <div className="text-xs flex items-center gap-1.5 -ml-0.5">
+                      {/* {formatTime(contestant.upload_time.toLocaleString())} */}
+                      <MdOutlineFileUpload className="text-lg" />
+                      <span>
+                        {contestant.upload_time.toLocaleDateString("en-US", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </span>
+                    </div>
+                  </div>
                   )}
                 </CardBody>
               </Card>
