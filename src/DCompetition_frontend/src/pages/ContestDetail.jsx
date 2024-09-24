@@ -443,9 +443,9 @@ function ContestDetail() {
           </Tabs>
         </div>
       </div>
-      <div className="lg:w-3/4 w-full flex rounded-lg justify-center items-center overflow-y-scroll">
+      <div className="lg:w-3/4 w-full flex rounded-lg justify-center items-start overflow-y-scroll">
         {contestants.length > 0 ? (
-          <div className="ml-3.5 lg:ml-0 m-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
+          <div className="ml-3.5 lg:ml-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
             {contestants.map((contestant, idx) => (
               <Card
                 key={idx}
