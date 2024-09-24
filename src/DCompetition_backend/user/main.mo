@@ -80,14 +80,15 @@ actor Main {
 
   public func reduceUserBalance(principal_id: Text, amount: Nat) : async Result<(), Text> {
     switch (tree.get(principal_id)) {
-      case (?user) {
-          if (user.money >= amount) {
-              let updatedUser = { user with money = user.money - amount };
-              tree.put(principal_id, updatedUser);
-              return #ok();
-          } else {
-              return #err("Insufficient balance");
-          };
+      case (?u) {
+        let user = u;
+        if (amount <= user.money) {
+            let updatedUser = { user with money : Nat = user.money - amount };
+            tree.put(principal_id, updatedUser);
+            return #ok();
+        } else {
+            return #err("Insufficient balance");
+        };
       };
       case null {
           return #err("User not found");
