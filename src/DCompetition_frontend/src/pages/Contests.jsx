@@ -225,12 +225,12 @@ function Contests() {
                                     contest.contestants[imgIndex].photo_url
                                   )}
                                   alt={`Placeholder ${imgIndex + 1}`}
-                                  className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-square"
+                                  className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-square bg-neutral-900 bg-opacity-50 backdrop-blur-md"
                                 />
                               ) : (
                                 <div
                                   key={imgIndex}
-                                  className="w-full h-auto min-h-24 bg-neutral-900 shadow-sm opacity-50 rounded-md flex justify-center items-center aspect-square"
+                                  className="w-full h-auto min-h-24 bg-neutral-900 shadow-sm bg-opacity-50 rounded-md flex justify-center items-center aspect-square backdrop-blur-md"
                                 >
                                   <img src={img_placeholder} alt="" />
                                 </div>
@@ -270,7 +270,7 @@ function Contests() {
 
                       <div className="flex flex-col">
                         <div className="flex flex-col ml-0.5">
-                          <h2 className="text-2xl font-bold text-gray-200 truncate">
+                          <h2 className="text-2xl font-bold text-gray-200 truncate -mt-2">
                             {contest.name}
                           </h2>
                           <p className="mb-4">

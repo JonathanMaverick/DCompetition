@@ -26,6 +26,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { idlFactory } from "../../../declarations/DContest_backend_user";
 import toast from "react-hot-toast";
 import ColorCard from "../components/ColorCard";
+import LockedCard from "../components/LockedCard";
 
 function ContestDetail() {
   const statusColors = {
@@ -242,16 +243,8 @@ function ContestDetail() {
           updateStatus={refresh}
           showSeconds={true}
         />
-        {contest.status == "Ongoing" && (
-          <ParticipateContestModal
-            competitionId={competitionID}
-            userId={userData.principal_id}
-            fetchData={getContestant}
-            className={`w-full cursor-pointer backdrop-blur-lg`}
-            category={contest.category}
-          ></ParticipateContestModal>
-        )}
-        <div className="bg-neutral-900 backdrop-blur-lg bg-opacity-40 rounded-lg px-4 py-2 pb-4 gap-1 flex flex-col">
+
+        <div className="bg-black backdrop-blur-lg bg-opacity-40 rounded-lg px-4 py-2 pb-4 gap-1 flex flex-col">
           {/* <div className="text-xl font-semibold">Description :</div> */}
 
           <Tabs
@@ -279,94 +272,89 @@ function ContestDetail() {
               title="Timeline"
               className="text-md flex flex-col gap-6"
             >
-              <Card className="bg-neutral-900 bg-opacity-50">
-                <CardBody>
-                  <div className="relative flex ml-4">
-                    <div className="flex flex-col items-center pt-[26px]">
-                      <div
-                        className={`w-4 h-4 ${contest.status != "Not Started" ? "bg-purple-500" : "bg-white"} rounded-full`}
-                      ></div>
-                      <div
-                        className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status != "Not Started" ? "bg-purple-500" : "bg-white"}`}
-                      ></div>
-                      <div
-                        className={`w-4 h-4 ${contest.status != "Not Started" && contest.status != "Ongoing" ? "bg-purple-500" : "bg-white"} rounded-full`}
-                      ></div>
-                      <div
-                        className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status != "Not Started" && contest.status != "Ongoing" ? "bg-purple-500" : "bg-white"}`}
-                      ></div>
-                      <div
-                        className={`w-4 h-4 bg-white rounded-full ${contest.status == "Completed" ? "bg-purple-500" : "bg-white"}`}
-                      ></div>
-                    </div>
+              <div className="relative flex ml-4">
+                <div className="flex flex-col items-center pt-[27px]">
+                  <div
+                    className={`w-4 h-4 ${contest.status != "Not Started" ? "bg-purple-500" : "bg-white"} rounded-full`}
+                  ></div>
+                  <div
+                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status != "Not Started" ? "bg-purple-500" : "bg-white"}`}
+                  ></div>
+                  <div
+                    className={`w-4 h-4 ${contest.status != "Not Started" && contest.status != "Ongoing" ? "bg-purple-500" : "bg-white"} rounded-full`}
+                  ></div>
+                  <div
+                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status != "Not Started" && contest.status != "Ongoing" ? "bg-purple-500" : "bg-white"}`}
+                  ></div>
+                  <div
+                    className={`w-4 h-4 bg-white rounded-full ${contest.status == "Completed" ? "bg-purple-500" : "bg-white"}`}
+                  ></div>
+                </div>
 
-                    <div className="flex flex-col gap-6">
-                      <div className="flex items-start">
-                        <div className="pl-8">
-                          <span className="font-semibold">Start Date</span>
-                          <p className="text-sm">
-                            {contest.startDate.toLocaleDateString("en-US", {
-                              weekday: "long",
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                              hour: "numeric",
-                              minute: "numeric",
-                              hour12: true,
-                            })}
-                          </p>
-                          <p className="text-[13px] text-gray-400">
-                            This is the time when the contest starts. Users can
-                            begin participating by uploading their designs.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start">
-                        <div className="pl-8">
-                          <span className="font-semibold">End Date</span>
-                          <p className="text-sm">
-                            {contest.endDate.toLocaleDateString("en-US", {
-                              weekday: "long",
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                              hour: "numeric",
-                              minute: "numeric",
-                              hour12: true,
-                            })}
-                          </p>
-                          <p className="text-[13px] text-gray-400">
-                            This is the deadline for users to upload their
-                            designs.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start relative">
-                        <div className="pl-8">
-                          <span className="font-semibold">End Voting Date</span>
-                          <p className="text-sm">
-                            {contest.votingEndDate.toLocaleDateString("en-US", {
-                              weekday: "long",
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                              hour: "numeric",
-                              minute: "numeric",
-                              hour12: true,
-                            })}
-                          </p>
-                          <p className="text-[13px] text-gray-400">
-                            This is the deadline for users to vote. After this,
-                            the contest will be marked as completed.
-                          </p>
-                        </div>
-                      </div>
+                <div className="flex flex-col gap-6 pr-4">
+                  <div className="flex items-start">
+                    <div className="pl-8">
+                      <span className="font-semibold">Start Date</span>
+                      <p className="text-sm">
+                        {contest.startDate.toLocaleDateString("en-US", {
+                          weekday: "long",
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </p>
+                      <p className="text-[13px] text-gray-400">
+                        This is the time when the contest starts. Users can
+                        begin participating by uploading their designs.
+                      </p>
                     </div>
                   </div>
-                </CardBody>
-              </Card>
+
+                  <div className="flex items-start">
+                    <div className="pl-8">
+                      <span className="font-semibold">End Date</span>
+                      <p className="text-sm">
+                        {contest.endDate.toLocaleDateString("en-US", {
+                          weekday: "long",
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </p>
+                      <p className="text-[13px] text-gray-400">
+                        This is the deadline for users to upload their designs.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start relative">
+                    <div className="pl-8">
+                      <span className="font-semibold">End Voting Date</span>
+                      <p className="text-sm">
+                        {contest.votingEndDate.toLocaleDateString("en-US", {
+                          weekday: "long",
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </p>
+                      <p className="text-[13px] text-gray-400">
+                        This is the deadline for users to vote. After this, the
+                        contest will be marked as completed.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Tab>
 
             <Tab key="additional" title="More Details" className="text-md">
@@ -454,35 +442,29 @@ function ContestDetail() {
         </div>
       </div>
       <div className="lg:w-3/4 w-full flex rounded-lg justify-center items-start overflow-y-scroll">
-        {contestants.length > 0 ? (
-          <div className="ml-3.5 lg:ml-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
-            {contestants
-              .slice()
-              .sort(getSort(contest) || ((a, b) => 0))
-              .map((contestant, idx) => (
-                <Card
-                  key={idx}
-                  className="flex flex-col items-center justify-center bg-opacity-50"
-                  radius="sm"
-                >
-                  <CardBody className="overflow-hidden p-0">
-                    {contest.status == "Completed" && idx + 1 == 1 ? (
-                      <div>
-                        <img
-                          src={contestant.photo_url}
-                          width={500}
-                          className={`${
-                            contest.category == "logo"
-                              ? "aspect-square"
-                              : "aspect-[1/2]"
-                          } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
-                          onClick={() => openDetailImg(contestant.photo_url)}
-                        />
-                        {/* <div className="w-56 h-8 bg-fuchsia-700 flex justify-center items-center ">
-                        Winner
-                    </div> */}
-                      </div>
-                    ) : (
+        <div className="ml-3.5 lg:ml-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
+          {contest.status == "Ongoing" && (
+            <ParticipateContestModal
+              competitionId={competitionID}
+              userId={userData.principal_id}
+              fetchData={getContestant}
+              className={`w-full cursor-pointer backdrop-blur-lg`}
+              category={contest.category}
+            ></ParticipateContestModal>
+          )}
+          {contest.status == "Not Started" && <LockedCard />}
+          {contestants
+            .slice()
+            .sort(getSort(contest) || ((a, b) => 0))
+            .map((contestant, idx) => (
+              <Card
+                key={idx}
+                className="pb-1 flex flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md"
+                radius="sm"
+              >
+                <CardBody className="overflow-hidden p-0">
+                  {contest.status == "Completed" && idx + 1 == 1 ? (
+                    <div>
                       <img
                         src={contestant.photo_url}
                         width={500}
@@ -493,89 +475,125 @@ function ContestDetail() {
                         } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
                         onClick={() => openDetailImg(contestant.photo_url)}
                       />
-                    )}
+                      <div className="w-56 h-8 bg-fuchsia-700 flex justify-center items-center ">
+                        Winner
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={contestant.photo_url}
+                      width={500}
+                      className={`${
+                        contest.category == "logo"
+                          ? "aspect-square"
+                          : "aspect-[1/2]"
+                      } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer bg-neutral-900 bg-opacity-40 backdrop-blur-lg`}
+                      onClick={() => openDetailImg(contestant.photo_url)}
+                    />
+                  )}
 
-                    {contest.status == "Ongoing" ||
-                    contest.status == "Winner Selection" ? (
-                      <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
-                        <p className="font-bold text-lg">Design #{idx + 1}</p>
-                        <div className="flex justify-between">
-                          <div className="text-sm flex gap-1 -mt-1.5">
-                            <span className="font-thin">by</span>
-                            <span className="font-semibold">
-                              {contestant.username}
-                            </span>
-                          </div>
-                          {/* <div className="text-sm font-semibold">1000 votes</div> */}
-                        </div>
-                        <div className="text-xs flex items-center gap-1.5 -ml-0.5">
-                          {/* {formatTime(contestant.upload_time.toLocaleString())} */}
-                          <MdOutlineFileUpload className="text-lg" />
-                          <span>
-                            {contestant.upload_time.toLocaleDateString(
-                              "en-US",
-                              {
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                                hour: "numeric",
-                                minute: "numeric",
-                                hour12: true,
-                              }
-                            )}
+                  {contest.status == "Ongoing" ||
+                  contest.status == "Winner Selection" ? (
+                    <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
+                      <p className="font-bold text-lg">Design #{idx + 1}</p>
+                      <div className="flex justify-between">
+                        <div className="text-sm flex gap-1 -mt-1.5">
+                          <span className="font-thin">by</span>
+                          <span className="font-semibold">
+                            {contestant.username}
                           </span>
                         </div>
-                        <Button
-                          variant="flat"
-                          className="rounded-full absolute right-2 top-2.5"
-                          onClick={() =>
-                            openVotingConfirmation(contestant.username)
-                          }
-                          isIconOnly
-                        >
-                          <AiOutlineLike className="text-xl" />
-                        </Button>
+                        {/* <div className="text-sm font-semibold">1000 votes</div> */}
                       </div>
-                    ) : (
-                      <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
-                        <p className="font-bold text-lg">Design #{idx + 1}</p>
-                        <div className="flex justify-between">
-                          <div className="text-sm flex gap-1 -mt-1.5">
-                            <span className="font-thin">by</span>
-                            <span className="font-semibold">
-                              {contestant.username}
-                            </span>
-                          </div>
-                          {/* <div className="text-sm font-semibold">1000 votes</div> */}
-                        </div>
-                        <div className="text-xs flex items-center gap-1.5 -ml-0.5">
-                          {/* {formatTime(contestant.upload_time.toLocaleString())} */}
-                          <MdOutlineFileUpload className="text-lg" />
-                          <span>
-                            {contestant.upload_time.toLocaleDateString(
-                              "en-US",
-                              {
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                                hour: "numeric",
-                                minute: "numeric",
-                                hour12: true,
-                              }
-                            )}
+                      <div className="text-xs flex items-center gap-1.5 -ml-0.5">
+                        {/* {formatTime(contestant.upload_time.toLocaleString())} */}
+                        <MdOutlineFileUpload className="text-lg" />
+                        <span>
+                          {contestant.upload_time.toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                          })}
+                        </span>
+                      </div>
+                      <Button
+                        variant="flat"
+                        className="rounded-full absolute right-2 top-2"
+                        onClick={() =>
+                          openVotingConfirmation(contestant.username)
+                        }
+                        isIconOnly
+                      >
+                        <AiOutlineLike className="text-xl" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
+                      <p className="font-bold text-lg">Design #{idx + 1}</p>
+                      <div className="flex justify-between">
+                        <div className="text-sm flex gap-1 -mt-1.5">
+                          <span className="font-thin">by</span>
+                          <span className="font-semibold">
+                            {contestant.username}
                           </span>
                         </div>
+                        {/* <div className="text-sm font-semibold">1000 votes</div> */}
                       </div>
-                    )}
-                  </CardBody>
-                </Card>
-              ))}
-          </div>
-        ) : (
-          <div className="text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
-            No contestants available.
-          </div>
-        )}
+                      <div className="text-xs flex items-center gap-1.5 -ml-0.5">
+                        {/* {formatTime(contestant.upload_time.toLocaleString())} */}
+                        <MdOutlineFileUpload className="text-lg" />
+                        <span>
+                          {contestant.upload_time.toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </CardBody>
+              </Card>
+            ))}
+          <Card
+            // key={idx}
+            className="pb-1 flex flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md opacity-0"
+            radius="sm"
+          >
+            <CardBody className="overflow-hidden p-0 placeholder">
+              <img
+                // src={contestant.photo_url}
+                width={500}
+                className={`${
+                  contest.category == "logo" ? "aspect-square" : "aspect-[1/2]"
+                } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 bg-neutral-900 bg-opacity-40 backdrop-blur-lg`}
+                // onClick={() => openDetailImg(contestant.photo_url)}
+              />
+
+              <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
+                <p className="font-bold text-lg">Design</p>
+                <div className="flex justify-between">
+                  <div className="text-sm flex gap-1 -mt-1.5">
+                    <span className="font-thin">by</span>
+                    <span className="font-semibold">a</span>
+                  </div>
+                  {/* <div className="text-sm font-semibold">1000 votes</div> */}
+                </div>
+                <div className="text-xs flex items-center gap-1.5 -ml-0.5">
+                  {/* {formatTime(contestant.upload_time.toLocaleString())} */}
+                  <MdOutlineFileUpload className="text-lg" />
+                  <span>a</span>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
         <Modal
           isOpen={isOpen}
           onOpenChange={setOpen}
