@@ -247,7 +247,7 @@ function ContestDetail() {
             competitionId={competitionID}
             userId={userData.principal_id}
             fetchData={getContestant}
-            className={`w-full cursor-pointer bg-gradient-to-b from-purple-600 to-purple-900`}
+            className={`w-full cursor-pointer backdrop-blur-lg`}
             category={contest.category}
           ></ParticipateContestModal>
         )}
@@ -462,7 +462,7 @@ function ContestDetail() {
               .map((contestant, idx) => (
                 <Card
                   key={idx}
-                  className="flex flex-col items-center justify-center bg-gradient-to-b from-black to-purple-800 bg-[length:100%_120vh] backdrop-blur-lg bg-opacity-10"
+                  className="flex flex-col items-center justify-center bg-opacity-50"
                   radius="sm"
                 >
                   <CardBody className="overflow-hidden p-0">

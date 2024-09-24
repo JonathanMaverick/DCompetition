@@ -106,6 +106,8 @@ function Contests() {
     getData();
   }, []);
 
+  console.log(contestants);
+
   filteredContests.forEach((c) => {
     c.contestants = [];
 
@@ -207,7 +209,7 @@ function Contests() {
               const status = contest.status;
               return (
                 <Link to={`/contestDetail/${contest.contest_id}`} key={index}>
-                  <Card className="bg-black backdrop-blur-lg bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer">
+                  <Card className="bg-black bg-opacity-40 relative shadow-lg transition-transform transform hover:scale-[1.02] cursor-pointer">
                     <Status status={status} />
                     <CardBody className="p-4 space-y-4">
                       {(contest.category === "logo" ||

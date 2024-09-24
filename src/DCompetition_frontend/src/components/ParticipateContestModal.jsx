@@ -95,8 +95,8 @@ export default function ParticipateContestModal({
     <>
       <Button
         onPress={onOpen}
-        // variant="bordered"
-        // color="secondary"
+        variant="bordered"
+        color="secondary"
         className={className}
       >
         Participate
