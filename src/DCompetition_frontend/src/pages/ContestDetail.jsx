@@ -254,7 +254,7 @@ function ContestDetail() {
             classNames={{
               tabList:
                 "flex gap-6 w-full relative rounded-none p-0 border-b border-divider",
-              tab: "flex-1 text-center h-12",
+              tab: "flex-1 text-center h-12 max-w-20 md:max-w-96",
               cursor: "w-full bg-[#FFF]",
               tabContent: "group-data-[selected=true]:text-[#FFF]",
             }}

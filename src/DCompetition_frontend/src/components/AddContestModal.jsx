@@ -161,17 +161,6 @@ export default function AddContestModal({ userId, fetchData }) {
 
       const descriptionHTML = contestData.description.replace(/\n/g, "<br>");
 
-      if (!areColorsUnique(result.color)) {
-        toast.error("Colors must be unique", {
-          style: {
-            borderRadius: "8px",
-            background: "#000",
-            color: "#fff",
-          },
-        });
-        return;
-      }
-
       const result = {
         userId: userId,
         title: contestData.title,
@@ -186,6 +175,17 @@ export default function AddContestModal({ userId, fetchData }) {
         colors: contestData.colors,
         files: contestData.files,
       };
+
+      if (!areColorsUnique(result.colors)) {
+        toast.error("Colors must be unique", {
+          style: {
+            borderRadius: "8px",
+            background: "#000",
+            color: "#fff",
+          },
+        });
+        return;
+      }
 
       console.log("Submitting Contest:", result);
 

@@ -62,7 +62,7 @@ function BottomCard({
 
   useEffect(() => {
     if (status !== "Completed") {
-      updateTimer(); // Initial call to set the correct time left immediately
+      updateTimer();
 
       function animate() {
         updateTimer();
