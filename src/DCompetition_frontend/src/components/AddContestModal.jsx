@@ -113,6 +113,11 @@ export default function AddContestModal({ userId, fetchData }) {
     }));
   };
 
+  function areColorsUnique(colors) {
+    const uniqueColors = new Set(colors);
+    return uniqueColors.size === colors.length;
+  }
+
   const handleSubmit = async () => {
     if (loading) return;
 
@@ -155,6 +160,17 @@ export default function AddContestModal({ userId, fetchData }) {
         BigInt(endVotingDate.getTime()) * 1_000_000n;
 
       const descriptionHTML = contestData.description.replace(/\n/g, "<br>");
+
+      if (!areColorsUnique(result.color)) {
+        toast.error("Colors must be unique", {
+          style: {
+            borderRadius: "8px",
+            background: "#000",
+            color: "#fff",
+          },
+        });
+        return;
+      }
 
       const result = {
         userId: userId,
