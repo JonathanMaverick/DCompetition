@@ -77,6 +77,10 @@ actor Main {
             return #err("Voting end date must be greater than the end date.");
         };
 
+        if (Array.size(color) > 6){
+            return #err("Colors cannot be more than 6");
+        };
+
         currentId := currentId + 1;
         let newContest : Contest.Contest = {
             contest_id = currentId;
