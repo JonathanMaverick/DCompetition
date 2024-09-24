@@ -401,7 +401,10 @@ function ContestDetail() {
                         </span>
                         <div className="flex flex-col gap-4">
                           {contest.file.map((file, fileIndex) => (
-                            <Card className="bg-neutral-800 bg-opacity-50 rounded-md p-2">
+                            <Card
+                              className="bg-neutral-800 bg-opacity-50 rounded-md p-2"
+                              key={fileIndex}
+                            >
                               <CardBody className="p-0">
                                 {" "}
                                 <div
@@ -453,24 +456,16 @@ function ContestDetail() {
                 radius="sm"
               >
                 <CardBody className="overflow-hidden p-0">
-                  {idx + 1 == 1 ? (
-                    <div className="">
-                      {/* <div className="w-56 h-8 bg-yellow-500 flex justify-center items-center rounded-t-lg">
-                        Winner
-                      </div> */}
-                      <img
-                        src={contestant.photo_url}
-                        className="aspect-square transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
-                        onClick={() => openDetailImg(contestant.photo_url)}
-                      />
-                    </div>
-                  ) : (
-                    <img
-                      src={contestant.photo_url}
-                      className="aspect-square rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer"
-                      onClick={() => openDetailImg(contestant.photo_url)}
-                    />
-                  )}
+                  <img
+                    src={contestant.photo_url}
+                    className={`${
+                      contest.category == "logo"
+                        ? "aspect-square"
+                        : "aspect-[1/2]"
+                    } w-full h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
+                    onClick={() => openDetailImg(contestant.photo_url)}
+                  />
+
                   {contest.status == "Ongoing" ||
                   contest.status == "Winner Selection" ? (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">

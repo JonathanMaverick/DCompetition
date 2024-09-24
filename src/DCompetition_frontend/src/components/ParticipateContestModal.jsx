@@ -131,7 +131,7 @@ export default function ParticipateContestModal({
                       <img
                         src={preview}
                         alt="Preview"
-                        className="w-full h-full object-cover rounded-md"
+                        className={`w-full h-auto ${isLogoCategory ? "aspect-square" : "aspect-[1/2]"}  object-cover rounded-md"`}
                       />
                       <div
                         className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity cursor-pointer"

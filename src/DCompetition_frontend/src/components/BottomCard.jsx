@@ -130,22 +130,22 @@ function BottomCard({
               <p className={` ${titleColors[status]} translate-y-[2px]`}>
                 Completed On
               </p>
-              <p
+              <div
                 className={`text-sm sm:text-lg font-bold ${titleColors[status]} mb-[4px] translate-y-[1px]`}
               >
                 {formatEndDate(endDate)}
-              </p>
+              </div>
             </>
           ) : (
             <>
               <p className={` ${titleColors[status]} translate-y-[2px]`}>
                 {status === "Not Started" ? "Starts In" : "Ends In"}
               </p>
-              <p
+              <div
                 className={`text-sm sm:text-lg font-bold ${titleColors[status]} translate-y-[1px]`}
               >
                 {formatTime(timeLeft)}
-              </p>
+              </div>
             </>
           )}
         </div>
