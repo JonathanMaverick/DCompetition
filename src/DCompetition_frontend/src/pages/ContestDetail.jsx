@@ -71,32 +71,6 @@ function ContestDetail() {
     setOpen(true);
   };
 
-  const vote = async (competition_id, contestant_id, principal_id) => {
-    console.log(competition_id, contestant_id, principal_id);
-    await DContest_backend_voting.addVoting(
-      Number(competition_id),
-      Number(contestant_id),
-      principal_id
-    );
-    // window.location.reload();
-    // setContestantName(username);
-    // setOpenConfirmation(true);
-  };
-
-  const unVote = async (competition_id, contestant_id, principal_id) => {
-    console.log(competition_id, contestant_id, principal_id);
-    await DContest_backend_voting.removeVoting(
-      Number(competition_id),
-      Number(contestant_id),
-      principal_id
-    );
-    console.log("unvote");
-    // window.location.reload();
-
-    // setContestantName(username);
-    // setOpenConfirmation(true);
-  };
-
   const changeToUrl = (picture) => {
     let url = "";
     if (picture) {
@@ -194,11 +168,10 @@ function ContestDetail() {
     console.log("CONTESTANT: ", c);
     if (c && (c.status === "Ongoing" || c.status === "Winner Selection")) {
       return (b, a) => new Date(a.upload_time) - new Date(b.upload_time);
-    }
-    else if (c && (c.status === "Completed")){
+    } else if (c && c.status === "Completed") {
       return (b, a) => {
         if (a.votes !== b.votes) {
-          return a.votes - b.votes; 
+          return a.votes - b.votes;
         }
         return new Date(b.upload_time) - new Date(a.upload_time);
       };
@@ -208,14 +181,90 @@ function ContestDetail() {
 
   const checkVote = (c) => {
     let vote = voting.find(
-      (v) => Number(v.contestant_id) == Number(c.contestant_id)
+      (v) => Number(v.contestant_id) === Number(c.contestant_id)
     );
     if (vote) {
-      if (vote.principal_id.includes(userData.principal_id)) {
-        return "like";
+      return vote.principal_id.includes(userData.principal_id)
+        ? "like"
+        : "unlike";
+    }
+    return "none";
+  };
+
+  const vote = async (competition_id, contestant_id, principal_id) => {
+    setVoting((prevVoting) => {
+      let updatedVoting = [...prevVoting];
+      const existingVoteIndex = updatedVoting.findIndex(
+        (v) => Number(v.contestant_id) === Number(contestant_id)
+      );
+
+      if (existingVoteIndex > -1) {
+        updatedVoting[existingVoteIndex].principal_id.push(principal_id);
       } else {
-        return "unlike";
+        updatedVoting.push({ contestant_id, principal_id: [principal_id] });
       }
+      return updatedVoting;
+    });
+
+    try {
+      await DContest_backend_voting.addVoting(
+        Number(competition_id),
+        Number(contestant_id),
+        principal_id
+      );
+    } catch (error) {
+      console.error("Failed to vote", error);
+      setVoting((prevVoting) => {
+        return prevVoting.filter(
+          (v) =>
+            !(
+              Number(v.contestant_id) === Number(contestant_id) &&
+              v.principal_id.includes(principal_id)
+            )
+        );
+      });
+    }
+  };
+
+  const unVote = async (competition_id, contestant_id, principal_id) => {
+    setVoting((prevVoting) => {
+      let updatedVoting = [...prevVoting];
+      const existingVoteIndex = updatedVoting.findIndex(
+        (v) => Number(v.contestant_id) === Number(contestant_id)
+      );
+
+      if (existingVoteIndex > -1) {
+        updatedVoting[existingVoteIndex].principal_id = updatedVoting[
+          existingVoteIndex
+        ].principal_id.filter((id) => id !== principal_id);
+        if (updatedVoting[existingVoteIndex].principal_id.length === 0) {
+          updatedVoting.splice(existingVoteIndex, 1);
+        }
+      }
+      return updatedVoting;
+    });
+
+    try {
+      await DContest_backend_voting.removeVoting(
+        Number(competition_id),
+        Number(contestant_id),
+        principal_id
+      );
+    } catch (error) {
+      console.error("Failed to unvote", error);
+      setVoting((prevVoting) => {
+        let revertedVoting = [...prevVoting];
+        const existingVoteIndex = revertedVoting.findIndex(
+          (v) => Number(v.contestant_id) === Number(contestant_id)
+        );
+
+        if (existingVoteIndex > -1) {
+          revertedVoting[existingVoteIndex].principal_id.push(principal_id);
+        } else {
+          revertedVoting.push({ contestant_id, principal_id: [principal_id] });
+        }
+        return revertedVoting;
+      });
     }
   };
 
@@ -227,7 +276,7 @@ function ContestDetail() {
       setVoting(votings);
     };
     getVotings();
-  }, [vote, unVote]);
+  }, [competitionID]);
 
   // console.log(voting)
 
@@ -317,19 +366,19 @@ function ContestDetail() {
               <div className="relative flex ml-4">
                 <div className="flex flex-col items-center pt-[27px]">
                   <div
-                    className={`w-4 h-4 ${contest.status != "Not Started" ? "bg-purple-500" : "bg-white"} rounded-full`}
+                    className={`w-4 h-4 ${contest.status === "Completed" ? "bg-fuchsia-500" : contest.status !== "Not Started" ? "bg-purple-500" : "bg-white"} rounded-full`}
                   ></div>
                   <div
-                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status != "Not Started" ? "bg-purple-500" : "bg-white"}`}
+                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status === "Completed" ? "bg-fuchsia-500" : contest.status !== "Not Started" ? "bg-purple-500" : "bg-white"}`}
                   ></div>
                   <div
-                    className={`w-4 h-4 ${contest.status != "Not Started" && contest.status != "Ongoing" ? "bg-purple-500" : "bg-white"} rounded-full`}
+                    className={`w-4 h-4 ${contest.status === "Completed" ? "bg-fuchsia-500" : contest.status !== "Not Started" && contest.status !== "Ongoing" ? "bg-purple-500" : "bg-white"} rounded-full`}
                   ></div>
                   <div
-                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status != "Not Started" && contest.status != "Ongoing" ? "bg-purple-500" : "bg-white"}`}
+                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status === "Completed" ? "bg-fuchsia-500" : contest.status !== "Not Started" && contest.status !== "Ongoing" ? "bg-purple-500" : "bg-white"}`}
                   ></div>
                   <div
-                    className={`w-4 h-4 bg-white rounded-full ${contest.status == "Completed" ? "bg-purple-500" : "bg-white"}`}
+                    className={`w-4 h-4 rounded-full ${contest.status === "Completed" ? "bg-fuchsia-500" : "bg-white"}`}
                   ></div>
                 </div>
 

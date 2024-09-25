@@ -18,7 +18,7 @@ function Home() {
           className="text-3xl sm:text-4xl md:text-6xl md:leading-tight font-bold leading-tight mb-6"
         >
           Unleash Creativity, <br />
-          <span className="text-purple-300">Earn Recognition</span>, and Win
+          <span className="text-purple-300">Share Your Vision</span>, and Win
           Big!
         </motion.h1>
 
