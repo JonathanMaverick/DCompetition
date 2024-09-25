@@ -191,8 +191,17 @@ function ContestDetail() {
   }, [contest, loading]);
 
   const getSort = (c) => {
+    console.log("CONTESTANT: ", c);
     if (c && (c.status === "Ongoing" || c.status === "Winner Selection")) {
       return (b, a) => new Date(a.upload_time) - new Date(b.upload_time);
+    }
+    else if (c && (c.status === "Completed")){
+      return (b, a) => {
+        if (a.votes !== b.votes) {
+          return a.votes - b.votes; 
+        }
+        return new Date(b.upload_time) - new Date(a.upload_time);
+      };
     }
     return null;
   };
@@ -497,7 +506,7 @@ function ContestDetail() {
               >
                 <CardBody className="overflow-hidden p-0">
                   {contest.status == "Completed" && idx + 1 == 1 ? (
-                    <div>
+                    <div className="relative">
                       <img
                         src={contestant.photo_url}
                         width={500}
@@ -508,7 +517,7 @@ function ContestDetail() {
                         } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer`}
                         onClick={() => openDetailImg(contestant.photo_url)}
                       />
-                      <div className="w-56 h-8 bg-fuchsia-700 flex justify-center items-center ">
+                      <div className="w-full h-8 bg-fuchsia-700 flex justify-center items-center absolute bottom-0 font-bold">
                         Winner
                       </div>
                     </div>
@@ -581,7 +590,13 @@ function ContestDetail() {
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
-                      <p className="font-bold text-lg">Design #{idx + 1}</p>
+                      <div className="flex justify-between">
+                        <p className="font-bold text-lg">Design #{idx + 1}</p>
+                        <div className="flex justify-center items-center gap-1">
+                          <h1 className="text-sm">{contestant.votes}</h1>
+                          <AiFillLike className="text-sm" />
+                        </div>
+                      </div>
                       <div className="flex justify-between">
                         <div className="text-sm flex gap-1 -mt-1.5">
                           <span className="font-thin">by</span>
@@ -605,7 +620,7 @@ function ContestDetail() {
                           })}
                         </span>
                       </div>
-                      <h1>Total Vote {contestant.votes}</h1>
+                      {/* <h1>Total Vote {contestant.votes}</h1> */}
                     </div>
                   )}
                 </CardBody>
