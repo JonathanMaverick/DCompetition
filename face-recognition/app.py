@@ -35,17 +35,18 @@ def check_face():
 
     for file_name in os.listdir(STORAGE_PATH):
       file_path = STORAGE_PATH + '/' + file_name
-            
-      result = DeepFace.verify(
-        img1_path=temp_image_path, 
-        img2_path=file_path,
-        enforce_detection=False
-      )
-      # Uncomment this to debug easier
-      # print(f"Comparing with {file_name}: {result['distance']}, {result['verified']} ")
-            
-      if result['distance'] < 0.4 and result['verified']:
-        return jsonify({"message": "Face already used. Try again."}), 200
+
+      if file_path.endswith('jpg'):      
+        result = DeepFace.verify(
+          img1_path=temp_image_path, 
+          img2_path=file_path,
+          enforce_detection=False
+        )
+        # Uncomment this to debug easier
+        # print(f"Comparing with {file_name}: {result['distance']}, {result['verified']} ")
+              
+        if result['distance'] < 0.4 and result['verified']:
+          return jsonify({"message": "Face already used. Try again."}), 200
         
     save_image(image_array, STORAGE_PATH)
     return jsonify({"message": "No match found."}), 200
