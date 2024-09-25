@@ -71,10 +71,10 @@ function History() {
         file: comp.file,
       };
     });
-
-    setContests(updatedContests);
-    setFilteredContests(updatedContests);
-    setLoading(false);
+    
+     setContests(updatedContests);
+     setFilteredContests(updatedContests);
+    
   };
 
   useEffect(() => {
@@ -143,6 +143,27 @@ function History() {
     }
     return url;
   }
+
+  const filterContest = () => {
+     if (userData){
+          const myContest = contests.filter((c) => c.principle_id === userData.principle_id);
+          const myContestant = contests.filter((c) => 
+               c.contestants.find((cc) => cc.principal_id === userData.principal_id)
+          );   
+          const mergedContests = [...myContest, ...myContestant].filter(
+               (value, index, self) => 
+                   index === self.findIndex((t) => t.contest_id === value.contest_id) 
+          );
+          console.log("MERGE: ", mergedContests)
+          setContests(mergedContests);
+          setFilteredContests(mergedContests);
+          setLoading(false);
+     }
+  }
+
+  useEffect(() => {
+     filterContest();
+   }, [userData]);
 
   return (
     <div className="flex flex-col gap-6 p-6 text-gray-100">
