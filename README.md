@@ -20,6 +20,13 @@ dfx start --background
 dfx deploy
 ```
 
+Before opening the app, go to frontend directory inside `src` and run:
+
+```bash
+# Install frontend node modules
+npm install
+```
+
 ## Running the AI service locally
 
 To run the AI service locally, go to `face-recognition` directory, and follow this command:
