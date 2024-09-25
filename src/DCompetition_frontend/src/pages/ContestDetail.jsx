@@ -548,15 +548,16 @@ function ContestDetail() {
       </div>
       <div className="lg:w-3/4 w-full flex rounded-lg justify-center items-start overflow-y-scroll">
         <div className="ml-3.5 lg:ml-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
-          {contest.status == "Ongoing" && (
-            <ParticipateContestModal
-              competitionId={competitionID}
-              userId={userData.principal_id}
-              fetchData={getContestant}
-              className={`w-full cursor-pointer backdrop-blur-lg`}
-              category={contest.category}
-            ></ParticipateContestModal>
-          )}
+          {contest.status == "Ongoing" &&
+            contest.principal_id != userData.principal_id && (
+              <ParticipateContestModal
+                competitionId={competitionID}
+                userId={userData.principal_id}
+                fetchData={getContestant}
+                className={`w-full cursor-pointer backdrop-blur-lg`}
+                category={contest.category}
+              ></ParticipateContestModal>
+            )}
           {contest.status == "Not Started" && <LockedCard />}
           {contestants
             .slice()
