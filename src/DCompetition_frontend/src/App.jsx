@@ -24,11 +24,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/history" element={<History />} /> */}
-          {/* <Route
-            path="/contestDetail/:competitionID"
-            element={<ContestDetail />}
-          /> */}
           <Route path="/*" element={<AuthenticationRoute/>}/>
         </Routes>
       </Template>
