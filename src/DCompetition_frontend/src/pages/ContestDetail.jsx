@@ -61,6 +61,7 @@ function ContestDetail() {
   const [contestants, setContestants] = useState([]);
   const [allUser, setAllUser] = useState([]);
   const [voting, setVoting] = useState([]);
+  const [creator, setCreator] = useState(null);
 
   const refresh = () => {
     window.location.reload();
@@ -90,6 +91,16 @@ function ContestDetail() {
     };
     getAllUser();
   }, [competitionID]);
+
+  useEffect(() => {
+    if (contest && allUser) {
+      allUser.forEach((u) => {
+        if (u.principal_id === contest.principal_id) {
+          setCreator(u);
+        }
+      });
+    }
+  }, [contest, allUser]);
 
   const getContestant = async () => {
     try {
@@ -327,6 +338,14 @@ function ContestDetail() {
     }
   });
 
+  const getUrl = (img) => {
+    const blob = new Blob([img], {
+      type: "image/jpeg",
+    });
+    const url = URL.createObjectURL(blob);
+    return url;
+  };
+
   // console.log(contestants)
 
   return (
@@ -541,6 +560,27 @@ function ContestDetail() {
                     </CardBody>
                   </Card>
                 )}
+
+                {creator && (
+                  <Card className="bg-neutral-900 bg-opacity-50 px-1">
+                    <CardBody>
+                      <span className="font-semibold block mb-2.5">
+                        Contest Creator
+                      </span>
+                      <div className="flex items-center space-x-3 py-2 pl-1 pr-4 bg-opacity-0 bg-neutral-800 rounded-lg hover:bg-opacity-70 transition cursor-pointer -mt-1 max-w-max">
+                        <img
+                          width={32}
+                          src={getUrl(creator.profilePic)}
+                          alt="Profile picture"
+                          className="rounded-full aspect-square border-2 border-purple-500"
+                        />
+                        <span className="hidden sm:block text-white font-semibold">
+                          {creator.username}
+                        </span>
+                      </div>
+                    </CardBody>
+                  </Card>
+                )}
               </div>
             </Tab>
           </Tabs>
@@ -602,7 +642,8 @@ function ContestDetail() {
                   contest.status == "Winner Selection" ? (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
                       <p className="font-bold text-lg">
-                        Design #{contestants.length - idx}
+                        {contest.status == "Completed" ? "Rank #" : "Design #"}
+                        {contestants.length - idx}
                       </p>
                       <div className="flex justify-between">
                         <div className="text-sm flex gap-1 -mt-1.5">
@@ -662,7 +703,7 @@ function ContestDetail() {
                   ) : (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
                       <div className="flex justify-between">
-                        <p className="font-bold text-lg">Design #{idx + 1}</p>
+                        <p className="font-bold text-lg">Rank #{idx + 1}</p>
                         <div className="flex justify-center items-center gap-1">
                           <h1 className="text-sm">{contestant.votes}</h1>
                           <AiFillLike className="text-sm" />
@@ -699,7 +740,7 @@ function ContestDetail() {
             ))}
           <Card
             // key={idx}
-            className="pb-1 flex flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md opacity-0"
+            className={`${contestants.length > 0 ? "hidden" : "flex"} pb-1 flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md opacity-0`}
             radius="sm"
           >
             <CardBody className="overflow-hidden p-0 placeholder">

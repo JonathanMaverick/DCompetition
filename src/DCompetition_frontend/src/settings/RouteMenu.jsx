@@ -5,29 +5,27 @@ import History from "../pages/History";
 import Register from "../pages/Register";
 
 export const RouteList = [
-    {
-        element: <Contests/>,
-        path: "/contests"
-    },
-    {
-        element: <History/>,
-        path: "/history"
-    },
-    {
-        element: <ContestDetail/>,
-        path: "/contestDetail/:competitionID"
-    }
-
-]
+  {
+    element: <Contests />,
+    path: "/contests",
+  },
+  {
+    element: <History />,
+    path: "/history",
+  },
+  {
+    element: <ContestDetail />,
+    path: "/contestDetail/:competitionID",
+  },
+];
 
 export const protectedRouteList = [
-    {
-        element: <Face/>,
-        path: "/face"
-    },
-    {
-        element: <Register/>,
-        path: "/register"
-    }
-
-]
+  {
+    element: <Face />,
+    path: "/face",
+  },
+  {
+    element: <Register />,
+    path: "/register",
+  },
+];
