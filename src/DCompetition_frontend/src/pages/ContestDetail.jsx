@@ -198,17 +198,17 @@ function ContestDetail() {
   };
 
   const checkVote = (c) => {
-    let vote = voting.find((v) => Number(v.contestant_id) == Number(c.contestant_id));
-    if(vote){
-      if(vote.principal_id.includes(userData.principal_id)){
+    let vote = voting.find(
+      (v) => Number(v.contestant_id) == Number(c.contestant_id)
+    );
+    if (vote) {
+      if (vote.principal_id.includes(userData.principal_id)) {
         return "like";
-      }
-      else {
+      } else {
         return "unlike";
       }
     }
-  }
-
+  };
 
   useEffect(() => {
     const getVotings = async () => {
@@ -556,28 +556,35 @@ function ContestDetail() {
                       </div>
                       {checkVote(contestant) == "like" ? (
                         <Button
-                        variant="flat"
-                        className="rounded-full absolute right-2 top-2.5"
-                        onClick={() =>
-                          unVote(contestant.competition_id,contestant.contestant_id,userData.principal_id)
-                        }
-                        isIconOnly
-                      >
-                        <AiFillLike className="text-xl" />
-                      </Button>
+                          variant="flat"
+                          className="rounded-full absolute right-2 top-2.5"
+                          onClick={() =>
+                            unVote(
+                              contestant.competition_id,
+                              contestant.contestant_id,
+                              userData.principal_id
+                            )
+                          }
+                          isIconOnly
+                        >
+                          <AiFillLike className="text-xl" />
+                        </Button>
                       ) : (
                         <Button
-                        variant="flat"
-                        className="rounded-full absolute right-2 top-2.5"
-                        onClick={() =>
-                          vote(contestant.competition_id,contestant.contestant_id,userData.principal_id)
-                        }
-                        isIconOnly
-                      >
-                        <AiOutlineLike className="text-xl" />
-                      </Button>
+                          variant="flat"
+                          className="rounded-full absolute right-2 top-2.5"
+                          onClick={() =>
+                            vote(
+                              contestant.competition_id,
+                              contestant.contestant_id,
+                              userData.principal_id
+                            )
+                          }
+                          isIconOnly
+                        >
+                          <AiOutlineLike className="text-xl" />
+                        </Button>
                       )}
-                      
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
@@ -650,15 +657,14 @@ function ContestDetail() {
           className="bg-[#0f0c12]"
           radius="none"
         >
-          <ModalContent className="w-96 h-96 p-0">
+          <ModalContent className="w-96 h-auto p-0">
             <img
               src={urlImg}
               alt="kosong"
-              className="w-full h-full aspect-square"
+              className={`w-full h-full ${contest.category == "logo" ? "aspect-square" : "aspect-[1/2]"}`}
             />
           </ModalContent>
         </Modal>
-       
       </div>
     </div>
   );
