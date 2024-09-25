@@ -3,6 +3,7 @@ import RBTree "mo:base/RBTree";
 import Text "mo:base/Text";
 import Nat "mo:base/Nat";
 import Array "mo:base/Array";
+import Bool "mo:base/Bool";
 
 actor Main {
     func compareTuples(t1 : (Nat, Nat), t2 : (Nat, Nat)) : {
@@ -27,12 +28,15 @@ actor Main {
 
     type Result<T, E> = { #ok : T; #err : E };
 
-    public func addVoting(competition_id : Nat, contestant_id : Nat, new_principal_id : Text) : async () {
+    public func addVoting(competition_id : Nat, contestant_id : Nat, new_principal_id : Text) : async Result<Null, Text> {
 
         let currentId = (competition_id, contestant_id);
 
         switch (tree.get(currentId)) {
             case (?existingVote) {
+                if (Array.filter(existingVote.principal_id, func(id: Text): Bool = id == new_principal_id).size() > 0) {
+                    return #err("You already vote this!");
+                };
                 let updatedPrincipalIds = Array.append(existingVote.principal_id, [new_principal_id]);
 
                 let updatedVote : Voting.Voting = {
@@ -42,6 +46,7 @@ actor Main {
                 };
 
                 tree.put(currentId, updatedVote);
+                return #ok(null);
             };
             case null {
                 let newVote : Voting.Voting = {
@@ -51,6 +56,7 @@ actor Main {
                 };
 
                 tree.put(currentId, newVote);
+                return #ok(null);
             };
         };
     };
