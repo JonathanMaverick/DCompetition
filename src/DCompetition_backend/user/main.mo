@@ -79,13 +79,18 @@ actor Main {
     return users;
   };
 
-  public func reduceUserBalance(principal_id : Text, amount : Nat) : async () {
+  public func reduceUserBalance(principal_id : Text, amount : Nat) : async Result<Null,Text> {
 
     for (e in RBTree.iter(tree.share(), #bwd)) {
       let key = e.0;
       let user = e.1;
 
       if (key == principal_id) {
+
+        if (amount > user.money){
+          return #err("Insufficient balance");
+        };
+
         let updatedUser : User.User = {
           principal_id = user.principal_id;
           username = user.username;
@@ -97,6 +102,8 @@ actor Main {
         tree.put(key, updatedUser);
       };
     };
+
+    return #ok(null);
   };
 
   public func login(principal_id : Text) : async ?User.User {
