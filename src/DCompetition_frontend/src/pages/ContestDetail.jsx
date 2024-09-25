@@ -23,7 +23,7 @@ import {
   MdFileDownload,
   MdOutlineFileUpload,
 } from "react-icons/md";
-import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
+import { AiOutlineDislike, AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { idlFactory } from "../../../declarations/DContest_backend_user";
 import toast from "react-hot-toast";
 import ColorCard from "../components/ColorCard";
@@ -78,8 +78,7 @@ function ContestDetail() {
       Number(contestant_id),
       principal_id
     );
-    console.log("vote");
-    window.location.reload();
+    // window.location.reload();
     // setContestantName(username);
     // setOpenConfirmation(true);
   };
@@ -92,38 +91,10 @@ function ContestDetail() {
       principal_id
     );
     console.log("unvote");
-    window.location.reload();
+    // window.location.reload();
 
     // setContestantName(username);
     // setOpenConfirmation(true);
-  };
-
-  const formatTime = (timestamp) => {
-    const now = new Date();
-    const date = new Date(timestamp);
-    const seconds = Math.floor((now - date) / 1000);
-
-    let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1)
-      return interval === 1 ? "1 year ago" : `${interval} years ago`;
-
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1)
-      return interval === 1 ? "1 month ago" : `${interval} months ago`;
-
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1)
-      return interval === 1 ? "1 day ago" : `${interval} days ago`;
-
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1)
-      return interval === 1 ? "1 hour ago" : `${interval} hours ago`;
-
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1)
-      return interval === 1 ? "1 minute ago" : `${interval} minutes ago`;
-
-    return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
   };
 
   const changeToUrl = (picture) => {
@@ -226,6 +197,19 @@ function ContestDetail() {
     return null;
   };
 
+  const checkVote = (c) => {
+    let vote = voting.find((v) => Number(v.contestant_id) == Number(c.contestant_id));
+    if(vote){
+      if(vote.principal_id.includes(userData.principal_id)){
+        return "like";
+      }
+      else {
+        return "unlike";
+      }
+    }
+  }
+
+
   useEffect(() => {
     const getVotings = async () => {
       const votings = await DContest_backend_voting.getVotesByCompetitionId(
@@ -234,7 +218,7 @@ function ContestDetail() {
       setVoting(votings);
     };
     getVotings();
-  }, []);
+  }, [vote, unVote]);
 
   // console.log(voting)
 
@@ -570,35 +554,30 @@ function ContestDetail() {
                           })}
                         </span>
                       </div>
-                      <Button
+                      {checkVote(contestant) == "like" ? (
+                        <Button
                         variant="flat"
-                        className="rounded-full absolute right-2.5 top-2.5"
+                        className="rounded-full absolute right-2 top-2.5"
                         onClick={() =>
-                          vote(
-                            contestant.competition_id,
-                            contestant.contestant_id,
-                            userData.principal_id
-                          )
+                          unVote(contestant.competition_id,contestant.contestant_id,userData.principal_id)
+                        }
+                        isIconOnly
+                      >
+                        <AiFillLike className="text-xl" />
+                      </Button>
+                      ) : (
+                        <Button
+                        variant="flat"
+                        className="rounded-full absolute right-2 top-2.5"
+                        onClick={() =>
+                          vote(contestant.competition_id,contestant.contestant_id,userData.principal_id)
                         }
                         isIconOnly
                       >
                         <AiOutlineLike className="text-xl" />
                       </Button>
-                      {/* <Button
-                        variant="flat"
-                        className="rounded-full absolute right-8 top-2"
-                        onClick={() =>
-                          unVote(
-                            contestant.competition_id,
-                            contestant.contestant_id,
-                            userData.principal_id
-                          )
-                        }
-                        isIconOnly
-                      >
-                        <AiOutlineDislike className="text-xl" />
-                      </Button>
-                      <h1>Total Vote {contestant.votes}</h1> */}
+                      )}
+                      {/* <h1>Total Vote {contestant.votes}</h1> */}
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
