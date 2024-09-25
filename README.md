@@ -7,7 +7,7 @@ Introducing `D’Contest`, an ultimate contest voting platform designed to host 
 To run the project locally, go to project root directory and follow this command:
 
 ```bash
-# Only for windows
+# Only for Windows
 wsl
 
 # Install node modules
@@ -37,6 +37,13 @@ pip install flask-cors
 # Run the app
 flask run --port=1234
 ```
+
+## Additional Links
+
+- Project Summary & Documentation
+  https://spectacular-powder-fc0.notion.site/D-Contest-10b125e9bce5804dbdaffbddc8a980df?pvs=4
+  
+- Project Demo
 
 ### Note on frontend environment variables
 
