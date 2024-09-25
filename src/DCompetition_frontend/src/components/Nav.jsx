@@ -85,7 +85,7 @@ export default function Nav() {
               console.log(user);
               window.location.href = "/";
             } else {
-              window.location.href = "/register";
+              window.location.href = "/auth/register";
             }
           } catch (error) {
             console.error("Error during user check:", error);

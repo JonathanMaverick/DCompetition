@@ -25,8 +25,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           {/* <Route path="/register" element={<Register /> /> */}
-          <Route path="/*" element={<AuthenticationRoute/>}/>
-          <Route path="/*" element={<ProtectedRoute />}/>
+          <Route path="/*" element={<AuthenticationRoute />}/>
+          <Route path="/auth/*" element={<ProtectedRoute/>}/>
         </Routes>
       </Template>
     </Router>
