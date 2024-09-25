@@ -1,5 +1,4 @@
 import Nat "mo:base/Nat";
-import Time "mo:base/Time";
 import Text "mo:base/Text";
 
 module {
