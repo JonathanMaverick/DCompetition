@@ -577,7 +577,7 @@ function ContestDetail() {
                         <AiOutlineLike className="text-xl" />
                       </Button>
                       )}
-                      {/* <h1>Total Vote {contestant.votes}</h1> */}
+                      
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
@@ -605,6 +605,7 @@ function ContestDetail() {
                           })}
                         </span>
                       </div>
+                      <h1>Total Vote {contestant.votes}</h1>
                     </div>
                   )}
                 </CardBody>
@@ -657,29 +658,7 @@ function ContestDetail() {
             />
           </ModalContent>
         </Modal>
-        {/* <Modal
-          isOpen={isOpenConfirmation}
-          onOpenChange={setOpenConfirmation}
-          hideCloseButton={true}
-          className="bg-[#0f0c12]"
-        >
-          <ModalContent className="w-96 h-36 p-4 flex gap-3 justify-center items-center">
-            <div className="text-center m-4">
-              Are you sure want to vote for {contestantName} ?
-            </div>
-            <div className="flex gap-3">
-              <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-800 transition">
-                Yes
-              </button>
-              <button
-                className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition"
-                onClick={() => setOpenConfirmation(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </ModalContent>
-        </Modal> */}
+       
       </div>
     </div>
   );
