@@ -366,19 +366,19 @@ function ContestDetail() {
               <div className="relative flex ml-4">
                 <div className="flex flex-col items-center pt-[27px]">
                   <div
-                    className={`w-4 h-4 ${contest.status != "Not Started" ? "bg-purple-500" : "bg-white"} rounded-full`}
+                    className={`w-4 h-4 ${contest.status === "Completed" ? "bg-fuchsia-500" : contest.status !== "Not Started" ? "bg-purple-500" : "bg-white"} rounded-full`}
                   ></div>
                   <div
-                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status != "Not Started" ? "bg-purple-500" : "bg-white"}`}
+                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status === "Completed" ? "bg-fuchsia-500" : contest.status !== "Not Started" ? "bg-purple-500" : "bg-white"}`}
                   ></div>
                   <div
-                    className={`w-4 h-4 ${contest.status != "Not Started" && contest.status != "Ongoing" ? "bg-purple-500" : "bg-white"} rounded-full`}
+                    className={`w-4 h-4 ${contest.status === "Completed" ? "bg-fuchsia-500" : contest.status !== "Not Started" && contest.status !== "Ongoing" ? "bg-purple-500" : "bg-white"} rounded-full`}
                   ></div>
                   <div
-                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status != "Not Started" && contest.status != "Ongoing" ? "bg-purple-500" : "bg-white"}`}
+                    className={`w-0.5 h-[91px] sm:h-[72px] lg:h-[91px] ${contest.status === "Completed" ? "bg-fuchsia-500" : contest.status !== "Not Started" && contest.status !== "Ongoing" ? "bg-purple-500" : "bg-white"}`}
                   ></div>
                   <div
-                    className={`w-4 h-4 bg-white rounded-full ${contest.status == "Completed" ? "bg-purple-500" : "bg-white"}`}
+                    className={`w-4 h-4 rounded-full ${contest.status === "Completed" ? "bg-fuchsia-500" : "bg-white"}`}
                   ></div>
                 </div>
 
