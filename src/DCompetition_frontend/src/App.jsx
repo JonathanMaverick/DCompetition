@@ -6,6 +6,7 @@ import Face from "./pages/Face";
 import Contests from "./pages/Contests";
 import ContestDetail from "./pages/ContestDetail";
 import Register, { RegisterContext } from "./pages/Register";
+import History from "./pages/History";
 
 function App() {
   const [register, setRegister] = useState({
@@ -23,6 +24,7 @@ function App() {
           <Route path="/face" element={<Face />} />
           <Route path="/register" element={<Register />} />
           <Route path="/contests" element={<Contests />} />
+          <Route path="/history" element={<History />} />
           <Route
             path="/contestDetail/:competitionID"
             element={<ContestDetail />}
