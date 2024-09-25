@@ -282,14 +282,28 @@ function ContestDetail() {
 
   if (loading || !userData) {
     return (
-      <div className="flex w-full gap-x-4">
-        <div className="flex flex-col w-2/5 h-full gap-y-3">
-          <Skeleton className="h-12 w-full mb-3 rounded-lg bg-default-300" />
-          <Skeleton className="h-8 w-1/3 mb-6 rounded-lg bg-default-300" />
-          <Skeleton className="h-12 w-full rounded-lg mt-4 bg-default-300" />
+      <div className="flex w-full lg:flex-row flex-col">
+        <div className="flex flex-col w-full px-2 lg:px-0 lg:w-2/5 h-[calc(100vh-8rem)] gap-y-2">
+          <div>
+            <Skeleton className="w-3/5 rounded-lg mt-4">
+              <div className="h-10 rounded-lg bg-default-200"></div>
+            </Skeleton>
+            <Skeleton className="w-1/5 rounded-lg mt-4 mb-2">
+              <div className="h-3.5 rounded-lg bg-default-200"></div>
+            </Skeleton>
+          </div>
+          <Skeleton className="rounded-lg">
+            <div className="h-[7rem] rounded-lg bg-default-300"></div>
+          </Skeleton>
+          <Skeleton className="w-full rounded-lg mt-4">
+            <div className="h-10 rounded-lg bg-default-200"></div>
+          </Skeleton>
+          <Skeleton className="w-full rounded-lg flex-grow">
+            <div className="h-full rounded-lg bg-default-200"></div>
+          </Skeleton>
         </div>
-        <div className="w-3/4 bg-black bg-opacity-40 h-full rounded-lg p-6">
-          <Skeleton className="h-52 w-full mb-2 rounded-lg bg-default-300" />
+        <div className="w-full lg:w-3/4 h-[calc(100vh-7rem)] min-h-full rounded-lg py-4 px-2 lg:px-4">
+          <Skeleton className="min-h-full w-full mb-2 rounded-lg bg-default-300" />
         </div>
       </div>
     );

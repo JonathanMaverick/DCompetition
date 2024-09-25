@@ -257,12 +257,12 @@ function Contests() {
                                       contest.contestants[imgIndex].photo_url
                                     )}
                                     alt={`Placeholder ${imgIndex + 1}`}
-                                    className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-[1/2.045]"
+                                    className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-[1/2.045] bg-neutral-900 bg-opacity-50 backdrop-blur-md"
                                   />
                                 ) : (
                                   <div
                                     key={imgIndex}
-                                    className="w-full h-auto min-h-24 bg-neutral-900 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
+                                    className="w-full h-auto min-h-24 bg-neutral-900 shadow-sm bg-opacity-50 rounded-md flex justify-center items-center aspect-[1/2.045] backdrop-blur-md"
                                   >
                                     <img src={img_placeholder} alt="" />
                                   </div>
