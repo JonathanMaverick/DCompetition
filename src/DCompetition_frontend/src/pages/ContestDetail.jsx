@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import BottomCard from "../components/BottomCard";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
 import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
+import { DContest_backend_voting } from "declarations/DContest_backend_voting";
 import { DContest_backend_user } from "declarations/DContest_backend_user";
 import { convertDate } from "../tools/date";
 import {
@@ -22,7 +23,7 @@ import {
   MdFileDownload,
   MdOutlineFileUpload,
 } from "react-icons/md";
-import { AiOutlineLike } from "react-icons/ai";
+import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
 import { idlFactory } from "../../../declarations/DContest_backend_user";
 import toast from "react-hot-toast";
 import ColorCard from "../components/ColorCard";
@@ -59,6 +60,7 @@ function ContestDetail() {
   const currentDate = new Date().getTime();
   const [contestants, setContestants] = useState([]);
   const [allUser, setAllUser] = useState([]);
+  const [voting, setVoting] = useState([]);
 
   const refresh = () => {
     window.location.reload();
@@ -69,9 +71,24 @@ function ContestDetail() {
     setOpen(true);
   };
 
-  const openVotingConfirmation = (username) => {
-    setContestantName(username);
-    setOpenConfirmation(true);
+
+  const vote = async (competition_id,contestant_id,principal_id) => {
+    console.log(competition_id,contestant_id,principal_id)
+    await DContest_backend_voting.addVoting(Number(competition_id), Number(contestant_id),principal_id)
+    console.log("vote")
+    window.location.reload()
+    // setContestantName(username);
+    // setOpenConfirmation(true);
+  };
+
+  const unVote = async (competition_id,contestant_id,principal_id) => {
+    console.log(competition_id,contestant_id,principal_id)
+    await DContest_backend_voting.removeVoting(Number(competition_id), Number(contestant_id),principal_id)
+    console.log("unvote")
+    window.location.reload()
+
+    // setContestantName(username);
+    // setOpenConfirmation(true);
   };
 
   const formatTime = (timestamp) => {
@@ -202,6 +219,16 @@ function ContestDetail() {
     return null;
   };
 
+  useEffect(() => {
+    const getVotings = async() => {
+      const votings = await DContest_backend_voting.getVotesByCompetitionId(Number(competitionID))
+      setVoting(votings)
+    }
+    getVotings()
+  },[])
+
+  // console.log(voting)
+
   if (loading || !userData) {
     return (
       <div className="flex w-full gap-x-4">
@@ -217,12 +244,24 @@ function ContestDetail() {
     );
   }
 
+
   contestants.forEach((c) => {
     let user = allUser.find((user) => user.principal_id === c.principal_id);
     if (user) {
       c.username = user.username;
     }
   });
+
+  contestants.forEach((c) => {
+    let vote = voting.find((v) => Number(v.contestant_id) == Number(c.contestant_id));
+    if(vote){
+      c.votes = vote.principal_id.length
+    }else{
+      c.votes = 0
+    }
+  })
+
+  // console.log(contestants)
 
   return (
     <div className="flex w-full gap-4 mt-4 lg:flex-row flex-col">
@@ -521,14 +560,25 @@ function ContestDetail() {
                       </div>
                       <Button
                         variant="flat"
-                        className="rounded-full absolute right-2 top-2"
+                        className="rounded-full absolute left-28 top-2"
                         onClick={() =>
-                          openVotingConfirmation(contestant.username)
+                          vote(contestant.competition_id,contestant.contestant_id,userData.principal_id)
                         }
                         isIconOnly
                       >
                         <AiOutlineLike className="text-xl" />
                       </Button>
+                      <Button
+                        variant="flat"
+                        className="rounded-full absolute right-8 top-2"
+                        onClick={() =>
+                          unVote(contestant.competition_id,contestant.contestant_id,userData.principal_id)
+                        }
+                        isIconOnly
+                      >
+                        <AiOutlineDislike className="text-xl" />
+                      </Button>
+                      <h1>Total Vote {contestant.votes}</h1>
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">

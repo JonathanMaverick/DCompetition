@@ -7,6 +7,5 @@ module {
     competition_id : Nat;
     contestant_id : Nat;
     principal_id : [Text];
-    voteTime : Time.Time;
   };
 };
