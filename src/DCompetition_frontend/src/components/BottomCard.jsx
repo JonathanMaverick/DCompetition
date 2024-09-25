@@ -28,7 +28,7 @@ function BottomCard({
 
     return (
       <div
-        className={`flex gap-[5px] ${showSeconds && "sm:min-w-[120px] min-w-[103px] translate-x-3 sm:translate-x-4 -ml-6"}`}
+        className={`flex gap-[5px] ${showSeconds && "sm:min-w-[120px] min-w-[103px] text-center justify-center translate-x-3 sm:translate-x-3 -ml-6"}`}
       >
         <span>
           {days}
