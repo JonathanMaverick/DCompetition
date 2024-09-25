@@ -131,6 +131,18 @@ export default function Nav() {
             Contests
           </Link>
         </NavbarItem>
+        <NavbarItem isActive={location.pathname === "/history"}>
+          <Link
+            to={"/history"}
+            className={
+              location.pathname === "/history"
+                ? "text-purple-500"
+                : "text-white hover:text-gray-300 transition-all"
+            }
+          >
+            History
+          </Link>
+        </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
