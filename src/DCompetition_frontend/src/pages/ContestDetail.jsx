@@ -71,21 +71,28 @@ function ContestDetail() {
     setOpen(true);
   };
 
-
-  const vote = async (competition_id,contestant_id,principal_id) => {
-    console.log(competition_id,contestant_id,principal_id)
-    await DContest_backend_voting.addVoting(Number(competition_id), Number(contestant_id),principal_id)
-    console.log("vote")
-    window.location.reload()
+  const vote = async (competition_id, contestant_id, principal_id) => {
+    console.log(competition_id, contestant_id, principal_id);
+    await DContest_backend_voting.addVoting(
+      Number(competition_id),
+      Number(contestant_id),
+      principal_id
+    );
+    console.log("vote");
+    window.location.reload();
     // setContestantName(username);
     // setOpenConfirmation(true);
   };
 
-  const unVote = async (competition_id,contestant_id,principal_id) => {
-    console.log(competition_id,contestant_id,principal_id)
-    await DContest_backend_voting.removeVoting(Number(competition_id), Number(contestant_id),principal_id)
-    console.log("unvote")
-    window.location.reload()
+  const unVote = async (competition_id, contestant_id, principal_id) => {
+    console.log(competition_id, contestant_id, principal_id);
+    await DContest_backend_voting.removeVoting(
+      Number(competition_id),
+      Number(contestant_id),
+      principal_id
+    );
+    console.log("unvote");
+    window.location.reload();
 
     // setContestantName(username);
     // setOpenConfirmation(true);
@@ -214,18 +221,20 @@ function ContestDetail() {
 
   const getSort = (c) => {
     if (c && (c.status === "Ongoing" || c.status === "Winner Selection")) {
-      return (a, b) => new Date(a.upload_time) - new Date(b.upload_time);
+      return (b, a) => new Date(a.upload_time) - new Date(b.upload_time);
     }
     return null;
   };
 
   useEffect(() => {
-    const getVotings = async() => {
-      const votings = await DContest_backend_voting.getVotesByCompetitionId(Number(competitionID))
-      setVoting(votings)
-    }
-    getVotings()
-  },[])
+    const getVotings = async () => {
+      const votings = await DContest_backend_voting.getVotesByCompetitionId(
+        Number(competitionID)
+      );
+      setVoting(votings);
+    };
+    getVotings();
+  }, []);
 
   // console.log(voting)
 
@@ -244,7 +253,6 @@ function ContestDetail() {
     );
   }
 
-
   contestants.forEach((c) => {
     let user = allUser.find((user) => user.principal_id === c.principal_id);
     if (user) {
@@ -253,13 +261,15 @@ function ContestDetail() {
   });
 
   contestants.forEach((c) => {
-    let vote = voting.find((v) => Number(v.contestant_id) == Number(c.contestant_id));
-    if(vote){
-      c.votes = vote.principal_id.length
-    }else{
-      c.votes = 0
+    let vote = voting.find(
+      (v) => Number(v.contestant_id) == Number(c.contestant_id)
+    );
+    if (vote) {
+      c.votes = vote.principal_id.length;
+    } else {
+      c.votes = 0;
     }
-  })
+  });
 
   // console.log(contestants)
 
@@ -534,7 +544,9 @@ function ContestDetail() {
                   {contest.status == "Ongoing" ||
                   contest.status == "Winner Selection" ? (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
-                      <p className="font-bold text-lg">Design #{idx + 1}</p>
+                      <p className="font-bold text-lg">
+                        Design #{contestants.length - idx}
+                      </p>
                       <div className="flex justify-between">
                         <div className="text-sm flex gap-1 -mt-1.5">
                           <span className="font-thin">by</span>
@@ -560,25 +572,33 @@ function ContestDetail() {
                       </div>
                       <Button
                         variant="flat"
-                        className="rounded-full absolute left-28 top-2"
+                        className="rounded-full absolute right-2.5 top-2.5"
                         onClick={() =>
-                          vote(contestant.competition_id,contestant.contestant_id,userData.principal_id)
+                          vote(
+                            contestant.competition_id,
+                            contestant.contestant_id,
+                            userData.principal_id
+                          )
                         }
                         isIconOnly
                       >
                         <AiOutlineLike className="text-xl" />
                       </Button>
-                      <Button
+                      {/* <Button
                         variant="flat"
                         className="rounded-full absolute right-8 top-2"
                         onClick={() =>
-                          unVote(contestant.competition_id,contestant.contestant_id,userData.principal_id)
+                          unVote(
+                            contestant.competition_id,
+                            contestant.contestant_id,
+                            userData.principal_id
+                          )
                         }
                         isIconOnly
                       >
                         <AiOutlineDislike className="text-xl" />
                       </Button>
-                      <h1>Total Vote {contestant.votes}</h1>
+                      <h1>Total Vote {contestant.votes}</h1> */}
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">

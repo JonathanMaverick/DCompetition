@@ -116,7 +116,7 @@ function Contests() {
     );
 
     if (matchedContestants.length > 0) {
-      const sortedContestants = matchedContestants.sort((a, b) => {
+      const sortedContestants = matchedContestants.sort((b, a) => {
         return (
           convertDate(Number(a.upload_time)) -
           convertDate(Number(b.upload_time))
@@ -215,56 +215,60 @@ function Contests() {
                       {(contest.category === "logo" ||
                         contest.category === "design") && (
                         <div className="grid grid-cols-2 gap-2 mb-2">
-                          {Array.from({ length: 4 }).map((_, imgIndex) => (
-                            <React.Fragment key={imgIndex}>
-                              {contest.contestants[imgIndex] &&
-                              contest.contestants[imgIndex].photo_url ? (
-                                <img
-                                  key={imgIndex}
-                                  src={changeToUrl(
-                                    contest.contestants[imgIndex].photo_url
-                                  )}
-                                  alt={`Placeholder ${imgIndex + 1}`}
-                                  className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-square bg-neutral-900 bg-opacity-50 backdrop-blur-md"
-                                />
-                              ) : (
-                                <div
-                                  key={imgIndex}
-                                  className="w-full h-auto min-h-24 bg-neutral-900 shadow-sm bg-opacity-50 rounded-md flex justify-center items-center aspect-square backdrop-blur-md"
-                                >
-                                  <img src={img_placeholder} alt="" />
-                                </div>
-                              )}
-                            </React.Fragment>
-                          ))}
+                          {Array.from({ length: 4 })
+                            .reverse()
+                            .map((_, imgIndex) => (
+                              <React.Fragment key={imgIndex}>
+                                {contest.contestants[imgIndex] &&
+                                contest.contestants[imgIndex].photo_url ? (
+                                  <img
+                                    key={imgIndex}
+                                    src={changeToUrl(
+                                      contest.contestants[imgIndex].photo_url
+                                    )}
+                                    alt={`Placeholder ${imgIndex + 1}`}
+                                    className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-square bg-neutral-900 bg-opacity-50 backdrop-blur-md"
+                                  />
+                                ) : (
+                                  <div
+                                    key={imgIndex}
+                                    className="w-full h-auto min-h-24 bg-neutral-900 shadow-sm bg-opacity-50 rounded-md flex justify-center items-center aspect-square backdrop-blur-md"
+                                  >
+                                    <img src={img_placeholder} alt="" />
+                                  </div>
+                                )}
+                              </React.Fragment>
+                            ))}
                         </div>
                       )}
 
                       {(contest.category === "poster" ||
                         contest.category === "infographic") && (
                         <div className="grid grid-cols-2 gap-2 mb-2">
-                          {Array.from({ length: 2 }).map((_, imgIndex) => (
-                            <React.Fragment key={imgIndex}>
-                              {contest.contestants[imgIndex] &&
-                              contest.contestants[imgIndex].photo_url ? (
-                                <img
-                                  key={imgIndex}
-                                  src={changeToUrl(
-                                    contest.contestants[imgIndex].photo_url
-                                  )}
-                                  alt={`Placeholder ${imgIndex + 1}`}
-                                  className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-[1/2.045]"
-                                />
-                              ) : (
-                                <div
-                                  key={imgIndex}
-                                  className="w-full h-auto min-h-24 bg-neutral-900 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
-                                >
-                                  <img src={img_placeholder} alt="" />
-                                </div>
-                              )}
-                            </React.Fragment>
-                          ))}
+                          {Array.from({ length: 2 })
+                            .reverse()
+                            .map((_, imgIndex) => (
+                              <React.Fragment key={imgIndex}>
+                                {contest.contestants[imgIndex] &&
+                                contest.contestants[imgIndex].photo_url ? (
+                                  <img
+                                    key={imgIndex}
+                                    src={changeToUrl(
+                                      contest.contestants[imgIndex].photo_url
+                                    )}
+                                    alt={`Placeholder ${imgIndex + 1}`}
+                                    className="w-full h-auto min-h-24 object-cover rounded-md shadow-sm aspect-[1/2.045]"
+                                  />
+                                ) : (
+                                  <div
+                                    key={imgIndex}
+                                    className="w-full h-auto min-h-24 bg-neutral-900 opacity-50 rounded-md shadow-sm flex justify-center items-center aspect-[1/2.045]"
+                                  >
+                                    <img src={img_placeholder} alt="" />
+                                  </div>
+                                )}
+                              </React.Fragment>
+                            ))}
                         </div>
                       )}
 
