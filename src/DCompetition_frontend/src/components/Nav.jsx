@@ -19,7 +19,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import { FaAngleDown } from "react-icons/fa";
 import icp from "../../public/favicon.ico";
 import { CgLogOut, CgProfile } from "react-icons/cg";
-import { MdMenu } from "react-icons/md";
+import { MdHistory, MdMenu } from "react-icons/md";
 
 export default function Nav() {
   const { getPrincipal, setPrincipal, getUserData, userData, setUserData } =
@@ -264,16 +264,17 @@ export default function Nav() {
                   }}
                 >
                   <div className="flex items-center gap-2">
-                    <CgProfile /> My Profile
+                    <MdHistory className="text-[16px] -translate-x-0.5" />{" "}
+                    History
                   </div>
                 </DropdownItem>
                 <DropdownItem
                   key="sign_out"
-                  className="py-2 px-3 hover:bg-red-600 hover:text-white rounded-lg transition-all"
+                  className="py-2 px-3 rounded-lg transition-all"
                   onClick={signOut}
                 >
                   <div className="flex items-center gap-2">
-                    <CgLogOut className="translate-y-[0.6px] translate-x-[0.5px] text-[16px]" />{" "}
+                    <CgLogOut className="translate-y-[0.6px] text-[16px]" />{" "}
                     Sign Out
                   </div>
                 </DropdownItem>
