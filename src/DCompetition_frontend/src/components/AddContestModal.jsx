@@ -205,8 +205,6 @@ export default function AddContestModal({ userId, fetchData }) {
         result.files
       );
 
-      // await DContest_backend_user.reduceUserBalance(result.userId,10)
-
       if ("err" in addContestResult) {
         toast.error(addContestResult.err, {
           style: {

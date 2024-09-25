@@ -83,7 +83,6 @@ actor Main {
         };
 
         let result = await UserActor.reduceUserBalance(principal_id, reward);
-        // let result = (await userActor.reduceUserBalance(principal_id, reward));
 
         switch (result) {
             case (#ok(_)) {
@@ -109,24 +108,6 @@ actor Main {
                 return #err(errorMessage);
             };
         };
-        // currentId := currentId + 1;
-        // let newContest : Contest.Contest = {
-        //     contest_id = currentId;
-        //     principal_id = principal_id;
-        //     name = name;
-        //     reward = reward;
-        //     desc = desc;
-        //     category = category;
-        //     startDate = startDate;
-        //     endDate = endDate;
-        //     votingEndDate = votingEndDate;
-        //     industry_name = industry_name;
-        //     additional_information = additional_information;
-        //     color = color;
-        //     file = file;
-        // };
-        // tree.put(currentId, newContest);
-
         return #ok(null);
     };
 
