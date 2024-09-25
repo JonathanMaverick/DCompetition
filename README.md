@@ -24,9 +24,9 @@ dfx deploy
 
 To run the AI service locally, go to `face-recognition` directory, and follow this command:
 
-*Notes*\n
-*Make sure you have python installed in local machine*\n
-*When you first running the app, the process will take more time as it will download the AI model first (estimated 500MB++)*\n
+`*Notes*`
+*Make sure you have python installed in local machine*<br />
+*When you first running the app, the process will take more time as it will download the AI model first (estimated 500MB++)*<br />
 
 ```bash
 # Install python library needed
@@ -40,12 +40,13 @@ flask run --port=1234
 
 ## Additional Links
 
-- Project Summary & Documentation\n
+- Project Summary & Documentation<br />
   https://spectacular-powder-fc0.notion.site/D-Contest-10b125e9bce5804dbdaffbddc8a980df?pvs=4
   
 - Project Demo
+  
 
-### Note on frontend environment variables
+## Note on frontend environment variables
 
 If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
 
