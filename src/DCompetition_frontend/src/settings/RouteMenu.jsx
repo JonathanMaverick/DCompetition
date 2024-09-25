@@ -2,12 +2,9 @@ import Contests from "../pages/Contests";
 import Face from "../pages/Face";
 import ContestDetail from "../pages/ContestDetail";
 import History from "../pages/History";
+import Register from "../pages/Register";
 
 export const RouteList = [
-    {
-        element: <Face/>,
-        path: "/face"
-    },
     {
         element: <Contests/>,
         path: "/contests"
@@ -19,6 +16,18 @@ export const RouteList = [
     {
         element: <ContestDetail/>,
         path: "/contestDetail/:competitionID"
+    }
+
+]
+
+export const protectedRouteList = [
+    {
+        element: <Face/>,
+        path: "/face"
+    },
+    {
+        element: <Register/>,
+        path: "/register"
     }
 
 ]

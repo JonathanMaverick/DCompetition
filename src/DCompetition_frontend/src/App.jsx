@@ -9,6 +9,7 @@ import Register, { RegisterContext } from "./pages/Register";
 import History from "./pages/History";
 import AuthenticationRoute from "./middlewares/AuthenticationRoute";
 import { RouteList } from "./settings/RouteMenu";
+import ProtectedRoute from "./middlewares/ProtectedRoute";
 
 function App() {
   const [register, setRegister] = useState({
@@ -23,8 +24,9 @@ function App() {
       <Template>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
+          {/* <Route path="/register" element={<Register /> /> */}
           <Route path="/*" element={<AuthenticationRoute/>}/>
+          <Route path="/*" element={<ProtectedRoute />}/>
         </Routes>
       </Template>
     </Router>
