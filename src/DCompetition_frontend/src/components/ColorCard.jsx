@@ -44,7 +44,7 @@ const Tooltip = ({ content, children, isVisible }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-7 -left-9 transform bg-neutral-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg"
+            className="absolute bottom-7 -left-11 transform bg-neutral-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg"
           >
             {content}
           </motion.div>
