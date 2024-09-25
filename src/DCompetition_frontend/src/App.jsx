@@ -7,6 +7,8 @@ import Contests from "./pages/Contests";
 import ContestDetail from "./pages/ContestDetail";
 import Register, { RegisterContext } from "./pages/Register";
 import History from "./pages/History";
+import AuthenticationRoute from "./middlewares/AuthenticationRoute";
+import { RouteList } from "./settings/RouteMenu";
 
 function App() {
   const [register, setRegister] = useState({
@@ -21,14 +23,13 @@ function App() {
       <Template>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/face" element={<Face />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/contests" element={<Contests />} />
-          <Route path="/history" element={<History />} />
-          <Route
+          {/* <Route path="/history" element={<History />} /> */}
+          {/* <Route
             path="/contestDetail/:competitionID"
             element={<ContestDetail />}
-          />
+          /> */}
+          <Route path="/*" element={<AuthenticationRoute/>}/>
         </Routes>
       </Template>
     </Router>
