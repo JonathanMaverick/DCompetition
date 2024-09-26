@@ -61,6 +61,16 @@ actor Main {
         };
     };
 
+    public func getAllVotings() : async [Voting.Voting] {
+        var votings : [Voting.Voting] = [];
+
+        for (entry in RBTree.iter(tree.share(), #bwd)) {
+            votings := Array.append<Voting.Voting>(votings, [entry.1]);
+        };
+
+        return votings;
+    };
+
     public func removeVoting(competition_id : Nat, contestant_id : Nat, principal_id : Text) : async () {
         let currentId = (competition_id, contestant_id);
 

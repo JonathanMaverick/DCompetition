@@ -65,8 +65,6 @@ actor Main {
                 return #err("Error Occured!")
             };
         };
-
-        
     };
 
     public func getAllContest() : async [Contest.Contest] {
