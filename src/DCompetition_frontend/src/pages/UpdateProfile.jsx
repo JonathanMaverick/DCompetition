@@ -139,7 +139,7 @@ const UpdateProfile = () => {
         >
           <Card className="w-full max-w-lg m-auto shadow-lg p-4 bg-black bg-opacity-40 backdrop-blur-md rounded-lg">
             <CardBody>
-              <h1 className="text-3xl font-semibold my-2 text-center">
+              <h1 className="text-3xl font-semibold my-2 mb-6 text-center">
                 Change Profile
               </h1>
               <div className="flex flex-col gap-4">

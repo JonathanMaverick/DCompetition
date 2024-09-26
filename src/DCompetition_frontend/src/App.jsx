@@ -27,7 +27,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             {/* <Route path="/register" element={<Register /> /> */}
-            <Route path="/update-profile" element={<UpdateProfile />} />
+            {/* <Route path="/update-profile" element={<UpdateProfile />} /> */}
+            <Route path="/contests" element={<Contests />} />
+            <Route
+              path="/contestDetail/:competitionID"
+              element={<ContestDetail />}
+            />
             <Route path="/*" element={<AuthenticationRoute />} />
             <Route path="/auth/*" element={<ProtectedRoute />} />
           </Routes>

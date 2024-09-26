@@ -597,9 +597,10 @@ function ContestDetail() {
           {contest.status == "Not Started" && (
             <LockedCard message="Not started yet" />
           )}
-          {contest.principal_id == userData.principal_id && (
-            <LockedCard message="This is your own contest" />
-          )}
+          {contest.principal_id == userData.principal_id &&
+            contest.status != "Not Started" && (
+              <LockedCard message="This is your own contest" />
+            )}
           {contestants
             .slice()
             .sort(getSort(contest) || ((a, b) => 0))

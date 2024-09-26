@@ -4,19 +4,20 @@ import ContestDetail from "../pages/ContestDetail";
 import History from "../pages/History";
 import Register from "../pages/Register";
 import { element } from "prop-types";
+import UpdateProfile from "../pages/UpdateProfile";
 
 export const RouteList = [
-  {
-    element: <Contests />,
-    path: "/contests",
-  },
+  // {
+  //   element: <Contests />,
+  //   path: "/contests",
+  // },
   {
     element: <History />,
     path: "/history",
   },
   {
-    element: <ContestDetail />,
-    path: "/contestDetail/:competitionID",
+    element: <UpdateProfile />,
+    path: "/update-profile",
   },
 ];
 
