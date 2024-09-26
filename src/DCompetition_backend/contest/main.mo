@@ -5,6 +5,8 @@ import Array "mo:base/Array";
 import Nat "mo:base/Nat";
 import Time "mo:base/Time";
 import Blob "mo:base/Blob";
+import Int "mo:base/Int";
+import Float "mo:base/Float";
 import UserActor "canister:DContest_backend_user";
 
 actor Main {
@@ -30,6 +32,41 @@ actor Main {
         var contest = tree.get(contest_id);
 
         return contest;
+    };
+
+    public func getReward(principal_id : Text, contest_id : Nat) : async Result<Null,Text>{
+        var contest = tree.get(contest_id);
+        switch (contest) {
+            case (?ContestMotoko) {
+                let rewardFloat : Float = Float.fromInt(ContestMotoko.reward);
+                let feeFloat : Float = rewardFloat * 0.10;
+                let feeNat = Int.abs(Float.toInt(feeFloat));
+                UserActor.addUserBalance(principal_id, ContestMotoko.reward - feeNat);
+                let updatedContest : Contest.Contest = {
+                    contest_id = ContestMotoko.contest_id;
+                    principal_id = ContestMotoko.principal_id;
+                    name = ContestMotoko.name;
+                    reward = ContestMotoko.reward;
+                    desc = ContestMotoko.desc;
+                    category = ContestMotoko.category;
+                    startDate = ContestMotoko.startDate;
+                    endDate = ContestMotoko.endDate;
+                    votingEndDate = ContestMotoko.votingEndDate;
+                    industry_name = ContestMotoko.industry_name;
+                    additional_information = ContestMotoko.additional_information;
+                    color = ContestMotoko.color;
+                    file = ContestMotoko.file;
+                    isReward = false;
+                };
+                tree.put(currentId, updatedContest);
+                return #ok(null);
+            };
+            case (null) {
+                return #err("Error Occured!")
+            };
+        };
+
+        
     };
 
     public func getAllContest() : async [Contest.Contest] {
@@ -101,6 +138,7 @@ actor Main {
                     additional_information = additional_information;
                     color = color;
                     file = file;
+                    isReward = false;
                 };
                 tree.put(currentId, newContest);
             };
