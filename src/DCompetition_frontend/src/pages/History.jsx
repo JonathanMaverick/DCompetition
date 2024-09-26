@@ -95,15 +95,40 @@ function History() {
     getData();
   }, []);
 
+  filteredContests.forEach((c) => {
+    c.contestants = [];
+
+    const matchedContestants = contestants.filter(
+      (ct) => Number(ct.competition_id) === c.contest_id
+    );
+
+    if (matchedContestants.length > 0) {
+      const sortedContestants = matchedContestants.sort((b, a) => {
+        return (
+          convertDate(Number(a.upload_time)) -
+          convertDate(Number(b.upload_time))
+        );
+      });
+
+      const earliestContestants = sortedContestants.slice(0, 4);
+
+      c.contestants.push(...earliestContestants);
+
+      const remainingContestants = sortedContestants.slice(4);
+
+      c.contestants.push(...remainingContestants);
+    }
+  });
+
   const filterContest = () => {
      if (userData){
           const myContest = contests.filter((c) => c.principle_id === userData.principle_id);
-          // const myContestant = contests.filter((c) => 
-          //      c.contestants.find((cc) => cc.principal_id === userData.principal_id)
-          // );   
-          console.log("CONTEST: ", contests);
+          const myContestant = contests.filter((c) => 
+               c.contestants.find((cc) => cc.principal_id === userData.principal_id)
+          );   
+          // console.log("CONTEST: ", contests);
           setCreatedContests(myContest);
-          // setFilteredContests(myContest);
+          setParticipateContests(myContestant);
           setLoading(false);
      }
   }
@@ -185,7 +210,7 @@ function History() {
                       <TableCell className="text-center">{c.name}</TableCell>
                       <TableCell className="text-center">{c.category}</TableCell>
                       <TableCell className="text-center">{c.reward}</TableCell>
-                      <TableCell className="text-center">{c.contest_id}</TableCell>
+                      <TableCell className="text-center">{c.contestants.length}</TableCell>
                       <TableCell className="text-center">{formatDate(c.startDate)}</TableCell>
                       <TableCell className="text-center">{formatDate(c.deadline)}</TableCell>
                       <TableCell className="text-center">{formatDate(c.endDate)}</TableCell>
@@ -195,7 +220,7 @@ function History() {
                         </Chip>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Link to={`/contestDetail/${c.contest_id}`} key={idx}>
+                        <Link to={`/contestDetail/${c.contest_id}`} key={idx} className="w-14 bg-gray-700 text-white py-1.5 px-4 rounded-md hover:bg-gray-600 transition duration-300">
                           View
                         </Link>
                       </TableCell>
