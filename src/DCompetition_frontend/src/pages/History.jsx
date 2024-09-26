@@ -421,7 +421,7 @@ function History() {
                         </div>
                       </div>
                       <div className="lg:w-3/4 w-full flex flex-col rounded-lg justify-center items-start overflow-y-scroll gap-2 max-h-max">
-                        <div className="text-1xl font-medium text-left pl-1">
+                        <div className="text-1xl font-medium text-left pl-1 mt-1.5">
                           Submitted Designs
                         </div>
                         <div className="flex gap-4 max-h-max">
