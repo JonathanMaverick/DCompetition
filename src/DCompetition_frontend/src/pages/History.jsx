@@ -11,8 +11,15 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Chip
+  Chip,
+  Modal,
+  ModalContent
 } from "@nextui-org/react";
+import {
+  MdContentCopy,
+  MdFileDownload,
+  MdOutlineFileUpload,
+} from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useUserAuth } from "../context/UserContext";
 import AddContestModal from "../components/AddContestModal";
@@ -21,14 +28,18 @@ import ContestFilter from "../components/ContestFilter";
 import { convertDate } from "../tools/date";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
 import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
+import { AiFillLike } from "react-icons/ai";
 import img_placeholder from "../../public/img_placeholder.png";
 
 function History() {
   const [contests, setContests] = useState([]);
+  const [isOpen, setOpen] = useState(false);
+  const [urlImg, setUrlImg] = useState(null);
   const [createdContests, setCreatedContests] = useState([]);
   const [participatedContests, setParticipateContests] = useState([]);
   const [filteredContests, setFilteredContests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [voting, setVoting] = useState([]);
   const { userData } = useUserAuth();
   const [contestants, setContestants] = useState([]);
 
@@ -37,6 +48,11 @@ function History() {
     Ongoing: "bg-purple-900",
     "Winner Selection": "bg-purple-600",
     Completed: "bg-fuchsia-700",
+  };
+
+  const openDetailImg = (url) => {
+    setUrlImg(url);
+    setOpen(true);
   };
 
   const getContest = async () => {
@@ -81,6 +97,8 @@ function History() {
     setFilteredContests(updatedContests);
     
   };
+
+  
 
   useEffect(() => {
     getContest();
@@ -180,6 +198,9 @@ function History() {
     },
   ]
   
+  const refresh = () => {
+    window.location.reload();
+  };
 
   const formatDate = (c) => {
     return c.toLocaleDateString("en-US", {
@@ -191,6 +212,15 @@ function History() {
       minute: "2-digit",
       hour12: true,
     });
+  }
+
+  const getContestant = (c) => {
+    const contestant = c.contestants.filter((c) => c.principle_id === userData.principle_id);
+    contestant.forEach((cont) => {
+        cont.username = userData.username;
+    });
+    console.log("MY CONTESTANTS : ", contestant);
+    return contestant;
   }
 
 
@@ -231,7 +261,98 @@ function History() {
           </div>
         </Tab>
         <Tab key="participated" title="Participated">
+          <div className="w-full flex flex-col gap-10">
+            {participatedContests.map((p, idx) => (
+              <div className="flex w-full h-full gap-4 mt-4 lg:flex-row flex-col">
+                <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3 px-2 md:px-0">
+                  <div className="flex flex-col gap-2 mb-2 ml-1">
+                    <div className="text-4xl font-bold text-left">{p.name}</div>
+                    <div className="text-1xl font-medium text-left pl-1">
+                      {p.category.charAt(0).toUpperCase() +
+                        p.category.slice(1).toLowerCase()}
+                    </div>
+                  </div>
+                  <BottomCard
+                    reward={Number(p.reward)}
+                    submissions={p.contestants.length}
+                    deadline={p.deadline}
+                    status={p.status}
+                    endDate={p.endDate}
+                    updateStatus={refresh}
+                    showSeconds={true}
+                  />
+                  <div className="w-full h-12 bg-yellow-500 flex justify-between items-center px-4 rounded-md">
+                    <div className="text-lg font-bold">
+                      You won this contest !
+                    </div>
+                    <div className="text-md cursor-pointer">
+                      Claim Reward
+                    </div>
+                  </div>
+                  <Link to={`/contestDetail/${p.contest_id}`} key={idx} className="w-full   bg-gray-700 text-white py-1.5 px-4 rounded-xl hover:bg-gray-600 transition duration-300 text-center text-sm">
+                      View Detail
+                  </Link>
+                </div>
+                <div className="lg:w-3/4 w-full flex flex-col rounded-lg justify-center items-start overflow-y-scroll gap-2">
+                  <div className="text-1xl font-medium text-left pl-1">My Designs</div>
+                  <div className="flex gap-4 overflow-x-scroll">
+                      {(getContestant(p)).map((cont, index) => (
+                        <Card
+                          key={index}
+                          className="min-w-56 pb-1 flex flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md"
+                          radius="sm"
+                        >
+                          <CardBody className="overflow-hidden p-0">
+                          <img
+                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4ocKgsBqAv2XjtfgrKUyDGKwEwZCAvBex7w&s"
+                              width={500}
+                              className={`${
+                                p.category == "logo"
+                                  ? "aspect-square"
+                                  : "aspect-[1/2]"
+                              } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer bg-neutral-900 bg-opacity-40 backdrop-blur-lg`}
+                              onClick={() => openDetailImg(cont.photo_url)}
+                          />
+                            <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
+                              <div className="flex justify-between">
+                                <p className="font-bold text-lg">Rank #{idx + 1}</p>
+                                <div className="flex justify-center items-center gap-1">
+                                  <h1 className="text-sm">{cont.votes}</h1>
+                                  <AiFillLike className="text-sm" />
+                                </div>
+                              </div>
+                              <div className="flex justify-between">
+                                <div className="text-sm flex gap-1 -mt-1.5">
+                                  <span className="font-thin">by</span>
+                                  <span className="font-semibold">
+                                    {cont.username}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="text-xs flex items-center gap-1.5 -ml-0.5">
+                                <MdOutlineFileUpload className="text-lg" />
+                                <span>
+                                  {/* {cont.upload_time.toLocaleDateString("en-US", {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric",
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                    hour12: true,
+                                  })} */}
+                                </span>
+                              </div>
+                            </div>
+                        </CardBody>
+                        </Card>
 
+                      ))}
+                  </div>
+                </div>
+              </div>
+            
+            ))}
+          </div>
         </Tab>
       </Tabs>
     </div>
