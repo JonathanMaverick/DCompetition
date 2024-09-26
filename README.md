@@ -1,6 +1,6 @@
 # `DContest`
 
-Introducing `D’Contest`, an ultimate contest voting platform designed to host exciting contest and empowering community. Whether you are a competitor looking to showcase your talent or a fan eager to support your top picks, our site has everything you need. `D’Contest` is built on Web3 blockchain using ICP technology such as DFX, Motoko, and Internet Identity. With a sleek, easy-to-navigate design, you can effortlessly explore ongoing contests, participate in the action, and vote with just a few clicks. Supporting fair voting process by providing AI face checking technology to ensure users only have one account.
+Introducing `D’Contest`, an ultimate contest voting platform designed to host exciting contests and empower the community. Whether you are a competitor looking to showcase your talent or a fan eager to support your top picks, our site has everything you need. `D’Contest` is built on Web3 blockchain using ICP technology such as DFX, Motoko, and Internet Identity. With a sleek, easy-to-navigate design, you can effortlessly explore ongoing contests, participate in the action, and vote with just a few clicks. Supporting fair voting process by providing AI face-checking technology to ensure users only have one account.
 
 ## Running the project locally
 
