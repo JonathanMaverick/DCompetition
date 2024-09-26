@@ -31,7 +31,7 @@ npm install
 
 To run the AI service locally, go to `face-recognition` directory, and follow this command:
 
-`*Notes*`
+`*Notes*`<br />
 *Make sure you have python installed in local machine*<br />
 *When you first running the app, the process will take more time as it will download the AI model first (estimated 500MB++)*<br />
 
