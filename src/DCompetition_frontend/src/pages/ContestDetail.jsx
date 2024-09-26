@@ -572,7 +572,7 @@ function ContestDetail() {
                           width={32}
                           src={getUrl(creator.profilePic)}
                           alt="Profile picture"
-                          className="rounded-full aspect-square border-2 border-purple-500"
+                          className="rounded-full aspect-square border-2 border-purple-500 object-cover"
                         />
                         <span className="hidden sm:block text-white font-semibold">
                           {creator.username}

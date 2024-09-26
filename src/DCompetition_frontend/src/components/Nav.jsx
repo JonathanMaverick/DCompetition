@@ -73,7 +73,7 @@ export default function Nav() {
 
   const signOut = async () => {
     await DContest_backend_user.clearPrincipalID();
-    localStorage.setItem("status",0)
+    localStorage.setItem("status", 0);
     window.location.href = "/";
   };
 
@@ -94,10 +94,10 @@ export default function Nav() {
 
             if (Array.isArray(user) && user.length > 0) {
               console.log(user);
-              localStorage.setItem('status', 2)
+              localStorage.setItem("status", 2);
               window.location.href = "/";
             } else {
-              localStorage.setItem('status', 1)
+              localStorage.setItem("status", 1);
               window.location.href = "/auth/register";
             }
           } catch (error) {
@@ -235,7 +235,7 @@ export default function Nav() {
                     width={32}
                     src={profilePicURL}
                     alt="Profile picture"
-                    className="rounded-full aspect-square border-2 border-purple-500"
+                    className="rounded-full aspect-square border-2 border-purple-500 object-cover"
                   />
                   <span className="hidden sm:block text-white font-semibold">
                     {userData.username}
