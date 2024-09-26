@@ -106,6 +106,29 @@ actor Main {
     return #ok(null);
   };
 
+  public func addUserBalance(principal_id : Text, amount : Nat) {
+
+    for (e in RBTree.iter(tree.share(), #bwd)) {
+      let key = e.0;
+      let user = e.1;
+
+      if (key == principal_id) {
+
+        let updatedUser : User.User = {
+          principal_id = user.principal_id;
+          username = user.username;
+          email = user.email;
+          money = user.money + amount;
+          profilePic = user.profilePic;
+        };
+
+        tree.put(key, updatedUser);
+      };
+    };
+
+  };
+
+
   public func login(principal_id : Text) : async ?User.User {
     let user = tree.get(principal_id);
     return user;

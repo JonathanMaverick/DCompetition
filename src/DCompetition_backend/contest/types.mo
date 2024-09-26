@@ -2,6 +2,7 @@ import Text "mo:base/Text";
 import Nat "mo:base/Nat";
 import Time "mo:base/Time";
 import Blob "mo:base/Blob";
+import Bool "mo:base/Bool";
 module {
   public type Contest = {
     contest_id : Nat;
@@ -17,5 +18,6 @@ module {
     additional_information : Text;
     color : [Text];
     file : [Blob];
+    isReward : Bool;
   };
 };
