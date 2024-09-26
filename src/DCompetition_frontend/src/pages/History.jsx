@@ -29,7 +29,7 @@ import { convertDate } from "../tools/date";
 import { DContest_backend_contest } from "declarations/DContest_backend_contest";
 import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
 import { AiFillLike } from "react-icons/ai";
-import img_placeholder from "../../public/img_placeholder.png";
+import { DContest_backend_voting } from "declarations/DContest_backend_voting";
 
 function History() {
   const [contests, setContests] = useState([]);
@@ -140,7 +140,7 @@ function History() {
 
   const filterContest = () => {
      if (userData){
-          const myContest = contests.filter((c) => c.principle_id === userData.principle_id);
+          const myContest = contests.filter((c) => c.principal_id === userData.principal_id);
           const myContestant = contests.filter((c) => 
                c.contestants.find((cc) => cc.principal_id === userData.principal_id)
           );   
@@ -218,10 +218,19 @@ function History() {
     const contestant = c.contestants.filter((c) => c.principle_id === userData.principle_id);
     contestant.forEach((cont) => {
         cont.username = userData.username;
+        cont.upload_time = convertDate(Number(cont.upload_time));
     });
     console.log("MY CONTESTANTS : ", contestant);
     return contestant;
   }
+
+  const getUrl = (img) => {
+    const blob = new Blob([img], {
+      type: "image/jpeg",
+    });
+    const url = URL.createObjectURL(blob);
+    return url;
+  };
 
 
   return (
@@ -304,7 +313,7 @@ function History() {
                         >
                           <CardBody className="overflow-hidden p-0">
                           <img
-                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4ocKgsBqAv2XjtfgrKUyDGKwEwZCAvBex7w&s"
+                              src={getUrl(cont.photo_url)}
                               width={500}
                               className={`${
                                 p.category == "logo"
@@ -315,11 +324,14 @@ function History() {
                           />
                             <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
                               <div className="flex justify-between">
-                                <p className="font-bold text-lg">Rank #{idx + 1}</p>
-                                <div className="flex justify-center items-center gap-1">
+                                <p className="font-bold text-lg">
+                                  {p.status == "Completed" ? "Rank #" : "Design #"}
+                                  {p.contestants.length - index}
+                                </p>
+                                {/* <div className="flex justify-center items-center gap-1">
                                   <h1 className="text-sm">{cont.votes}</h1>
                                   <AiFillLike className="text-sm" />
-                                </div>
+                                </div> */}
                               </div>
                               <div className="flex justify-between">
                                 <div className="text-sm flex gap-1 -mt-1.5">
@@ -332,14 +344,14 @@ function History() {
                               <div className="text-xs flex items-center gap-1.5 -ml-0.5">
                                 <MdOutlineFileUpload className="text-lg" />
                                 <span>
-                                  {/* {cont.upload_time.toLocaleDateString("en-US", {
+                                  {cont.upload_time.toLocaleDateString("en-US", {
                                     day: "numeric",
                                     month: "short",
                                     year: "numeric",
                                     hour: "numeric",
                                     minute: "numeric",
                                     hour12: true,
-                                  })} */}
+                                  })}
                                 </span>
                               </div>
                             </div>
