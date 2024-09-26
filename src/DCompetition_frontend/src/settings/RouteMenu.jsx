@@ -3,6 +3,7 @@ import Face from "../pages/Face";
 import ContestDetail from "../pages/ContestDetail";
 import History from "../pages/History";
 import Register from "../pages/Register";
+import { element } from "prop-types";
 
 export const RouteList = [
   {

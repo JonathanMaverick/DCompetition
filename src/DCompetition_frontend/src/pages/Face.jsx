@@ -116,6 +116,8 @@ const Face = () => {
           register.email,
           register.profile_pic
         );
+        
+        localStorage.setItem("status",2)
         window.location.href = "/";
         // toast.success("Success!", {
         //   style: {

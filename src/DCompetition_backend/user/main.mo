@@ -79,7 +79,7 @@ actor Main {
     return users;
   };
 
-  public func reduceUserBalance(principal_id : Text, amount : Nat) : async Result<Null,Text> {
+  public func reduceUserBalance(principal_id : Text, amount : Nat) : async Result<Null, Text> {
 
     for (e in RBTree.iter(tree.share(), #bwd)) {
       let key = e.0;
@@ -87,7 +87,7 @@ actor Main {
 
       if (key == principal_id) {
 
-        if (amount > user.money){
+        if (amount > user.money) {
           return #err("Insufficient balance");
         };
 
@@ -109,6 +109,35 @@ actor Main {
   public func login(principal_id : Text) : async ?User.User {
     let user = tree.get(principal_id);
     return user;
+  };
+
+  public func updateProfile(principal_id : Text, new_username : Text, new_profilePic : Blob) : async Result<Text, Text> {
+    if (new_username == "") {
+      return #err("Username can't be empty");
+    };
+
+    if (new_profilePic.size() == 0) {
+      return #err("Profile picture can't be empty");
+    };
+
+    let userOpt = tree.get(principal_id);
+    switch (userOpt) {
+      case (null) {
+        return #err("User not found");
+      };
+      case (?user) {
+        let updatedUser : User.User = {
+          principal_id = user.principal_id;
+          username = new_username;
+          email = user.email;
+          money = user.money;
+          profilePic = new_profilePic;
+        };
+
+        tree.put(principal_id, updatedUser);
+        return #ok("Profile updated successfully");
+      };
+    };
   };
 
 };

@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
-
+  localStorage.setItem("status", 0)
   return (
     <div className="absolute top-0 left-0 w-screen min-h-screen flex flex-col justify-center items-center text-white overflow-hidden px-8">
       <motion.div

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -73,6 +73,7 @@ export default function Nav() {
 
   const signOut = async () => {
     await DContest_backend_user.clearPrincipalID();
+    localStorage.setItem("status",0)
     window.location.href = "/";
   };
 
@@ -93,8 +94,10 @@ export default function Nav() {
 
             if (Array.isArray(user) && user.length > 0) {
               console.log(user);
+              localStorage.setItem('status', 2)
               window.location.href = "/";
             } else {
+              localStorage.setItem('status', 1)
               window.location.href = "/auth/register";
             }
           } catch (error) {
@@ -266,6 +269,18 @@ export default function Nav() {
                   <div className="flex items-center gap-2">
                     <MdHistory className="text-[16px] -translate-x-0.5" />{" "}
                     History
+                  </div>
+                </DropdownItem>
+                <DropdownItem
+                  key="my_profile"
+                  className="py-2 px-3 hover:bg-purple-600 rounded-lg transition-all flex items-center"
+                  onClick={() => {
+                    navigate("/update-profile");
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <MdHistory className="text-[16px] -translate-x-0.5" />{" "}
+                    Change Profile
                   </div>
                 </DropdownItem>
                 <DropdownItem

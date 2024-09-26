@@ -3,15 +3,21 @@ import { useUserAuth } from "../context/UserContext";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { protectedRouteList } from "../settings/RouteMenu";
 
+
+
 function ProtectedRoute() {
-  const { getPrincipal } = useUserAuth();
   const navigate = useNavigate();
+  const { getPrincipal } = useUserAuth()  
+  const status = localStorage.getItem("status")
 
   useEffect(() => {
+    console.log(status)
     const getID = async () => {
       const id = await getPrincipal();
-      if (id !== "") {
+      if (id === "" || status == 0) {
         navigate("/");
+      }else if(id !== "" && status == 2) { // buat login  && register
+        navigate("/")
       }
     };
     getID();
