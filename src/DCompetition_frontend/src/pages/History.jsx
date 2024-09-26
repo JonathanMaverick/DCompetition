@@ -41,7 +41,7 @@ function History() {
   const [participatedContests, setParticipateContests] = useState([]);
   const [filteredContests, setFilteredContests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [voting, setVoting] = useState([]);
+  const [allVoting, setAllVoting] = useState([]);
   const { userData } = useUserAuth();
   const [contestants, setContestants] = useState([]);
   const [currCategory, setCurrCategory] = useState("");
@@ -58,6 +58,11 @@ function History() {
     setCurrCategory(category);
     setOpen(true);
   };
+
+  const getAllVotings = async () => {
+    const votings = await DContest_backend_voting.getAllVotings();
+    console.log("VOTING: ", votings);
+  }
 
   const getContest = async () => {
     const contests = await DContest_backend_contest.getAllContest();
@@ -104,6 +109,7 @@ function History() {
 
   useEffect(() => {
     getContest();
+    getAllVotings();
   }, [userData]);
 
   useEffect(() => {
@@ -229,7 +235,7 @@ function History() {
     contestant.forEach((cont) => {
       cont.username = userData.username;
     });
-    console.log("MY CONTESTANTS : ", contestant);
+    // console.log("MY CONTESTANTS : ", contestant);
     return contestant;
   };
 
@@ -254,7 +260,14 @@ function History() {
       </h1>
       <Tabs key="full" radius="md" variant="light" aria-label="Tabs radius">
         <Tab key="created" title="Created">
-          <div className="w-full ">
+          {createdContests.length === 0 ? (
+            <div className="col-span-full">
+              <div className="col-span-full text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
+                No contests have been created
+              </div>
+            </div>
+          ) : (
+            <div className="w-full ">
             <Table
               aria-label="Contest Table"
               classNames={{
@@ -274,7 +287,7 @@ function History() {
                 )}
               </TableHeader>
               <TableBody>
-                {contests.map((c, idx) => (
+                {!loading && createdContests.map((c, idx) => (
                   <TableRow key={idx} className="text-center">
                     <TableCell className="text-center w-[5%]">
                       {idx + 1}
@@ -326,6 +339,8 @@ function History() {
               </TableBody>
             </Table>
           </div>
+          )}
+          
         </Tab>
         <Tab key="participated" title="Participated">
           <div className="w-full flex flex-col gap-10">
@@ -413,7 +428,7 @@ function History() {
                             <div className="text-xs flex items-center gap-1.5 -ml-0.5">
                               <MdOutlineFileUpload className="text-lg" />
                               <span>
-                                {console.log(cont)}
+                                {/* {console.log(cont)} */}
                                 {convertDate(
                                   Number(cont.upload_time)
                                 ).toLocaleDateString("en-US", {
