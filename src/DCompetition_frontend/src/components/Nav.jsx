@@ -87,7 +87,6 @@ export default function Nav() {
           setPrincipal(principal);
 
           try {
-
             const user = await DContest_backend_user.login(principal);
 
             if (Array.isArray(user) && user.length > 0) {
@@ -261,6 +260,18 @@ export default function Nav() {
                   key="my_profile"
                   className="py-2 px-3 hover:bg-purple-600 rounded-lg transition-all flex items-center"
                   onClick={() => {
+                    navigate("/update-profile");
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <CgProfile className="text-[14px] -translate-x-[0.8px]" />{" "}
+                    Change Profile
+                  </div>
+                </DropdownItem>
+                <DropdownItem
+                  key="my_profile"
+                  className="py-2 px-3 hover:bg-purple-600 rounded-lg transition-all flex items-center"
+                  onClick={() => {
                     navigate("/history");
                   }}
                 >
@@ -269,18 +280,7 @@ export default function Nav() {
                     History
                   </div>
                 </DropdownItem>
-                <DropdownItem
-                  key="my_profile"
-                  className="py-2 px-3 hover:bg-purple-600 rounded-lg transition-all flex items-center"
-                  onClick={() => {
-                    navigate("/update-profile");
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    <MdHistory className="text-[16px] -translate-x-0.5" />{" "}
-                    Change Profile
-                  </div>
-                </DropdownItem>
+
                 <DropdownItem
                   key="sign_out"
                   className="py-2 px-3 rounded-lg transition-all"
