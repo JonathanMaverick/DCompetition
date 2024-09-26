@@ -106,8 +106,6 @@ function Contests() {
     getData();
   }, []);
 
-  console.log(contestants);
-
   filteredContests.forEach((c) => {
     c.contestants = [];
 

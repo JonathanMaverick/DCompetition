@@ -77,7 +77,7 @@ export default function AddContestModal({ userId, fetchData }) {
   const handleFileChange = async (index, file) => {
     const newFiles = [...contestData.files];
     newFiles[index] = new Uint8Array(await file.arrayBuffer());
-    console.log(newFiles[index]);
+
     setContestData((prev) => ({
       ...prev,
       files: newFiles,
@@ -187,8 +187,6 @@ export default function AddContestModal({ userId, fetchData }) {
         });
         return;
       }
-
-      console.log("Submitting Contest:", result);
 
       const addContestResult = await DContest_backend_contest.addContest(
         result.userId,

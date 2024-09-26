@@ -25,7 +25,6 @@ export default function Nav() {
       try {
         const principal = await getPrincipal();
         setID(principal);
-        console.log(principal);
       } catch (error) {
         console.error("Error getting principal:", error);
       }
@@ -77,12 +76,10 @@ export default function Nav() {
           setPrincipal(principal);
 
           try {
-            console.log("Logged in Principal ID:", principal);
 
             const user = await DContest_backend_user.login(principal);
 
             if (Array.isArray(user) && user.length > 0) {
-              console.log(user);
               window.location.href = "/";
             } else {
               window.location.href = "/register";

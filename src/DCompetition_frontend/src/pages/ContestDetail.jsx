@@ -86,7 +86,6 @@ function ContestDetail() {
     const getAllUser = async () => {
       const datas = await DContest_backend_user.getAllUsers();
       setAllUser(datas);
-      console.log(datas);
     };
     getAllUser();
   }, [competitionID]);
@@ -165,7 +164,6 @@ function ContestDetail() {
   }, [contest, loading]);
 
   const getSort = (c) => {
-    console.log("CONTESTANT: ", c);
     if (c && (c.status === "Ongoing" || c.status === "Winner Selection")) {
       return (b, a) => new Date(a.upload_time) - new Date(b.upload_time);
     } else if (c && c.status === "Completed") {
@@ -278,8 +276,6 @@ function ContestDetail() {
     getVotings();
   }, [competitionID]);
 
-  // console.log(voting)
-
   if (loading || !userData) {
     return (
       <div className="flex w-full gap-x-4">
@@ -312,8 +308,6 @@ function ContestDetail() {
       c.votes = 0;
     }
   });
-
-  // console.log(contestants)
 
   return (
     <div className="flex w-full gap-4 mt-4 lg:flex-row flex-col">

@@ -106,8 +106,6 @@ function History() {
     getData();
   }, []);
 
-  console.log(contestants);
-
   filteredContests.forEach((c) => {
     c.contestants = [];
 

@@ -22,7 +22,6 @@ const Face = () => {
   const { register } = useContext(RegisterContext);
   const navigate = useNavigate();
 
-  console.log(register);
   const videoConstraints = {
     width: 500,
     height: 500,
@@ -97,7 +96,6 @@ const Face = () => {
   const processFace = async (imageSrc) => {
     if (loading) return;
     setLoading(true);
-    console.log("Processing face...");
     try {
       const response = await fetch("http://127.0.0.1:1234/check-face", {
         method: "POST",

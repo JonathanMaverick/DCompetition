@@ -81,11 +81,8 @@ const Register = () => {
 
       setRegister(newRegisterData);
 
-      console.log(newRegisterData);
-
       navigate("/face");
     } catch (error) {
-      console.log(error);
       toast.error("Failed to register!", {
         style: {
           borderRadius: "8px",
