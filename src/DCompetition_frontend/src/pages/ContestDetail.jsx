@@ -598,7 +598,12 @@ function ContestDetail() {
                 category={contest.category}
               ></ParticipateContestModal>
             )}
-          {contest.status == "Not Started" && <LockedCard />}
+          {contest.status == "Not Started" && (
+            <LockedCard message="Not started yet" />
+          )}
+          {contest.principal_id == userData.principal_id && (
+            <LockedCard message="This is your own contest" />
+          )}
           {contestants
             .slice()
             .sort(getSort(contest) || ((a, b) => 0))

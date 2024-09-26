@@ -11,11 +11,8 @@ import {
   Card,
 } from "@nextui-org/react";
 import { IoAdd, IoLockClosed } from "react-icons/io5";
-import { useRef, useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
-import { DContest_backend_contestant } from "declarations/DContest_backend_contestant";
 
-export default function LockedCard() {
+export default function LockedCard({ message }) {
   return (
     <>
       <Card
@@ -26,7 +23,7 @@ export default function LockedCard() {
       >
         <CardBody className="flex flex-col items-center justify-center">
           <IoLockClosed className="text-6xl text-gray-400 mb-2" />
-          <p className="text-gray-400">Not started yet</p>
+          <p className="text-gray-400">{message}</p>
         </CardBody>
       </Card>
     </>
