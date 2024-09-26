@@ -11,7 +11,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  width: 14px;
+  width: 5px;
   background-color: #434953;
   border-radius: 10px;
   z-index: 12;
@@ -42,4 +42,8 @@
 
 ::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }

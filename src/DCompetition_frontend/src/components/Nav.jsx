@@ -269,7 +269,7 @@ export default function Nav() {
                   </div>
                 </DropdownItem>
                 <DropdownItem
-                  key="my_profile"
+                  key="history"
                   className="py-2 px-3 hover:bg-purple-600 rounded-lg transition-all flex items-center"
                   onClick={() => {
                     navigate("/history");

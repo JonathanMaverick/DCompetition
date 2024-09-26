@@ -20,20 +20,19 @@ function App() {
     profile_pic: "",
   });
 
-
   return (
-    <RegisterContext.Provider value={{ register,setRegister }}>
-    <Router>
-      <Template>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/register" element={<Register /> /> */}
-          <Route path="/update-profile" element={<UpdateProfile/>} />
-          <Route path="/*" element={<AuthenticationRoute />}/>
-          <Route path="/auth/*" element={<ProtectedRoute/>}/>
-        </Routes>
-      </Template>
-    </Router>
+    <RegisterContext.Provider value={{ register, setRegister }}>
+      <Router>
+        <Template>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            {/* <Route path="/register" element={<Register /> /> */}
+            <Route path="/update-profile" element={<UpdateProfile />} />
+            <Route path="/*" element={<AuthenticationRoute />} />
+            <Route path="/auth/*" element={<ProtectedRoute />} />
+          </Routes>
+        </Template>
+      </Router>
     </RegisterContext.Provider>
   );
 }
