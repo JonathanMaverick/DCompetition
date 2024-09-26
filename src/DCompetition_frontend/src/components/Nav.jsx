@@ -16,7 +16,7 @@ import { useUserAuth } from "../context/UserContext";
 import { DContest_backend_user } from "declarations/DContest_backend_user";
 import { AuthClient } from "@dfinity/auth-client";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { FaAngleDown } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import icp from "../../public/favicon.ico";
 import { CgLogOut, CgProfile } from "react-icons/cg";
 import { MdHistory, MdMenu } from "react-icons/md";
@@ -27,8 +27,14 @@ export default function Nav() {
   const [id, setID] = useState("");
   const [loading, setLoading] = useState(true);
   const [profilePicURL, setProfilePicURL] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
+
+  const openClosed = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     const principalID = async () => {
@@ -225,8 +231,8 @@ export default function Nav() {
             //     Sign Out
             //   </Button>
             // </div>
-            <Dropdown placement="bottom-end">
-              <DropdownTrigger>
+            <Dropdown placement="bottom-end" onOpenChange={openClosed}>
+              <DropdownTrigger >
                 <div className="flex items-center space-x-3 p-2 px-4 bg-opacity-0 bg-neutral-800 rounded-lg hover:bg-opacity-70 transition cursor-pointer -mt-1">
                   <img
                     width={32}
@@ -237,7 +243,12 @@ export default function Nav() {
                   <span className="hidden sm:block text-white font-semibold">
                     {userData.username}
                   </span>
-                  <FaAngleDown className="translate-y-[1px] text-white transition-transform duration-300 group-hover:rotate-180" />
+                  {isOpen ? (
+                      <FaAngleUp className="translate-y-[1px] text-white transition-transform duration-300 group-hover:rotate-180" />
+                  ) : (
+                      <FaAngleDown className="translate-y-[1px] text-white transition-transform duration-300 group-hover:rotate-180" />
+                  )}
+                  
                 </div>
               </DropdownTrigger>
               <DropdownMenu
