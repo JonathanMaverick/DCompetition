@@ -215,7 +215,7 @@ function History() {
   }
 
   const getContestant = (c) => {
-    const contestant = c.contestants.filter((c) => c.principle_id === userData.principle_id);
+    const contestant = c.contestants.filter((c) => c.principal_id === userData.principal_id);
     contestant.forEach((cont) => {
         cont.username = userData.username;
         cont.upload_time = convertDate(Number(cont.upload_time));
@@ -350,7 +350,7 @@ function History() {
                                     year: "numeric",
                                     hour: "numeric",
                                     minute: "numeric",
-                                    hour12: true,
+                                    hour12: true, 
                                   })}
                                 </span>
                               </div>
