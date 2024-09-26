@@ -81,7 +81,7 @@ const Register = () => {
 
       setRegister(newRegisterData);
 
-      navigate("/face");
+      navigate("/auth/face");
     } catch (error) {
       toast.error("Failed to register!", {
         style: {

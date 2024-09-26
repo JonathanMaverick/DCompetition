@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/react";
+import { Link, useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+  localStorage.setItem("status", 0)
   return (
     <div className="absolute top-0 left-0 w-screen min-h-screen flex flex-col justify-center items-center text-white overflow-hidden px-8">
       <motion.div
@@ -41,6 +44,9 @@ function Home() {
           <Button
             radius="full"
             className="w-60 h-12 bg-purple-600 hover:bg-purple-500 text-md font-semibold"
+            onClick={() => {
+              navigate("/contests");
+            }}
           >
             Get Started
           </Button>

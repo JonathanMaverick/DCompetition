@@ -61,6 +61,7 @@ function ContestDetail() {
   const [contestants, setContestants] = useState([]);
   const [allUser, setAllUser] = useState([]);
   const [voting, setVoting] = useState([]);
+  const [creator, setCreator] = useState(null);
 
   const refresh = () => {
     window.location.reload();
@@ -89,6 +90,16 @@ function ContestDetail() {
     };
     getAllUser();
   }, [competitionID]);
+
+  useEffect(() => {
+    if (contest && allUser) {
+      allUser.forEach((u) => {
+        if (u.principal_id === contest.principal_id) {
+          setCreator(u);
+        }
+      });
+    }
+  }, [contest, allUser]);
 
   const getContestant = async () => {
     try {
@@ -278,14 +289,28 @@ function ContestDetail() {
 
   if (loading || !userData) {
     return (
-      <div className="flex w-full gap-x-4">
-        <div className="flex flex-col w-2/5 h-full gap-y-3">
-          <Skeleton className="h-12 w-full mb-3 rounded-lg bg-default-300" />
-          <Skeleton className="h-8 w-1/3 mb-6 rounded-lg bg-default-300" />
-          <Skeleton className="h-12 w-full rounded-lg mt-4 bg-default-300" />
+      <div className="flex w-full lg:flex-row flex-col">
+        <div className="flex flex-col w-full px-2 lg:px-0 lg:w-2/5 h-[calc(100vh-8rem)] gap-y-2">
+          <div>
+            <Skeleton className="w-3/5 rounded-lg mt-4">
+              <div className="h-10 rounded-lg bg-default-200"></div>
+            </Skeleton>
+            <Skeleton className="w-1/5 rounded-lg mt-4 mb-2">
+              <div className="h-3.5 rounded-lg bg-default-200"></div>
+            </Skeleton>
+          </div>
+          <Skeleton className="rounded-lg">
+            <div className="h-[7rem] rounded-lg bg-default-300"></div>
+          </Skeleton>
+          <Skeleton className="w-full rounded-lg mt-4">
+            <div className="h-10 rounded-lg bg-default-200"></div>
+          </Skeleton>
+          <Skeleton className="w-full rounded-lg flex-grow">
+            <div className="h-full rounded-lg bg-default-200"></div>
+          </Skeleton>
         </div>
-        <div className="w-3/4 bg-black bg-opacity-40 h-full rounded-lg p-6">
-          <Skeleton className="h-52 w-full mb-2 rounded-lg bg-default-300" />
+        <div className="w-full lg:w-3/4 h-[calc(100vh-7rem)] min-h-full rounded-lg py-4 px-2 lg:px-4">
+          <Skeleton className="min-h-full w-full mb-2 rounded-lg bg-default-300" />
         </div>
       </div>
     );
@@ -308,6 +333,16 @@ function ContestDetail() {
       c.votes = 0;
     }
   });
+
+  const getUrl = (img) => {
+    const blob = new Blob([img], {
+      type: "image/jpeg",
+    });
+    const url = URL.createObjectURL(blob);
+    return url;
+  };
+
+  // console.log(contestants)
 
   return (
     <div className="flex w-full gap-4 mt-4 lg:flex-row flex-col">
@@ -521,6 +556,27 @@ function ContestDetail() {
                     </CardBody>
                   </Card>
                 )}
+
+                {creator && (
+                  <Card className="bg-neutral-900 bg-opacity-50 px-1">
+                    <CardBody>
+                      <span className="font-semibold block mb-2.5">
+                        Contest Creator
+                      </span>
+                      <div className="flex items-center space-x-3 py-2 pl-1 pr-4 bg-opacity-0 bg-neutral-800 rounded-lg hover:bg-opacity-70 transition cursor-pointer -mt-1 max-w-max">
+                        <img
+                          width={32}
+                          src={getUrl(creator.profilePic)}
+                          alt="Profile picture"
+                          className="rounded-full aspect-square border-2 border-purple-500 object-cover"
+                        />
+                        <span className="hidden sm:block text-white font-semibold">
+                          {creator.username}
+                        </span>
+                      </div>
+                    </CardBody>
+                  </Card>
+                )}
               </div>
             </Tab>
           </Tabs>
@@ -528,16 +584,22 @@ function ContestDetail() {
       </div>
       <div className="lg:w-3/4 w-full flex rounded-lg justify-center items-start overflow-y-scroll">
         <div className="ml-3.5 lg:ml-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 w-full justify-items-center gap-5">
-          {contest.status == "Ongoing" && (
-            <ParticipateContestModal
-              competitionId={competitionID}
-              userId={userData.principal_id}
-              fetchData={getContestant}
-              className={`w-full cursor-pointer backdrop-blur-lg`}
-              category={contest.category}
-            ></ParticipateContestModal>
+          {contest.status == "Ongoing" &&
+            contest.principal_id != userData.principal_id && (
+              <ParticipateContestModal
+                competitionId={competitionID}
+                userId={userData.principal_id}
+                fetchData={getContestant}
+                className={`w-full cursor-pointer backdrop-blur-lg`}
+                category={contest.category}
+              ></ParticipateContestModal>
+            )}
+          {contest.status == "Not Started" && (
+            <LockedCard message="Not started yet" />
           )}
-          {contest.status == "Not Started" && <LockedCard />}
+          {contest.principal_id == userData.principal_id && (
+            <LockedCard message="This is your own contest" />
+          )}
           {contestants
             .slice()
             .sort(getSort(contest) || ((a, b) => 0))
@@ -581,7 +643,8 @@ function ContestDetail() {
                   contest.status == "Winner Selection" ? (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
                       <p className="font-bold text-lg">
-                        Design #{contestants.length - idx}
+                        {contest.status == "Completed" ? "Rank #" : "Design #"}
+                        {contestants.length - idx}
                       </p>
                       <div className="flex justify-between">
                         <div className="text-sm flex gap-1 -mt-1.5">
@@ -641,7 +704,7 @@ function ContestDetail() {
                   ) : (
                     <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
                       <div className="flex justify-between">
-                        <p className="font-bold text-lg">Design #{idx + 1}</p>
+                        <p className="font-bold text-lg">Rank #{idx + 1}</p>
                         <div className="flex justify-center items-center gap-1">
                           <h1 className="text-sm">{contestant.votes}</h1>
                           <AiFillLike className="text-sm" />
@@ -678,7 +741,7 @@ function ContestDetail() {
             ))}
           <Card
             // key={idx}
-            className="pb-1 flex flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md opacity-0"
+            className={`${contestants.length > 0 ? "hidden" : "flex"} pb-1 flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md opacity-0`}
             radius="sm"
           >
             <CardBody className="overflow-hidden p-0 placeholder">

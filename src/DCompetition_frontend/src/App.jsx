@@ -9,6 +9,8 @@ import Register, { RegisterContext } from "./pages/Register";
 import History from "./pages/History";
 import AuthenticationRoute from "./middlewares/AuthenticationRoute";
 import { RouteList } from "./settings/RouteMenu";
+import ProtectedRoute from "./middlewares/ProtectedRoute";
+import UpdateProfile from "./pages/UpdateProfile";
 
 function App() {
   const [register, setRegister] = useState({
@@ -17,14 +19,18 @@ function App() {
     email: "",
     profile_pic: "",
   });
+
+
   return (
     <RegisterContext.Provider value={{ register,setRegister }}>
     <Router>
       <Template>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/*" element={<AuthenticationRoute/>}/>
+          {/* <Route path="/register" element={<Register /> /> */}
+          <Route path="/update-profile" element={<UpdateProfile/>} />
+          <Route path="/*" element={<AuthenticationRoute />}/>
+          <Route path="/auth/*" element={<ProtectedRoute/>}/>
         </Routes>
       </Template>
     </Router>
