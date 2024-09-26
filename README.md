@@ -14,7 +14,7 @@ wsl
 npm install
 
 # Starts the replica, running in the background
-dfx start --background
+dfx start --clean --background
 
 # Deploys your canisters to the replica and generates your candid interface
 dfx deploy
