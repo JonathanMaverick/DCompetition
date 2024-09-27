@@ -5,7 +5,6 @@ import Array "mo:base/Array";
 import Nat "mo:base/Nat";
 import Time "mo:base/Time";
 import Blob "mo:base/Blob";
-import Int "mo:base/Int";
 import Float "mo:base/Float";
 import UserActor "canister:DContest_backend_user";
 

@@ -4,7 +4,6 @@ import RBTree "mo:base/RBTree";
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
 import Result "mo:base/Result";
-import Nat "mo:base/Nat";
 import Float "mo:base/Float";
 
 actor Main {
