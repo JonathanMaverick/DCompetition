@@ -270,7 +270,7 @@ function History() {
 
   return (
     <div className="w-full flex flex-col mt-6">
-      <h1 className="text-4xl font-bold text-left md:text-center text-purple-400 mb-4">
+      <h1 className="text-4xl font-bold text-center text-purple-400 mb-4">
         History
       </h1>
       <Tabs
@@ -302,7 +302,7 @@ function History() {
             </div>
           ) : (
             !loading && (
-              <div className="w-full ">
+              <div className="w-full overflow-x-scroll">
                 <Table
                   aria-label="Contest Table"
                   classNames={{
@@ -457,7 +457,8 @@ function History() {
                             showAnchorIcon
                             variant="solid"
                             target="_blank"
-                            className={`from-white to-neutral-400 bg-gradient-to-br border-small border-white/20 font-bold text-neutral-600`}
+                            radius="sm"
+                            className={`from-white to-neutral-300 bg-gradient-to-br border-small border-white/20 font-bold text-neutral-900`}
                           >
                             View Detail
                           </Button>
