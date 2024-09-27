@@ -67,6 +67,8 @@ function History() {
     setAllVoting(votings);
   };
 
+  // console.log(allVoting)
+
   const getContest = async () => {
     const contests = await DContest_backend_contest.getAllContest();
     const currentDate = new Date().getTime();
@@ -150,33 +152,41 @@ function History() {
     }
   });
 
+  // console.log(userData)
+  // console.log(contests)
+
   const filterContest = () => {
     if (userData) {
       const myContest = contests.filter(
         (c) => c.principal_id === userData.principal_id
       );
+      // console.log(myContest)
       const myContestant = contests.filter((c) =>
         c.contestants.find((cc) => cc.principal_id === userData.principal_id)
       );
-      // console.log("CONTEST: ", contests);
       setCreatedContests(myContest);
       setParticipateContests(myContestant);
       setLoading(false);
     }
   };
 
+  
+  // console.log(participatedContests)
+
   const getVotes = (competition_id, contestant_id) => {
-    let vote = allVoting.filter(
+    let voteEntry = allVoting.find(
       (v) =>
-        Number(v.competition_id) == Number(competition_id) &&
-        Number(v.contestant_id) == Number(contestant_id)
+        Number(v.competition_id) === Number(competition_id) &&
+        Number(v.contestant_id) === Number(contestant_id)
     );
-    if (vote) {
-      return vote.length;
+  
+    if (voteEntry && Array.isArray(voteEntry.principal_id)) {
+      return voteEntry.principal_id.length; 
     } else {
-      return 0;
+      return 0; 
     }
   };
+  
 
   const checkWinner = (c) => {
     let myContestant = [];
@@ -184,7 +194,6 @@ function History() {
     c.contestants.forEach((cont, index) => {
       if (cont.principal_id === userData.principal_id) {
         let vote = getVotes(cont.competition_id, cont.contestant_id);
-        // console.log("test111111111", vote);
         myContestant.push({ ...cont, index, vote });
       }
     });
@@ -215,7 +224,6 @@ function History() {
       if (sortedVotes[0].principal_id === userData.principal_id) {
         for (let i = 1; i < sortedVotes.length; i++) {
           if (sortedVotes[0].vote !== sortedVotes[i].vote) {
-            console.log("aa", sortedVotes[0], sortedVotes[1], true);
             return true;
           }
         }
@@ -294,26 +302,26 @@ function History() {
 
   const getContestant = (c) => {
     let myContestant = [];
+  
+    const sortedContestants = c.contestants
+      .map((cont, index) => {
+        let vote = getVotes(cont.competition_id, cont.contestant_id);
+        return { ...cont, index, vote };
+      })
+      .sort((a, b) => b.vote - a.vote); 
+  
+    const filteredContestants = sortedContestants.filter(cont =>
+      cont.principal_id.includes(userData.principal_id)
+    );
+  
+    filteredContestants.forEach((cont, index) => {
+      myContestant.push({ ...cont, globalRank: sortedContestants.indexOf(cont) + 1 });
+    });
 
-    if (c.status === "Completed") {
-      c.contestants
-        .map((cont, index) => {
-          let vote = getVotes(cont.competition_id, cont.contestant_id); // Get votes for each contestant
-          return { ...cont, index, vote }; // Append index and vote
-        })
-        .sort((a, b) => b.vote - a.vote) // Sort by vote in descending order
-        .forEach((cont) => myContestant.push(cont)); // Push each sorted contestant to myContestant
-    } else {
-      c.contestants.forEach((cont, index) => {
-        if (cont.principal_id === userData.principal_id) {
-          let vote = getVotes(cont.competition_id, cont.contestant_id); // Get the votes for the user's contestant
-          myContestant.push({ ...cont, index, vote }); // Append index and vote
-        }
-      });
-    }
-
+  
     return myContestant;
   };
+  
 
   const getUrl = (img) => {
     const blob = new Blob([img], {
@@ -530,7 +538,7 @@ function History() {
                                 <div className="text-base font-semibold text-white">
                                   You won this contest!
                                 </div>
-                                <ClaimRewardModal contest={p} />
+                                <ClaimRewardModal contest={p} principal_id={userData.principal_id} />
                               </div>
                             )}
                         </div>
@@ -565,10 +573,10 @@ function History() {
                                     <div className="flex justify-between">
                                       <p className="font-bold text-lg">
                                         {p.status == "Completed"
-                                          ? "Rank #"
+                                          ? 'Rank #'
                                           : "Design #"}
                                         {p.status == "Completed"
-                                          ? index + 1
+                                          ? cont.globalRank
                                           : p.contestants.length - index}
                                       </p>
                                       {p.status == "Completed" && (
@@ -636,7 +644,7 @@ function History() {
         className="bg-[#0f0c12]"
         radius="none"
       >
-        <ModalContent className="w-96 h-auto p-0">
+        <ModalContent className="w-96 h-auto p-0"> 
           <img
             src={urlImg}
             alt="kosong"

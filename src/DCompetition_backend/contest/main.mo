@@ -33,7 +33,7 @@ actor Main {
         return contest;
     };
 
-    public func getReward(principal_id : Text, contest_id : Nat) : async Result<Null,Text>{
+    public func getReward(principal_id : Text, contest_id : Nat) : async Result<Null, Text> {
         var contest = tree.get(contest_id);
         switch (contest) {
             case (?ContestMotoko) {
@@ -53,13 +53,13 @@ actor Main {
                     additional_information = ContestMotoko.additional_information;
                     color = ContestMotoko.color;
                     file = ContestMotoko.file;
-                    isReward = false;
+                    isReward = true;
                 };
                 tree.put(currentId, updatedContest);
                 return #ok(null);
             };
             case (null) {
-                return #err("Error Occured!")
+                return #err("Error Occured!");
             };
         };
     };

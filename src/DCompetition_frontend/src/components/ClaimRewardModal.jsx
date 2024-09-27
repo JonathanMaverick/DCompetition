@@ -7,18 +7,20 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import { DContest_backend_contest } from "declarations/DContest_backend_contest";
 
-export default function ClaimRewardModal({ contest }) {
+export default function ClaimRewardModal({ contest, principal_id }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   const reward = contest.reward;
   const feePercentage = 0.01;
   const feeAmount = reward * feePercentage;
   const finalAmount = reward - feeAmount;
 
-  const handleClaimReward = () => {
-    alert("Reward claimed successfully!");
-    // const result = DContest_backend_contest.getReward()
+  // console.log(contest)
+  const handleClaimReward = async() => {
+    const result = await DContest_backend_contest.getReward(principal_id,Number(contest.contest_id))
+    console.log(result)
+    console.log("Reward claimed successfully!");
   };
 
   return (
@@ -72,7 +74,7 @@ export default function ClaimRewardModal({ contest }) {
               <ModalFooter className="justify-center">
                 <Button
                   className="bg-purple-600 text-white w-full"
-                  onPress={onClose}
+                  onPress={handleClaimReward}
                 >
                   Claim
                 </Button>
