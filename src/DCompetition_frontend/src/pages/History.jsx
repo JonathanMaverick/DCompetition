@@ -301,23 +301,34 @@ function History() {
   const getContestant = (c) => {
     let myContestant = [];
 
-    const sortedContestants = c.contestants
-      .map((cont, index) => {
-        let vote = getVotes(cont.competition_id, cont.contestant_id);
-        return { ...cont, index, vote };
-      })
-      .sort((a, b) => b.vote - a.vote);
+    if (c.status === "Completed") {
+      const sortedContestants = c.contestants
+        .map((cont, index) => {
+          let vote = getVotes(cont.competition_id, cont.contestant_id);
+          return { ...cont, index, vote };
+        })
+        .sort((b, a) => {
+          if (a.vote !== b.vote) {
+            return a.vote - b.vote;
+          }
+          return new Number(b.upload_time) - Number(a.upload_time);
+        });
 
-    const filteredContestants = sortedContestants.filter((cont) =>
-      cont.principal_id.includes(userData.principal_id)
-    );
-
-    filteredContestants.forEach((cont, index) => {
-      myContestant.push({
-        ...cont,
-        globalRank: sortedContestants.indexOf(cont) + 1,
+      sortedContestants.forEach((cont, globalRank) => {
+        if (cont.principal_id === userData.principal_id) {
+          let vote = getVotes(cont.competition_id, cont.contestant_id);
+          globalRank += 1;
+          myContestant.push({ ...cont, globalRank, vote });
+        }
       });
-    });
+    } else {
+      c.contestants.forEach((cont, index) => {
+        if (cont.principal_id === userData.principal_id) {
+          let vote = getVotes(cont.competition_id, cont.contestant_id);
+          myContestant.push({ ...cont, index, vote });
+        }
+      });
+    }
 
     return myContestant;
   };
@@ -578,7 +589,7 @@ function History() {
                                           : "Design #"}
                                         {p.status == "Completed"
                                           ? cont.globalRank
-                                          : p.contestants.length - index}
+                                          : p.contestants.length - cont.index}
                                       </p>
                                       {p.status == "Completed" && (
                                         <div className="flex justify-center items-center gap-1">
