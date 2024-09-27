@@ -165,14 +165,16 @@ function History() {
 
   const getVotes = (competition_id, contestant_id) => {
     let vote = allVoting.filter(
-      (v) => Number(v.competition_id) == Number(competition_id) && Number(v.contestant_id) == Number(contestant_id)
+      (v) =>
+        Number(v.competition_id) == Number(competition_id) &&
+        Number(v.contestant_id) == Number(contestant_id)
     );
     if (vote) {
       return vote.length;
     } else {
       return 0;
     }
-  }
+  };
 
   useEffect(() => {
     filterContest();
@@ -265,7 +267,6 @@ function History() {
   //     <CircularProgress size="lg" color="secondary" className="m-auto mt-16" />
   //   );
   // }
-  
 
   return (
     <div className="w-full flex flex-col mt-6">
@@ -286,10 +287,10 @@ function History() {
           {loading && (
             <div className="flex w-full flex-col gap-y-4">
               <Skeleton className="w-full rounded-lg">
-                    <div className="h-10 rounded-lg bg-default-200"></div>
+                <div className="h-10 rounded-lg bg-default-200"></div>
               </Skeleton>
               <Skeleton className="w-full rounded-lg">
-                    <div className="h-48 rounded-lg bg-default-200"></div>
+                <div className="h-48 rounded-lg bg-default-200"></div>
               </Skeleton>
             </div>
           )}
@@ -302,85 +303,86 @@ function History() {
           ) : (
             !loading && (
               <div className="w-full ">
-              <Table
-                aria-label="Contest Table"
-                classNames={{
-                  table:
-                    "bg-black bg-opacity-40 backdrop-blur-sm w-full h-full",
-                }}
-                variant="bordered"
-                removeWrapper
-              >
-                <TableHeader columns={headerColumn}>
-                  {(c) => (
-                    <TableColumn
-                      key={c.key}
-                      className="bg-purple-800 text-center text-white uppercase text-[11px]"
-                    >
-                      {c.label}
-                    </TableColumn>
-                  )}
-                </TableHeader>
-                <TableBody>
-                  {!loading &&
-                    createdContests.map((c, idx) => (
-                      <TableRow key={idx} className="text-center">
-                        <TableCell className="text-center w-[5%] font-semibold">
-                          {idx + 1}
-                        </TableCell>
-                        <TableCell className="text-center w-[25%] font-semibold">
-                          {c.name}
-                        </TableCell>
-                        <TableCell className="text-center w-[8%] font-semibold">
-                          {" "}
-                          {c.category.charAt(0).toUpperCase() +
-                            c.category.slice(1).toLowerCase()}
-                        </TableCell>
-                        <TableCell className="text-center w-[8%] font-semibold">
-                          {c.reward} ICP
-                        </TableCell>
-                        <TableCell className="text-center w-[8%] font-semibold">
-                          {c.contestants.length} Designs
-                        </TableCell>
+                <Table
+                  aria-label="Contest Table"
+                  classNames={{
+                    table:
+                      "bg-black bg-opacity-40 backdrop-blur-sm w-full h-full",
+                  }}
+                  variant="bordered"
+                  removeWrapper
+                >
+                  <TableHeader columns={headerColumn}>
+                    {(c) => (
+                      <TableColumn
+                        key={c.key}
+                        className="bg-purple-800 text-center text-white uppercase text-[11px]"
+                      >
+                        {c.label}
+                      </TableColumn>
+                    )}
+                  </TableHeader>
+                  <TableBody>
+                    {!loading &&
+                      createdContests.map((c, idx) => (
+                        <TableRow key={idx} className="text-center">
+                          <TableCell className="text-center w-[5%] font-semibold">
+                            {idx + 1}
+                          </TableCell>
+                          <TableCell className="text-center w-[25%] font-semibold">
+                            {c.name}
+                          </TableCell>
+                          <TableCell className="text-center w-[8%] font-semibold">
+                            {" "}
+                            {c.category.charAt(0).toUpperCase() +
+                              c.category.slice(1).toLowerCase()}
+                          </TableCell>
+                          <TableCell className="text-center w-[8%] font-semibold">
+                            {c.reward} ICP
+                          </TableCell>
+                          <TableCell className="text-center w-[8%] font-semibold">
+                            {c.contestants.length} Designs
+                          </TableCell>
 
-                        <TableCell className="text-center w-[10%] font-semibold">
-                          {formatDate(c.startDate)}
-                        </TableCell>
-                        <TableCell className="text-center w-[10%] font-semibold">
-                          {formatDate(c.deadline)}
-                        </TableCell>
-                        <TableCell className="text-center w-[8%] font-semibold">
-                          {formatDate(c.endDate)}
-                        </TableCell>
-                        <TableCell className="text-center font-semibold">
-                          <Chip
-                            className={`${statusColors[c.status]} min-w-16 h-7 font-semibold`}
-                            size="sm"
-                            variant="flat"
-                            classNames={{
-                              base: "bg-gradient-to-br border-small border-white/50 shadow-pink-500/30",
-                              content: "drop-shadow shadow-black text-white",
-                            }}
-                          >
-                            {c.status}
-                          </Chip>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <Link
-                            // isBlock
-                            showAnchorIcon
-                            href={`/contestDetail/${c.contest_id}`}
-                            color="foreground"
-                            underline="hover"
-                          >
-                            View
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </div>
+                          <TableCell className="text-center w-[10%] font-semibold">
+                            {formatDate(c.startDate)}
+                          </TableCell>
+                          <TableCell className="text-center w-[10%] font-semibold">
+                            {formatDate(c.deadline)}
+                          </TableCell>
+                          <TableCell className="text-center w-[8%] font-semibold">
+                            {formatDate(c.endDate)}
+                          </TableCell>
+                          <TableCell className="text-center font-semibold">
+                            <Chip
+                              className={`${statusColors[c.status]} min-w-16 h-7 font-semibold`}
+                              size="sm"
+                              variant="flat"
+                              classNames={{
+                                base: "bg-gradient-to-br border-small border-white/50 shadow-pink-500/30",
+                                content: "drop-shadow shadow-black text-white",
+                              }}
+                            >
+                              {c.status}
+                            </Chip>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Link
+                              // isBlock
+                              showAnchorIcon
+                              href={`/contestDetail/${c.contest_id}`}
+                              color="foreground"
+                              underline="hover"
+                              target="_blank"
+                            >
+                              View
+                            </Link>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </div>
             )
           )}
         </Tab>
@@ -408,11 +410,13 @@ function History() {
                   </Skeleton>
                 </div>
                 <Skeleton className="w-4/6 rounded-lg">
-                      <div className="h-full rounded-lg bg-default-200"></div>
+                  <div className="h-full rounded-lg bg-default-200"></div>
                 </Skeleton>
               </div>
             )}
-            {!loading && contests.length !== 0 && participatedContests.length === 0 ? (
+            {!loading &&
+            contests.length !== 0 &&
+            participatedContests.length === 0 ? (
               <div className="col-span-full">
                 <div className="col-span-full text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
                   You haven't participated in any contests
@@ -421,111 +425,119 @@ function History() {
             ) : (
               !loading && (
                 <div className="flex flex-col gap-4">
-                {participatedContests.map((p, idx) => (
-                  <Card className="bg-neutral-900 bg-opacity-60 p-4" key={idx}>
-                    <CardBody className="flex w-full h-full gap-4 lg:flex-row flex-co items-center">
-                      <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3 px-2 md:px-0 mb-auto">
-                        <div className="flex flex-col gap-2 mb-2 ml-1">
-                          <div className="text-4xl font-bold text-left line-clamp-2">
-                            {p.name}
+                  {participatedContests.map((p, idx) => (
+                    <Card
+                      className="bg-neutral-900 bg-opacity-60 p-4"
+                      key={idx}
+                    >
+                      <CardBody className="flex w-full h-full gap-4 lg:flex-row flex-co items-center">
+                        <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3 px-2 md:px-0 mb-auto">
+                          <div className="flex flex-col gap-2 mb-2 ml-1">
+                            <div className="text-4xl font-bold text-left line-clamp-2">
+                              {p.name}
+                            </div>
+                            <div className="text-1xl font-medium text-left pl-1">
+                              {p.category.charAt(0).toUpperCase() +
+                                p.category.slice(1).toLowerCase()}
+                            </div>
                           </div>
-                          <div className="text-1xl font-medium text-left pl-1">
-                            {p.category.charAt(0).toUpperCase() +
-                              p.category.slice(1).toLowerCase()}
+                          <BottomCard
+                            reward={Number(p.reward)}
+                            submissions={p.contestants.length}
+                            deadline={p.deadline}
+                            status={p.status}
+                            endDate={p.endDate}
+                            updateStatus={refresh}
+                            showSeconds={true}
+                          />
+                          <Button
+                            href={`/contestDetail/${p.contest_id}`}
+                            as={Link}
+                            // color="danger"
+                            showAnchorIcon
+                            variant="solid"
+                            target="_blank"
+                            className={`from-white to-neutral-400 bg-gradient-to-br border-small border-white/20 font-bold text-neutral-600`}
+                          >
+                            View Detail
+                          </Button>
+                          <div className="w-full h-12 bg-gradient-to-br from-purple-500 to-pink-500 border-small border-white/40 shadow-pink-500/30 font-semibold flex justify-between items-center px-4 rounded-md">
+                            <div className="text-base font-semibold text-white">
+                              You won this contest!
+                            </div>
+                            <button className="bg-white text-fuchsia-600 font-medium px-3 py-1 rounded-md hover:bg-gray-200 transition">
+                              Claim Reward
+                            </button>
                           </div>
                         </div>
-                        <BottomCard
-                          reward={Number(p.reward)}
-                          submissions={p.contestants.length}
-                          deadline={p.deadline}
-                          status={p.status}
-                          endDate={p.endDate}
-                          updateStatus={refresh}
-                          showSeconds={true}
-                        />
-                        <Button
-                          href={`/contestDetail/${p.contest_id}`}
-                          as={Link}
-                          // color="danger"
-                          showAnchorIcon
-                          variant="solid"
-                          target="_blank"
-                          className={`from-white to-neutral-400 bg-gradient-to-br border-small border-white/20 font-bold text-neutral-600`}
-                        >
-                          View Detail
-                        </Button>
-                        <div className="w-full h-12 bg-gradient-to-br from-purple-500 to-pink-500 border-small border-white/40 shadow-pink-500/30 font-semibold flex justify-between items-center px-4 rounded-md">
-                          <div className="text-base font-semibold text-white">
-                            You won this contest!
+                        <div className="lg:w-3/4 w-full flex flex-col rounded-lg justify-center items-start overflow-y-scroll gap-2 max-h-max">
+                          <div className="text-1xl font-medium text-left pl-1 mt-1.5">
+                            Submitted Designs
                           </div>
-                          <button className="bg-white text-fuchsia-600 font-medium px-3 py-1 rounded-md hover:bg-gray-200 transition">
-                            Claim Reward
-                          </button>
-                        </div>
-                      </div>
-                      <div className="lg:w-3/4 w-full flex flex-col rounded-lg justify-center items-start overflow-y-scroll gap-2 max-h-max">
-                        <div className="text-1xl font-medium text-left pl-1 mt-1.5">
-                          Submitted Designs
-                        </div>
-                        <div className="flex gap-4 max-h-max">
-                          {getContestant(p).map((cont, index) => (
-                            <Card
-                              key={index}
-                              className="w-56 pb-1 flex flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md"
-                              radius="sm"
-                            >
-                              <CardBody className="overflow-hidden p-0">
-                                <img
-                                  src={getUrl(cont.photo_url)}
-                                  width={500}
-                                  className={`${
-                                    p.category == "logo"
-                                      ? "aspect-square"
-                                      : "aspect-[1/2]"
-                                  } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer bg-neutral-900 bg-opacity-40 backdrop-blur-lg`}
-                                  onClick={() =>
-                                    openDetailImg(
-                                      getUrl(cont.photo_url),
-                                      p.category
-                                    )
-                                  }
-                                />
-                                <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
-                                  <div className="flex justify-between">
-                                    <p className="font-bold text-lg">
-                                      {p.status == "Completed"
-                                        ? "Rank #"
-                                        : "Design #"}
-                                      {p.contestants.length - index}
-                                    </p>
-                                    <div className="flex justify-center items-center gap-1">
-                                  <h1 className="text-sm">{getVotes(cont.competition_id, cont.contestant_id)}</h1>
-                                  <AiFillLike className="text-sm" />
-                                </div>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <div className="text-sm flex gap-1 -mt-1.5">
-                                      <span className="font-thin">by</span>
-                                      <span className="font-semibold">
-                                        {cont.username}
-                                      </span>
+                          <div className="flex gap-4 max-h-max">
+                            {getContestant(p).map((cont, index) => (
+                              <Card
+                                key={index}
+                                className="w-56 pb-1 flex flex-col items-center justify-center bg-opacity-40 bg-black backdrop-blur-md"
+                                radius="sm"
+                              >
+                                <CardBody className="overflow-hidden p-0">
+                                  <img
+                                    src={getUrl(cont.photo_url)}
+                                    width={500}
+                                    className={`${
+                                      p.category == "logo"
+                                        ? "aspect-square"
+                                        : "aspect-[1/2]"
+                                    } h-full object-cover rounded-t-sm transition duration-500 ease-in-out hover:brightness-75 cursor-pointer bg-neutral-900 bg-opacity-40 backdrop-blur-lg`}
+                                    onClick={() =>
+                                      openDetailImg(
+                                        getUrl(cont.photo_url),
+                                        p.category
+                                      )
+                                    }
+                                  />
+                                  <div className="flex flex-col gap-1 p-3 pt-2.5 relative">
+                                    <div className="flex justify-between">
+                                      <p className="font-bold text-lg">
+                                        {p.status == "Completed"
+                                          ? "Rank #"
+                                          : "Design #"}
+                                        {p.contestants.length - index}
+                                      </p>
+                                      <div className="flex justify-center items-center gap-1">
+                                        <h1 className="text-sm">
+                                          {getVotes(
+                                            cont.competition_id,
+                                            cont.contestant_id
+                                          )}
+                                        </h1>
+                                        <AiFillLike className="text-sm" />
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div className="text-xs flex items-center gap-1.5 -ml-0.5">
-                                    <MdOutlineFileUpload className="text-lg" />
-                                    <span>
-                                      {/* {console.log(cont)} */}
-                                      {convertDate(
-                                        Number(cont.upload_time)
-                                      ).toLocaleDateString("en-US", {
-                                        day: "numeric",
-                                        month: "short",
-                                        year: "numeric",
-                                        hour: "numeric",
-                                        minute: "numeric",
-                                        hour12: true,
-                                      })}
-                                      {/* {cont.upload_time.toLocaleDateString("en-US", {
+                                    <div className="flex justify-between">
+                                      <div className="text-sm flex gap-1 -mt-1.5">
+                                        <span className="font-thin">by</span>
+                                        <span className="font-semibold">
+                                          {cont.username}
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div className="text-xs flex items-center gap-1.5 -ml-0.5">
+                                      <MdOutlineFileUpload className="text-lg" />
+                                      <span>
+                                        {/* {console.log(cont)} */}
+                                        {convertDate(
+                                          Number(cont.upload_time)
+                                        ).toLocaleDateString("en-US", {
+                                          day: "numeric",
+                                          month: "short",
+                                          year: "numeric",
+                                          hour: "numeric",
+                                          minute: "numeric",
+                                          hour12: true,
+                                        })}
+                                        {/* {cont.upload_time.toLocaleDateString("en-US", {
                                   day: "numeric",
                                   month: "short",
                                   year: "numeric",
@@ -533,18 +545,18 @@ function History() {
                                   minute: "numeric",
                                   hour12: true,
                                 })} */}
-                                    </span>
+                                      </span>
+                                    </div>
                                   </div>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          ))}
+                                </CardBody>
+                              </Card>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    </CardBody>
-                  </Card>
-                ))}
-              </div>
+                      </CardBody>
+                    </Card>
+                  ))}
+                </div>
               )
             )}
           </div>
