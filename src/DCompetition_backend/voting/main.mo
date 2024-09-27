@@ -120,4 +120,34 @@ actor Main {
         return results;
     };
 
+    public func addVotingTie(competition_id : Nat, contestant_id : Nat) : async Result<Null, Text> {
+
+        let currentId = (competition_id, contestant_id);
+
+        switch (tree.get(currentId)) {
+            case (?existingVote) {
+                let updatedPrincipalIds = Array.append(existingVote.principal_id, ["Winner"]);
+
+                let updatedVote : Voting.Voting = {
+                    competition_id = existingVote.competition_id;
+                    contestant_id = existingVote.contestant_id;
+                    principal_id = updatedPrincipalIds;
+                };
+
+                tree.put(currentId, updatedVote);
+                return #ok(null);
+            };
+            case null {
+                let newVote : Voting.Voting = {
+                    competition_id = competition_id;
+                    contestant_id = contestant_id;
+                    principal_id = ["Winner"];
+                };
+
+                tree.put(currentId, newVote);
+                return #ok(null);
+            };
+        };
+    };
+
 };
