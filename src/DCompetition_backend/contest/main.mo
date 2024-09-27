@@ -38,10 +38,8 @@ actor Main {
         var contest = tree.get(contest_id);
         switch (contest) {
             case (?ContestMotoko) {
-                let rewardFloat : Float = Float.fromInt(ContestMotoko.reward);
-                let feeFloat : Float = rewardFloat * 0.10;
-                let feeNat = Int.abs(Float.toInt(feeFloat));
-                UserActor.addUserBalance(principal_id, ContestMotoko.reward - feeNat);
+                let feeFloat : Float = ContestMotoko.reward * 0.10;
+                UserActor.addUserBalance(principal_id, ContestMotoko.reward - feeFloat);
                 let updatedContest : Contest.Contest = {
                     contest_id = ContestMotoko.contest_id;
                     principal_id = ContestMotoko.principal_id;
@@ -80,7 +78,7 @@ actor Main {
     public func addContest(
         principal_id : Text,
         name : Text,
-        reward : Nat,
+        reward : Float,
         desc : Text,
         category : Text,
         startDate : Time.Time,

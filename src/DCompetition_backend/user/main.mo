@@ -5,6 +5,7 @@ import Text "mo:base/Text";
 import Blob "mo:base/Blob";
 import Result "mo:base/Result";
 import Nat "mo:base/Nat";
+import Float "mo:base/Float";
 
 actor Main {
 
@@ -79,7 +80,7 @@ actor Main {
     return users;
   };
 
-  public func reduceUserBalance(principal_id : Text, amount : Nat) : async Result<Null, Text> {
+  public func reduceUserBalance(principal_id : Text, amount : Float) : async Result<Null, Text> {
 
     for (e in RBTree.iter(tree.share(), #bwd)) {
       let key = e.0;
@@ -106,7 +107,7 @@ actor Main {
     return #ok(null);
   };
 
-  public func addUserBalance(principal_id : Text, amount : Nat) {
+  public func addUserBalance(principal_id : Text, amount : Float) {
 
     for (e in RBTree.iter(tree.share(), #bwd)) {
       let key = e.0;

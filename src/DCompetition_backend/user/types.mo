@@ -1,12 +1,12 @@
 import Text "mo:base/Text";
-import Nat "mo:base/Nat";
 import Blob "mo:base/Blob";
+import Float "mo:base/Float";
 module {
   public type User = {
     principal_id : Text;
     username : Text;
     email : Text;
-    money : Nat;
+    money : Float;
     profilePic : Blob;
   };
 };

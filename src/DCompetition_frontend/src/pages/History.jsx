@@ -224,6 +224,11 @@ function History() {
     return false;
   };
 
+  const handleClaimReward = () => {
+    alert("Reward claimed successfully!");
+    // const result = DContest_backend_contest.getReward()
+  };
+
   useEffect(() => {
     filterContest();
   }, [contests]);
@@ -529,7 +534,10 @@ function History() {
                                 <div className="text-base font-semibold text-white">
                                   You won this contest!
                                 </div>
-                                <button className="bg-white text-fuchsia-600 font-medium px-3 py-1 rounded-md hover:bg-gray-200 transition">
+                                <button
+                                  className="bg-white text-fuchsia-600 font-medium px-3 py-1 rounded-md hover:bg-gray-200 transition"
+                                  onClick={() => handleClaimReward()}
+                                >
                                   Claim Reward
                                 </button>
                               </div>
