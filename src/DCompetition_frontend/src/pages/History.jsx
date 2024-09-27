@@ -101,6 +101,7 @@ function History() {
         additional_information: comp.additional_information,
         color: comp.color,
         file: comp.file,
+        isReward: comp.isReward,
       };
     });
 
@@ -176,6 +177,53 @@ function History() {
     }
   };
 
+  const checkWinner = (c) => {
+    let myContestant = [];
+
+    c.contestants.forEach((cont, index) => {
+      if (cont.principal_id === userData.principal_id) {
+        let vote = getVotes(cont.competition_id, cont.contestant_id);
+        // console.log("test111111111", vote);
+        myContestant.push({ ...cont, index, vote });
+      }
+    });
+
+    if (c.status === "Completed") {
+      myContestant.sort((a, b) => b.vote - a.vote);
+    }
+
+    const voteGroups = {};
+    c.contestants.forEach((cont) => {
+      let voteCount = getVotes(cont.competition_id, cont.contestant_id);
+      if (!voteGroups[cont.competition_id]) {
+        voteGroups[cont.competition_id] = [];
+      }
+      voteGroups[cont.competition_id].push({
+        principal_id: cont.principal_id,
+        vote: voteCount,
+      });
+    });
+
+    Object.keys(voteGroups).forEach((competitionId) => {
+      voteGroups[competitionId].sort((a, b) => b.vote - a.vote);
+    });
+
+    for (let competitionId in voteGroups) {
+      const sortedVotes = voteGroups[competitionId];
+
+      if (sortedVotes[0].principal_id === userData.principal_id) {
+        for (let i = 1; i < sortedVotes.length; i++) {
+          if (sortedVotes[0].vote !== sortedVotes[i].vote) {
+            console.log("aa", sortedVotes[0], sortedVotes[1], true);
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  };
+
   useEffect(() => {
     filterContest();
   }, [contests]);
@@ -244,14 +292,26 @@ function History() {
   };
 
   const getContestant = (c) => {
-    const contestant = c.contestants.filter(
-      (c) => c.principal_id === userData.principal_id
-    );
-    contestant.forEach((cont) => {
-      cont.username = userData.username;
-    });
-    // console.log("MY CONTESTANTS : ", contestant);
-    return contestant;
+    let myContestant = [];
+
+    if (c.status === "Completed") {
+      c.contestants
+        .map((cont, index) => {
+          let vote = getVotes(cont.competition_id, cont.contestant_id); // Get votes for each contestant
+          return { ...cont, index, vote }; // Append index and vote
+        })
+        .sort((a, b) => b.vote - a.vote) // Sort by vote in descending order
+        .forEach((cont) => myContestant.push(cont)); // Push each sorted contestant to myContestant
+    } else {
+      c.contestants.forEach((cont, index) => {
+        if (cont.principal_id === userData.principal_id) {
+          let vote = getVotes(cont.competition_id, cont.contestant_id); // Get the votes for the user's contestant
+          myContestant.push({ ...cont, index, vote }); // Append index and vote
+        }
+      });
+    }
+
+    return myContestant;
   };
 
   const getUrl = (img) => {
@@ -462,14 +522,18 @@ function History() {
                           >
                             View Detail
                           </Button>
-                          <div className="w-full h-12 bg-gradient-to-br from-purple-500 to-pink-500 border-small border-white/40 shadow-pink-500/30 font-semibold flex justify-between items-center px-4 rounded-md">
-                            <div className="text-base font-semibold text-white">
-                              You won this contest!
-                            </div>
-                            <button className="bg-white text-fuchsia-600 font-medium px-3 py-1 rounded-md hover:bg-gray-200 transition">
-                              Claim Reward
-                            </button>
-                          </div>
+                          {p.status === "Completed" &&
+                            checkWinner(p) &&
+                            !p.isReward && (
+                              <div className="w-full h-12 bg-gradient-to-br from-purple-500 to-pink-500 border-small border-white/40 shadow-pink-500/30 font-semibold flex justify-between items-center px-4 rounded-md">
+                                <div className="text-base font-semibold text-white">
+                                  You won this contest!
+                                </div>
+                                <button className="bg-white text-fuchsia-600 font-medium px-3 py-1 rounded-md hover:bg-gray-200 transition">
+                                  Claim Reward
+                                </button>
+                              </div>
+                            )}
                         </div>
                         <div className="lg:w-3/4 w-full flex flex-col rounded-lg justify-center items-start overflow-y-scroll gap-2 max-h-max">
                           <div className="text-1xl font-medium text-left pl-1 mt-1.5">
@@ -504,23 +568,27 @@ function History() {
                                         {p.status == "Completed"
                                           ? "Rank #"
                                           : "Design #"}
-                                        {p.contestants.length - index}
+                                        {p.status == "Completed"
+                                          ? index + 1
+                                          : p.contestants.length - index}
                                       </p>
-                                      <div className="flex justify-center items-center gap-1">
-                                        <h1 className="text-sm">
-                                          {getVotes(
-                                            cont.competition_id,
-                                            cont.contestant_id
-                                          )}
-                                        </h1>
-                                        <AiFillLike className="text-sm" />
-                                      </div>
+                                      {p.status == "Completed" && (
+                                        <div className="flex justify-center items-center gap-1">
+                                          <h1 className="text-sm">
+                                            {getVotes(
+                                              cont.competition_id,
+                                              cont.contestant_id
+                                            )}
+                                          </h1>
+                                          <AiFillLike className="text-sm" />
+                                        </div>
+                                      )}
                                     </div>
                                     <div className="flex justify-between">
                                       <div className="text-sm flex gap-1 -mt-1.5">
                                         <span className="font-thin">by</span>
                                         <span className="font-semibold">
-                                          {cont.username}
+                                          {userData.username}
                                         </span>
                                       </div>
                                     </div>
