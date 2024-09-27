@@ -63,7 +63,7 @@ function History() {
 
   const getAllVotings = async () => {
     const votings = await DContest_backend_voting.getAllVotings();
-    console.log("VOTING: ", votings);
+    setAllVoting(votings);
   };
 
   const getContest = async () => {
@@ -106,7 +106,7 @@ function History() {
 
     setContests(updatedContests);
     setFilteredContests(updatedContests);
-    setLoading(false);
+    // setLoading(false);
   };
 
   useEffect(() => {
@@ -163,9 +163,20 @@ function History() {
     }
   };
 
+  const getVotes = (competition_id, contestant_id) => {
+    let vote = allVoting.filter(
+      (v) => Number(v.competition_id) == Number(competition_id) && Number(v.contestant_id) == Number(contestant_id)
+    );
+    if (vote) {
+      return vote.length;
+    } else {
+      return 0;
+    }
+  }
+
   useEffect(() => {
     filterContest();
-  }, [userData]);
+  }, [contests]);
 
   const headerColumn = [
     {
@@ -271,7 +282,7 @@ function History() {
         }}
       >
         <Tab key="created" title="Created">
-          {createdContests.length === 0 ? (
+          {!loading && createdContests.length === 0 ? (
             <div className="col-span-full">
               <div className="col-span-full text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
                 You haven't created any contests
@@ -343,13 +354,6 @@ function History() {
                           </Chip>
                         </TableCell>
                         <TableCell className="text-center">
-                          {/* <Link
-                            to={`/contestDetail/${c.contest_id}`}
-                            key={idx}
-                            className="w-14 bg-gray-700 bg-opacity-40 text-white py-1.5 px-4 rounded-md hover:bg-opacity-70 transition duration-300 font-semibold"
-                          >
-                            View
-                          </Link> */}
                           <Link
                             // isBlock
                             showAnchorIcon
@@ -455,10 +459,10 @@ function History() {
                                         : "Design #"}
                                       {p.contestants.length - index}
                                     </p>
-                                    {/* <div className="flex justify-center items-center gap-1">
-                                  <h1 className="text-sm">{cont.votes}</h1>
+                                    <div className="flex justify-center items-center gap-1">
+                                  <h1 className="text-sm">{getVotes(cont.competition_id, cont.contestant_id)}</h1>
                                   <AiFillLike className="text-sm" />
-                                </div> */}
+                                </div>
                                   </div>
                                   <div className="flex justify-between">
                                     <div className="text-sm flex gap-1 -mt-1.5">
