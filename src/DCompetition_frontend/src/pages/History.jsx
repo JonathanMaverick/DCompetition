@@ -260,11 +260,12 @@ function History() {
     return url;
   };
 
-  if (loading) {
-    return (
-      <CircularProgress size="lg" color="secondary" className="m-auto mt-16" />
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <CircularProgress size="lg" color="secondary" className="m-auto mt-16" />
+  //   );
+  // }
+  
 
   return (
     <div className="w-full flex flex-col mt-6">
@@ -282,14 +283,25 @@ function History() {
         }}
       >
         <Tab key="created" title="Created">
-          {!loading && createdContests.length === 0 ? (
+          {loading && (
+            <div className="flex w-full flex-col gap-y-4">
+              <Skeleton className="w-full rounded-lg">
+                    <div className="h-10 rounded-lg bg-default-200"></div>
+              </Skeleton>
+              <Skeleton className="w-full rounded-lg">
+                    <div className="h-48 rounded-lg bg-default-200"></div>
+              </Skeleton>
+            </div>
+          )}
+          {!loading && contests.length !== 0 && createdContests.length === 0 ? (
             <div className="col-span-full">
               <div className="col-span-full text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
                 You haven't created any contests
               </div>
             </div>
           ) : (
-            <div className="w-full ">
+            !loading && (
+              <div className="w-full ">
               <Table
                 aria-label="Contest Table"
                 classNames={{
@@ -370,18 +382,46 @@ function History() {
                 </TableBody>
               </Table>
             </div>
+            )
           )}
         </Tab>
         <Tab key="participated" title="Participated">
           <div className="w-full flex flex-col gap-10">
-            {participatedContests.length === 0 ? (
+            {loading && (
+              <div className="flex w-full gap-x-5 py-4 px-6">
+                <div className="flex flex-col w-4/12">
+                  <div className="flex flex-col">
+                    <Skeleton className="w-3/5 rounded-lg mt-4">
+                      <div className="h-10 rounded-lg bg-default-200"></div>
+                    </Skeleton>
+                    <Skeleton className="w-1/5 rounded-lg mt-4 mb-2">
+                      <div className="h-3.5 rounded-lg bg-default-200"></div>
+                    </Skeleton>
+                  </div>
+                  <Skeleton className="rounded-lg">
+                    <div className="h-32 rounded-lg bg-default-300"></div>
+                  </Skeleton>
+                  <Skeleton className="w-full rounded-lg mt-4">
+                    <div className="h-10 rounded-lg bg-default-200"></div>
+                  </Skeleton>
+                  <Skeleton className="w-full rounded-lg mt-4">
+                    <div className="h-12 rounded-lg bg-default-200"></div>
+                  </Skeleton>
+                </div>
+                <Skeleton className="w-4/6 rounded-lg">
+                      <div className="h-full rounded-lg bg-default-200"></div>
+                </Skeleton>
+              </div>
+            )}
+            {!loading && contests.length !== 0 && participatedContests.length === 0 ? (
               <div className="col-span-full">
                 <div className="col-span-full text-center text-gray-300 text-xl py-4 w-full backdrop-blur-md">
                   You haven't participated in any contests
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col gap-4">
+              !loading && (
+                <div className="flex flex-col gap-4">
                 {participatedContests.map((p, idx) => (
                   <Card className="bg-neutral-900 bg-opacity-60 p-4" key={idx}>
                     <CardBody className="flex w-full h-full gap-4 lg:flex-row flex-co items-center">
@@ -506,6 +546,7 @@ function History() {
                   </Card>
                 ))}
               </div>
+              )
             )}
           </div>
         </Tab>
