@@ -170,7 +170,6 @@ function History() {
     }
   };
 
-  
   // console.log(participatedContests)
 
   const getVotes = (competition_id, contestant_id) => {
@@ -179,14 +178,13 @@ function History() {
         Number(v.competition_id) === Number(competition_id) &&
         Number(v.contestant_id) === Number(contestant_id)
     );
-  
+
     if (voteEntry && Array.isArray(voteEntry.principal_id)) {
-      return voteEntry.principal_id.length; 
+      return voteEntry.principal_id.length;
     } else {
-      return 0; 
+      return 0;
     }
   };
-  
 
   const checkWinner = (c) => {
     let myContestant = [];
@@ -302,26 +300,27 @@ function History() {
 
   const getContestant = (c) => {
     let myContestant = [];
-  
+
     const sortedContestants = c.contestants
       .map((cont, index) => {
         let vote = getVotes(cont.competition_id, cont.contestant_id);
         return { ...cont, index, vote };
       })
-      .sort((a, b) => b.vote - a.vote); 
-  
-    const filteredContestants = sortedContestants.filter(cont =>
+      .sort((a, b) => b.vote - a.vote);
+
+    const filteredContestants = sortedContestants.filter((cont) =>
       cont.principal_id.includes(userData.principal_id)
     );
-  
+
     filteredContestants.forEach((cont, index) => {
-      myContestant.push({ ...cont, globalRank: sortedContestants.indexOf(cont) + 1 });
+      myContestant.push({
+        ...cont,
+        globalRank: sortedContestants.indexOf(cont) + 1,
+      });
     });
 
-  
     return myContestant;
   };
-  
 
   const getUrl = (img) => {
     const blob = new Blob([img], {
@@ -531,16 +530,18 @@ function History() {
                           >
                             View Detail
                           </Button>
-                          {p.status === "Completed" &&
-                            checkWinner(p) &&
-                            !p.isReward && (
-                              <div className="w-full h-12 bg-gradient-to-br from-purple-500 to-pink-500 border-small border-white/40 shadow-pink-500/30 font-semibold flex justify-between items-center px-4 rounded-md">
-                                <div className="text-base font-semibold text-white">
-                                  You won this contest!
-                                </div>
-                                <ClaimRewardModal contest={p} principal_id={userData.principal_id} />
+                          {p.status === "Completed" && checkWinner(p) && (
+                            <div className="w-full h-12 bg-gradient-to-br from-purple-500 to-pink-500 border-small border-white/40 shadow-pink-500/30 font-semibold flex justify-between items-center px-4 rounded-md">
+                              <div className="text-base font-semibold text-white">
+                                You won this contest!
                               </div>
-                            )}
+                              <ClaimRewardModal
+                                contest={p}
+                                principal_id={userData.principal_id}
+                                claimed={p.isReward}
+                              />
+                            </div>
+                          )}
                         </div>
                         <div className="lg:w-3/4 w-full flex flex-col rounded-lg justify-center items-start overflow-y-scroll gap-2 max-h-max">
                           <div className="text-1xl font-medium text-left pl-1 mt-1.5">
@@ -573,7 +574,7 @@ function History() {
                                     <div className="flex justify-between">
                                       <p className="font-bold text-lg">
                                         {p.status == "Completed"
-                                          ? 'Rank #'
+                                          ? "Rank #"
                                           : "Design #"}
                                         {p.status == "Completed"
                                           ? cont.globalRank
@@ -644,7 +645,7 @@ function History() {
         className="bg-[#0f0c12]"
         radius="none"
       >
-        <ModalContent className="w-96 h-auto p-0"> 
+        <ModalContent className="w-96 h-auto p-0">
           <img
             src={urlImg}
             alt="kosong"
