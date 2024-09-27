@@ -34,6 +34,7 @@ import { DContest_backend_contestant } from "declarations/DContest_backend_conte
 import { AiFillLike } from "react-icons/ai";
 import { DContest_backend_voting } from "declarations/DContest_backend_voting";
 import { FaUsers } from "react-icons/fa";
+import ClaimRewardModal from "../components/ClaimRewardModal";
 
 function History() {
   const [contests, setContests] = useState([]);
@@ -222,11 +223,6 @@ function History() {
     }
 
     return false;
-  };
-
-  const handleClaimReward = () => {
-    alert("Reward claimed successfully!");
-    // const result = DContest_backend_contest.getReward()
   };
 
   useEffect(() => {
@@ -492,11 +488,11 @@ function History() {
                 <div className="flex flex-col gap-4">
                   {participatedContests.map((p, idx) => (
                     <Card
-                      className="bg-neutral-900 bg-opacity-60 p-4"
+                      className="bg-neutral-900 bg-opacity-60 p-0 md:p-4"
                       key={idx}
                     >
                       <CardBody className="flex w-full h-full gap-4 lg:flex-row flex-co items-center">
-                        <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3 px-2 md:px-0 mb-auto">
+                        <div className="flex flex-col w-full lg:w-2/5 h-full gap-y-3 px-0 md:px-0 mb-auto">
                           <div className="flex flex-col gap-2 mb-2 ml-1">
                             <div className="text-4xl font-bold text-left line-clamp-2">
                               {p.name}
@@ -534,12 +530,7 @@ function History() {
                                 <div className="text-base font-semibold text-white">
                                   You won this contest!
                                 </div>
-                                <button
-                                  className="bg-white text-fuchsia-600 font-medium px-3 py-1 rounded-md hover:bg-gray-200 transition"
-                                  onClick={() => handleClaimReward()}
-                                >
-                                  Claim Reward
-                                </button>
+                                <ClaimRewardModal contest={p} />
                               </div>
                             )}
                         </div>
