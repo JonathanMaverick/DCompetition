@@ -371,7 +371,6 @@ function History() {
                             showAnchorIcon
                             href={`/contestDetail/${c.contest_id}`}
                             color="foreground"
-                            target="_blank"
                             underline="hover"
                           >
                             View
