@@ -54,7 +54,7 @@ flask run --port=1234
   https://tinyurl.com/DemoDContest
 
 - Pitch Deck<br />
-  
+  https://tinyurl.com/PitchDContest
 
 ## Note on frontend environment variables
 
