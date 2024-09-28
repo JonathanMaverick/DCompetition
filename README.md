@@ -50,7 +50,10 @@ flask run --port=1234
 - Project Summary & Documentation<br />
   https://spectacular-powder-fc0.notion.site/D-Contest-10b125e9bce5804dbdaffbddc8a980df?pvs=4
   
-- Project Demo
+- Project Demo<br />
+  https://tinyurl.com/DemoDContest
+
+- Pitch Deck<br />
   
 
 ## Note on frontend environment variables
