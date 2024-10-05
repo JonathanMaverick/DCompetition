@@ -1,5 +1,9 @@
 # `DContest`
 
+<img src="https://scontent.cdninstagram.com/v/t51.29350-15/462218855_1198265131459219_5436943921733853923_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE0NDAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=scontent.cdninstagram.com&_nc_cat=107&_nc_ohc=1rstANR_nZsQ7kNvgElxGfV&_nc_gid=fa5b4dfdd57141b5b49adb988820cad3&edm=APs17CUBAAAA&ccb=7-5&ig_cache_key=MzQ3MTkyNjU5NTM1NDAxNDQ4MA%3D%3D.3-ccb7-5&oh=00_AYCm7S8xWodDvGKAMEo_AmuutQa0af6fjR_UZ8GTMbM_Gg&oe=6706B571&_nc_sid=10d13b"/>
+
+## We’re thrilled to announce that our team won 1st place at Codefest
+
 Introducing `D’Contest`, an ultimate contest voting platform designed to host exciting contests and empower the community. Whether you are a competitor looking to showcase your talent or a fan eager to support your top picks, our site has everything you need. `D’Contest` is built on Web3 blockchain using ICP technology such as DFX, Motoko, and Internet Identity. With a sleek, easy-to-navigate design, you can effortlessly explore ongoing contests, participate in the action, and vote with just a few clicks. Supporting fair voting process by providing AI face-checking technology to ensure users only have one account.
 
 ## Running the project locally
